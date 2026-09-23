@@ -1,0 +1,9 @@
+name = "ai-sympo"
+compatibility_date = "2024-01-01"
+[assets]
+directory = "."
+
+[[d1_databases]]
+binding = "DB"
+database_name = "sympo_db"
+database_id = "e236fc4d-62c4-4556-a106-664cc16045a3"

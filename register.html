@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Confirmation & Ticket Checkout | INTELLIGENZ 2K26</title>
+  <meta name="description" content="Official Registration & Ticket Checkout for INTELLIGENZ 2K26 1-Day National Level Technical Symposium.">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  
+  <!-- Supabase Real-time Database Config -->
+  <script src="assets/js/supabase_config.js"></script>
+</head>
+  <style>
+    .checkout-page {
+      padding: 3rem 0 6rem 0;
+    }
+    .checkout-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 0.6fr;
+      gap: 2.5rem;
+      align-items: start;
+    }
+    @media (max-width: 992px) {
+      .checkout-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .form-section-title {
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      color: var(--accent-cyan);
+      border-bottom: 1px solid var(--border-dim);
+      padding-bottom: 0.5rem;
+      margin: 1.8rem 0 1.2rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+      margin-bottom: 1.2rem;
+    }
+    @media (max-width: 600px) {
+      .form-row { grid-template-columns: 1fr; }
+    }
+    .radio-group, .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 0.4rem;
+    }
+    .radio-option, .checkbox-option {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+    .radio-option input, .checkbox-option input {
+      accent-color: var(--accent-green);
+      width: 16px;
+      height: 16px;
+    }
+    .summary-card {
+      position: sticky;
+      top: 100px;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-green);
+      box-shadow: 0 0 30px rgba(0, 255, 102, 0.15);
+      padding: 2rem;
+    }
+    .summary-event-banner {
+      background: linear-gradient(135deg, rgba(0, 255, 102, 0.15), rgba(0, 240, 255, 0.15));
+      border: 1px solid var(--border-cyan);
+      padding: 1.2rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      margin-bottom: 0.8rem;
+      color: var(--text-secondary);
+    }
+    .summary-total {
+      font-family: var(--font-mono);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--accent-green);
+      border-top: 1px solid var(--border-dim);
+      padding-top: 1rem;
+      margin-top: 1rem;
+      display: flex;
+      justify-content: space-between;
+    }
+    .trust-badge-group {
+      margin-top: 1.8rem;
+      border-top: 1px solid var(--border-dim);
+      padding-top: 1.2rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .trust-badge-group i {
+      color: var(--accent-cyan);
+      font-size: 1.1rem;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================================================
+       1. NAVIGATION & HUD STATUS BAR
+       ========================================================================== -->
+  <div class="header-wrapper">
+    <nav class="navbar" id="navbar">
+      <div class="nav-container">
+        <a href="index.html#hero" class="nav-brand">
+          <i class="fas fa-microchip brand-icon"></i>
+          <span class="brand-title">INTELLIGENZ<span>_2K26</span></span>
+        </a>
+        
+        <a href="index.html" class="btn-nav-cta">
+          <i class="fas fa-arrow-left"></i> RETURN TO MAIN HQ
+        </a>
+      </div>
+    </nav>
+
+    <!-- Sticky HUD Status Bar -->
+    <div class="hud-status-strip">
+      <div class="hud-status-content">
+        <div class="hud-left">
+          <div class="hud-item">
+            <span class="status-dot"></span>
+            <span class="hud-label">STATUS:</span>
+            <span class="hud-val">SECURE CHECKOUT ENCRYPTION ACTIVE</span>
+          </div>
+        </div>
+        <div class="hud-right">
+          <div class="hud-item">
+            <span class="hud-label">GATEWAY:</span>
+            <span class="hud-val cyan">TICKET9 ENCRYPTED</span>
+          </div>
+          <div class="hud-item">
+            <span class="hud-label">LOCAL CLOCK:</span>
+            <span class="hud-val cyan" id="hudLocalClock">--:--:-- IST</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       2. CHECKOUT MAIN CONTAINER
+       ========================================================================== -->
+  <main class="checkout-page">
+    <div class="container">
+      <div class="checkout-grid">
+
+        <!-- Left Form Column: Booking Confirmation -->
+        <div class="booking-form-wrapper tactical-box">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-dim); padding-bottom: 1rem; margin-bottom: 1.5rem;">
+            <h2 style="font-family: var(--font-heading); color: var(--text-primary); font-size: 1.8rem;">
+              Booking Confirmation
+            </h2>
+            <span class="badge-tactical badge-cyan">PASS CLEARANCE</span>
+          </div>
+
+          <form id="bookingConfirmationForm">
+            <!-- 1. Personal Information -->
+            <div class="form-section-title">
+              <i class="fas fa-user-shield"></i> Personal Credentials
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="regName">NAME *</label>
+                <input type="text" id="regName" class="form-control" placeholder="Operative Full Name" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="regEmail">EMAIL *</label>
+                <input type="email" id="regEmail" class="form-control" placeholder="example@gmail.com" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="regMobile">MOBILE NUMBER *</label>
+                <div style="display: flex; gap: 0.5rem;">
+                  <span class="badge-tactical" style="padding: 0.75rem 0.8rem; font-size: 0.9rem;">+91</span>
+                  <input type="tel" id="regMobile" class="form-control" placeholder="10-digit mobile number" required pattern="[0-9]{10}">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="regNo">REGISTER NUMBER *</label>
+                <input type="text" id="regNo" class="form-control" placeholder="College Register / Roll Number" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">GENDER *</label>
+              <div class="radio-group">
+                <label class="radio-option">
+                  <input type="radio" name="gender" value="Male" required checked> Male
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="gender" value="Female"> Female
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="gender" value="Other"> Other
+                </label>
+              </div>
+            </div>
+
+            <!-- 2. Academic & District Details -->
+            <div class="form-section-title">
+              <i class="fas fa-university"></i> Academic &amp; Location Intel
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="regCollege">COLLEGE NAME *</label>
+                <input type="text" id="regCollege" class="form-control" placeholder="Institution / College Name" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="regDept">DEPARTMENT NAME *</label>
+                <input type="text" id="regDept" class="form-control" placeholder="e.g. AI&amp;DS, CSE, ECE" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="regDistrict">DISTRICT *</label>
+                <input type="text" id="regDistrict" class="form-control" placeholder="District name" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="regPincode">PINCODE(Ex : 636001) *</label>
+                <input type="text" id="regPincode" class="form-control" placeholder="6-digit Pincode" required pattern="[0-9]{6}">
+              </div>
+            </div>
+
+            <!-- 3. Event Selection -->
+            <div class="form-section-title">
+              <i class="fas fa-layer-group"></i> Select Target TECHNICAL Events SELECT(2) *
+            </div>
+
+            <div class="checkbox-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
+              <label class="checkbox-option">
+                <input type="checkbox" name="events" value="Innov Expo" checked> Innov Expo (AI/ML)
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" name="events" value="Prompt-a-thon"> Prompt-a-thon (GenAI)
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" name="events" value="Paper Talks"> Paper Talks (Paper Presentation)
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" name="events" value="Workshop"> Hands-on Workshop
+              </label>
+
+              <div class="form-section-title">
+              <i class="fas fa-layer-group"></i> Select Target NON TECHNICAL EVENT (1) *
+            </div>
+            <div class="checkbox-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;"></div>
+              <label class="checkbox-option">
+                <input type="checkbox" name="events" value="Esport Gaming"> Esport Gaming (Free Fire)
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" name="events" value="IPL Auction"> IPL Tactical Auction
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" name="events" value="Mystery Box"> Mystery Box
+              </label>
+            </div>
+
+            <!-- 4. Referral & Source Details -->
+            <div class="form-section-title">
+              <i class="fas fa-share-alt"></i> Referral Intelligence
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1.2rem;">
+              <label class="form-label">REFERRED BY ANYONE FROM INSTITUTION? *</label>
+              <div class="radio-group">
+                <label class="radio-option">
+                  <input type="radio" name="referred" value="Yes"> Yes
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="referred" value="No" checked> No
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1.2rem;">
+              <label class="form-label">SOURCE OF INFORMATION / REFERRED BY *</label>
+              <div class="radio-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem;">
+                <label class="radio-option">
+                  <input type="radio" name="source" value="Social Media" checked> Social Media
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="source" value="WhatsApp"> WhatsApp
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="source" value="College / Institution"> College / Institution
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="source" value="Friends / Colleagues"> Friends / Colleagues
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="source" value="Previous Participant"> Previous Participant
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="source" value="Other"> Other
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1.5rem;">
+              <label class="form-label">REFERRAL DEPARTMENT (IF APPLICABLE)</label>
+              <select class="form-control" id="regRefDept">
+                <option value="Artificial Intelligence and Data Science" selected>Artificial Intelligence and Data Science</option>
+                <option value="Computer Science and Engineering">Computer Science and Engineering</option>
+                <option value="Information Technology">Information Technology</option>
+                <option value="Electronics & Communication Engineering">Electronics & Communication Engineering</option>
+                <option value="Electrical & Electronics Engineering">Electrical & Electronics Engineering</option>
+                <option value="Mechanical Engineering">Mechanical Engineering</option>
+                <option value="Civil Engineering">Civil Engineering</option>
+                <option value="Mechatronics Engineering">Mechatronics Engineering</option>
+                <option value="CSE (Cyber Security)">CSE (Cyber Security)</option>
+                <option value="Master of Business Administration (MBA)">Master of Business Administration (MBA)</option>
+              </select>
+            </div>
+
+            <!-- 5. Agreements & Submit -->
+            <div style="border-top: 1px solid var(--border-dim); padding-top: 1.2rem; margin-bottom: 1.5rem;">
+              <label class="checkbox-option" style="margin-bottom: 0.6rem;">
+                <input type="checkbox" id="chkAccount" checked> Create an account to manage booking
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" id="chkTerms" required checked> By continuing, you agree to <a href="#" style="color: var(--accent-cyan); text-decoration: underline; margin-left: 4px;">Terms &amp; Conditions</a>
+              </label>
+            </div>
+
+            <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; font-size: 1.1rem; padding: 1rem;">
+              <i class="fas fa-lock"></i> CONFIRM &amp; PAY ₹300
+            </button>
+          </form>
+        </div>
+
+        <!-- Right Column: Order & Ticket Summary Card -->
+        <div class="summary-card tactical-box">
+          <div class="summary-event-banner">
+            <h3 style="font-family: var(--font-heading); color: var(--accent-green); font-size: 1.4rem;">
+              INTELLIGENZ 2K26
+            </h3>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.3rem;">
+              <i class="fas fa-map-marker-alt" style="color: var(--accent-cyan);"></i> Department of AI&amp;DS, Tech Campus, Sector 4
+            </p>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem;">
+              <i class="fas fa-calendar-alt"></i> October 9, 2026 | 09:00 AM
+            </p>
+          </div>
+
+          <div style="border-bottom: 1px solid var(--border-dim); padding-bottom: 1rem; margin-bottom: 1rem;">
+            <div class="summary-row">
+              <span>Ticket Name:</span>
+              <strong style="color: #fff;">1-Day Pass DAY-1</strong>
+            </div>
+            <div class="summary-row">
+              <span>Price &amp; Quantity:</span>
+              <strong style="color: var(--accent-cyan);">₹ 300 x 1</strong>
+            </div>
+            <div class="summary-row">
+              <span style="font-size: 0.75rem; color: var(--text-muted);">Includes convenience fees &amp; GST</span>
+              <span style="font-size: 0.75rem; color: var(--accent-green);">Included</span>
+            </div>
+          </div>
+
+          <div class="summary-total">
+            <span>Total Amount:</span>
+            <span>₹ 300.00</span>
+          </div>
+
+          <!-- Trust Badges -->
+          <div class="trust-badge-group">
+            <div>
+              <i class="fas fa-lock"></i>
+              <span>100% Secure Payment</span>
+            </div>
+            <div>
+              <i class="fas fa-user-check"></i>
+              <span>Trusted by Event-Goers</span>
+            </div>
+            <div>
+              <i class="fas fa-headset"></i>
+              <span>24/7 Command Support</span>
+            </div>
+          </div>
+
+          <!-- Guarantee Box -->
+          <div style="margin-top: 1.5rem; background: rgba(0, 255, 102, 0.08); border: 1px solid var(--border-green); padding: 0.8rem; border-radius: 4px; font-size: 0.78rem; color: var(--text-secondary); display: flex; gap: 0.6rem; align-items: flex-start;">
+            <i class="fas fa-shield-alt" style="color: var(--accent-green); font-size: 1.1rem; margin-top: 0.1rem;"></i>
+            <div>
+              <strong style="color: #fff;">Book with Confidence:</strong> Ticket9 guarantees refunds and verified clearance for all operatives.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- ==========================================================================
+       3. INTERACTIVE ₹300 QR CODE PAYMENT & SCREENSHOT UPLOAD MODAL (STEP 2)
+       ========================================================================== -->
+  <div id="paymentModal" class="event-modal-overlay">
+    <div class="event-modal-content tactical-box payment-modal-box">
+      
+      <!-- Modal Header -->
+      <div class="modal-header-strip">
+        <div class="modal-title-group">
+          <i class="fas fa-qrcode modal-icon"></i>
+          <div>
+            <h3 class="modal-heading">INTELLIGENZ 2K26 PAYMENT GATEWAY</h3>
+            <span class="modal-subheading">STEP 2 OF 2: SCAN QR &amp; UPLOAD PAYMENT PROOF</span>
+          </div>
+        </div>
+        <button type="button" class="modal-close-x" id="closePaymentModal" aria-label="Close modal">&times;</button>
+      </div>
+
+      <!-- Payment Timer & Amount Banner -->
+      <div class="payment-banner-box">
+        <div class="payment-amount-display">
+          <span class="amount-label">REGISTRATION CLEARANCE FEE:</span>
+          <div class="amount-val">₹ 300<span class="amount-cents">.00</span></div>
+          <span class="badge-tactical badge-green"><i class="fas fa-check-circle"></i> ALL SELECTED EVENTS INCLUDED</span>
+        </div>
+        <div class="payment-timer-box">
+          <i class="fas fa-clock timer-icon"></i>
+          <div>
+            <div class="timer-title">RESERVATION EXPIRES IN</div>
+            <div class="timer-countdown" id="paymentTimer">14:59</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Payment Grid: QR Card on Left, Upload & Submit on Right -->
+      <div class="payment-grid-layout">
+        
+        <!-- Left Column: Primary & Secondary QR Code Displays -->
+        <div class="qr-cards-column" style="display: flex; flex-direction: column; gap: 1.5rem;">
+          
+          <!-- PRIMARY QR CARD SETUP 1 -->
+          <div class="qr-card-container tactical-box">
+            <div class="qr-badge-header">
+              <span class="gpay-badge"><i class="fab fa-google-pay"></i> Google Pay (Option 1)</span>
+              <span class="upi-badge"><i class="fas fa-bolt"></i> UPI INSTANT</span>
+            </div>
+
+            <!-- QR Image Box with Holographic Scanning Effect & Authentic GPay Styling -->
+            <div class="qr-code-frame">
+              <div class="qr-scanner-line"></div>
+              <img id="paymentQrImage" 
+                   src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&ecc=H&margin=10&data=upi%3A%2F%2Fpay%3Fpa%3Dsanjay132726-1%40okicici%26pn%3DSanjay%26mc%3D0000%26tn%3DINTELLIGENZ%25202K26%2520Registration%26am%3D300%26cu%3DINR" 
+                   alt="Google Pay QR Code - ₹300 (sanjay132726-1@okicici)" class="qr-image"
+                   onerror="this.onerror=null; this.src='https://chart.googleapis.com/chart?cht=qr&chs=350x350&chld=H|1&chl=upi%3A%2F%2Fpay%3Fpa%3Dsanjay132726-1%40okicici%26pn%3DSanjay%26am%3D300%26cu%3DINR';">
+            </div>
+
+            <div class="qr-instructions">
+              <i class="fas fa-qrcode" style="color: var(--accent-cyan);"></i> Scan QR code using <strong>GPay, PhonePe, Paytm</strong> or any UPI App to pay <strong>₹300</strong>
+            </div>
+
+            <!-- Copy UPI ID Box -->
+            <div class="upi-copy-box">
+              <div class="upi-id-details">
+                <span class="upi-label">OFFICIAL UPI ID 1:</span>
+                <span class="upi-id-text" id="upiIdText">sanjay132726-1@okicici</span>
+              </div>
+              <button type="button" class="btn-copy-upi" id="btnCopyUpi" title="Copy UPI ID 1">
+                <i class="fas fa-copy"></i> <span id="copyBtnText">COPY ID</span>
+              </button>
+            </div>
+
+            <!-- Payment App Badges -->
+            <div class="payment-apps-strip">
+              <span class="app-chip"><i class="fab fa-google-pay"></i> GPay</span>
+              <span class="app-chip"><i class="fas fa-mobile-alt"></i> PhonePe</span>
+              <span class="app-chip"><i class="fas fa-wallet"></i> Paytm</span>
+              <span class="app-chip"><i class="fas fa-university"></i> BHIM UPI</span>
+            </div>
+          </div>
+
+          <!-- SECONDARY QR CARD SETUP 2 (QR & UPI ID ONLY) -->
+          <div class="qr-card-container tactical-box">
+            <div class="qr-badge-header">
+              <span class="gpay-badge" style="background: rgba(0, 240, 255, 0.15); border-color: var(--accent-cyan); color: var(--accent-cyan);"><i class="fas fa-mobile-alt"></i> PhonePe / Paytm (Option 2)</span>
+              <span class="upi-badge"><i class="fas fa-bolt"></i> ALTERNATE UPI</span>
+            </div>
+
+            <!-- QR Image Box for Second Account -->
+            <div class="qr-code-frame">
+              <div class="qr-scanner-line"></div>
+              <img id="paymentQrImage2" 
+                   src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&ecc=H&margin=10&data=upi%3A%2F%2Fpay%3Fpa%3D8778910842%40ybl%26pn%3DParthipan%26mc%3D0000%26tn%3DINTELLIGENZ%25202K26%2520Registration%26am%3D300%26cu%3DINR" 
+                   alt="PhonePe/Paytm QR Code 2 - ₹300 (8778910842@ybl)" class="qr-image"
+                   onerror="this.onerror=null; this.src='https://chart.googleapis.com/chart?cht=qr&chs=350x350&chld=H|1&chl=upi%3A%2F%2Fpay%3Fpa%3D8778910842%40ybl%26pn%3DParthipan%26am%3D300%26cu%3DINR';">
+            </div>
+
+            <div class="qr-instructions">
+              <i class="fas fa-qrcode" style="color: var(--accent-green);"></i> Scan Alternate QR code using <strong>PhonePe, Paytm, GPay</strong> to pay <strong>₹300</strong>
+            </div>
+
+            <!-- Copy UPI ID Box 2 -->
+            <div class="upi-copy-box">
+              <div class="upi-id-details">
+                <span class="upi-label">OFFICIAL UPI ID 2:</span>
+                <span class="upi-id-text" id="upiIdText2">6381661311@ybl</span>
+              </div>
+              <button type="button" class="btn-copy-upi" id="btnCopyUpi2" title="Copy UPI ID 2">
+                <i class="fas fa-copy"></i> <span id="copyBtnText2">COPY ID</span>
+              </button>
+            </div>
+
+            <!-- Payment App Badges -->
+            <div class="payment-apps-strip">
+              <span class="app-chip"><i class="fas fa-mobile-alt"></i> PhonePe</span>
+              <span class="app-chip"><i class="fas fa-wallet"></i> Paytm</span>
+              <span class="app-chip"><i class="fab fa-google-pay"></i> GPay</span>
+              <span class="app-chip"><i class="fas fa-university"></i> BHIM UPI</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right: Upload Payment Screenshot & Submit Option -->
+        <div class="upload-section-container tactical-box">
+          <h4 class="upload-section-title">
+            <i class="fas fa-file-upload"></i> UPLOAD PAYMENT SCREENSHOT (🙏MUST🙏)*
+          </h4>
+          <p class="upload-section-desc">
+            After making the ₹300 payment on GPay/PhonePe, upload your payment receipt or screenshot below to complete clearance.
+          </p>
+
+          <!-- Drag & Drop Zone -->
+          <div class="dropzone-area" id="dropzoneArea">
+            <input type="file" id="screenshotInput" accept="image/*" class="dropzone-file-input">
+            <div class="dropzone-content" id="dropzoneDefaultContent">
+              <div class="dropzone-icon">
+                <i class="fas fa-cloud-upload-alt"></i>
+              </div>
+              <div class="dropzone-text">
+                <strong>Click to upload screenshot</strong> or drag &amp; drop picture here
+              </div>
+              <div class="dropzone-hint">PNG, JPG, JPEG, WEBP formats (Max 10MB)</div>
+            </div>
+
+            <!-- Live Image Preview Container -->
+            <div class="preview-content" id="dropzonePreviewContent" style="display: none;">
+              <div class="preview-image-wrapper">
+                <img id="previewImage" src="" alt="Payment Screenshot Preview">
+                <span class="preview-badge"><i class="fas fa-check-circle"></i> ATTACHED</span>
+              </div>
+              <div class="preview-info">
+                <div class="preview-filename" id="previewFilename">screenshot.png</div>
+                <div class="preview-filesize" id="previewFilesize">0 KB</div>
+                <button type="button" class="btn-remove-preview" id="btnRemovePreview">
+                  <i class="fas fa-trash-alt"></i> Change Image
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Transaction Reference Field (Required) -->
+          <div class="form-group" style="margin-top: 1rem;">
+            <label class="form-label" for="utrNumber" style="font-size: 0.85rem; color: var(--accent-cyan); font-weight: bold;">
+              12-DIGIT UTR / UPI REF NO. *
+            </label>
+            <input type="text" id="utrNumber" class="form-control" placeholder="Enter 12-digit UTR/Ref No. from GPay/PhonePe" required maxlength="18" pattern="[0-9]{10,18}">
+            <span style="font-size: 0.72rem; color: var(--text-muted); display: block; margin-top: 0.3rem;">
+              <i class="fas fa-info-circle"></i> Find your 12-digit UTR / UPI Ref No. on your GPay, PhonePe, or Paytm payment receipt.
+            </span>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="submit-action-box" style="margin-top: 1.2rem;">
+            <button type="button" class="btn-submit-payment" id="btnSubmitPayment" disabled>
+              <i class="fas fa-lock" id="submitIcon"></i> 
+              <span id="submitText">ATTACH SCREENSHOT TO SUBMIT</span>
+            </button>
+            <p class="submit-disclaimer">
+              <i class="fas fa-shield-alt" style="color: var(--accent-green);"></i> Secure Verification Active. Ticket credentials dispatched instantly upon submit.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       4. SUCCESS CONFIRMATION MODAL WITH SUBMITTED PROOF PREVIEW
+       ========================================================================== -->
+  <div id="paymentSuccessModal" class="event-modal-overlay">
+    <div class="event-modal-content tactical-box" style="max-width: 600px; text-align: center; padding: 2.2rem 1.8rem; position: relative;">
+      <button type="button" class="modal-close-x" id="closeSuccessModal" style="position: absolute; top: 1rem; right: 1rem;">&times;</button>
+      
+      <div style="font-size: 3.5rem; color: var(--accent-green); margin-bottom: 0.8rem;">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <h2 style="font-family: var(--font-heading); color: var(--accent-green); font-size: 1.8rem; margin-bottom: 0.3rem;">
+        BOOKING CONFIRMED!
+      </h2>
+      <p style="font-family: var(--font-mono); font-size: 0.9rem; color: var(--accent-cyan); margin-bottom: 1rem;" id="successPassId">
+        PASS TRANSACTION ID: #INT2K26-PASS-88492
+      </p>
+
+      <!-- Booking Summary Details Box -->
+      <div style="background: rgba(0,0,0,0.5); border: 1px solid var(--border-green); padding: 1rem; border-radius: 6px; margin-bottom: 1.2rem; text-align: left; font-size: 0.85rem;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
+          <span style="color: var(--text-muted);">Participant:</span>
+          <strong style="color: #fff;" id="summaryParticipantName">--</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
+          <span style="color: var(--text-muted);">College:</span>
+          <span style="color: var(--text-secondary);" id="summaryCollege">--</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
+          <span style="color: var(--text-muted);">Amount Paid:</span>
+          <strong style="color: var(--accent-green);">₹ 300.00 (Verified)</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color: var(--text-muted);">Selected Events:</span>
+          <span style="color: var(--accent-cyan); font-family: var(--font-mono); font-size: 0.78rem;" id="summaryEvents">Innov Expo, Free Fire</span>
+        </div>
+      </div>
+
+      <!-- Submitted Payment Proof Thumbnail Box -->
+      <div id="submittedProofCard" style="display: none; background: #0d131d; border: 1px solid var(--border-cyan); padding: 0.8rem; border-radius: 6px; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 1rem; text-align: left;">
+        <img id="submittedProofImage" src="" alt="Payment Proof" style="width: 55px; height: 55px; object-fit: cover; border-radius: 4px; border: 1px solid var(--accent-cyan);">
+        <div>
+          <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-cyan);">
+            <i class="fas fa-file-image"></i> PAYMENT SCREENSHOT VERIFIED
+          </div>
+          <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.2rem;" id="submittedProofText">
+            Screenshot attached &amp; forwarded to verification server.
+          </div>
+        </div>
+      </div>
+
+      <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
+        Your 1-Day Pass for <strong>INTELLIGENZ 2K26</strong> has been registered. Entry credentials &amp; official QR clearance pass have been dispatched to your email.
+      </p>
+
+      <div style="display: flex; gap: 0.8rem; flex-wrap: wrap;">
+        <button type="button" class="btn-primary" id="btnDownloadPass" style="flex: 1; justify-content: center; font-size: 0.9rem;">
+          <i class="fas fa-download"></i> DOWNLOAD PASS
+        </button>
+        <a href="index.html" class="btn-primary" style="flex: 1; justify-content: center; font-size: 0.9rem; background: transparent; border: 1px solid var(--border-cyan); color: var(--accent-cyan);">
+          <i class="fas fa-home"></i> RETURN HQ
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; 2026 INTELLIGENZ 2K26. AI&amp;DS DEPARTMENT. ALL RIGHTS RESERVED.</div>
+        <div>Developed by AI payalunga</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Supabase Real-time Database Config -->
+  <script src="assets/js/supabase_config.js"></script>
+
+  <!-- Interactive JavaScript Logic -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Real-time HUD Clock
+      const updateClock = () => {
+        const now = new Date();
+        const clockEl = document.getElementById('hudLocalClock');
+        if (clockEl) {
+          clockEl.textContent = now.toLocaleTimeString('en-US', { hour12: false }) + ' IST';
+        }
+      };
+      updateClock();
+      setInterval(updateClock, 1000);
+
+      // Auto pre-select event if passed in URL parameter
+      const urlParams = new URLSearchParams(window.location.search);
+      const targetEventParam = urlParams.get('event');
+      if (targetEventParam) {
+        const eventMap = {
+          'project-expo': 'Innov Expo',
+          'prompt-a-thon': 'Prompt-a-thon',
+          'paper-presentation': 'Paper Talks',
+          'workshop': 'Workshop',
+          'esport-gaming': 'Esport Gaming',
+          'ipl-auction': 'IPL Auction',
+          'mystery-box': 'Mystery Box'
+        };
+        const targetVal = eventMap[targetEventParam] || targetEventParam;
+        const checkboxes = document.querySelectorAll('input[name="events"]');
+        checkboxes.forEach(cb => {
+          if (cb.value.toLowerCase().includes(targetVal.toLowerCase()) || targetVal.toLowerCase().includes(cb.value.toLowerCase())) {
+            cb.checked = true;
+          }
+        });
+      }
+
+      // DOM Elements
+      const bookingForm = document.getElementById('bookingConfirmationForm');
+      const paymentModal = document.getElementById('paymentModal');
+      const closePaymentModalBtn = document.getElementById('closePaymentModal');
+      const paymentSuccessModal = document.getElementById('paymentSuccessModal');
+      const closeSuccessModalBtn = document.getElementById('closeSuccessModal');
+
+      const screenshotInput = document.getElementById('screenshotInput');
+      const dropzoneArea = document.getElementById('dropzoneArea');
+      const dropzoneDefaultContent = document.getElementById('dropzoneDefaultContent');
+      const dropzonePreviewContent = document.getElementById('dropzonePreviewContent');
+      const previewImage = document.getElementById('previewImage');
+      const previewFilename = document.getElementById('previewFilename');
+      const previewFilesize = document.getElementById('previewFilesize');
+      const btnRemovePreview = document.getElementById('btnRemovePreview');
+
+      const btnSubmitPayment = document.getElementById('btnSubmitPayment');
+      const submitText = document.getElementById('submitText');
+      const submitIcon = document.getElementById('submitIcon');
+      const btnCopyUpi = document.getElementById('btnCopyUpi');
+      const copyBtnText = document.getElementById('copyBtnText');
+
+      let currentImageDataUrl = '';
+      let timerInterval = null;
+
+      // 2. Form Submission -> Triggers Step 2 Payment Modal
+      if (bookingForm && paymentModal) {
+        bookingForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          
+          if (!bookingForm.checkValidity()) {
+            bookingForm.reportValidity();
+            return;
+          }
+
+          // Show Payment Modal with smooth transition
+          paymentModal.classList.add('show');
+          document.body.style.overflow = 'hidden';
+
+          // Start 15-Minute Expiration Timer
+          startPaymentTimer(15 * 60);
+        });
+      }
+
+      // Close Payment Modal handler
+      if (closePaymentModalBtn && paymentModal) {
+        closePaymentModalBtn.addEventListener('click', () => {
+          paymentModal.classList.remove('show');
+          document.body.style.overflow = '';
+          if (timerInterval) clearInterval(timerInterval);
+        });
+      }
+
+      // Close Success Modal handler
+      if (closeSuccessModalBtn && paymentSuccessModal) {
+        closeSuccessModalBtn.addEventListener('click', () => {
+          paymentSuccessModal.classList.remove('show');
+          document.body.style.overflow = '';
+        });
+      }
+
+      // 3. 15-Minute Countdown Timer
+      function startPaymentTimer(durationSeconds) {
+        let timer = durationSeconds;
+        const timerEl = document.getElementById('paymentTimer');
+        if (timerInterval) clearInterval(timerInterval);
+
+        timerInterval = setInterval(() => {
+          const minutes = Math.floor(timer / 60);
+          const seconds = timer % 60;
+          if (timerEl) {
+            timerEl.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+          }
+          if (--timer < 0) {
+            clearInterval(timerInterval);
+            if (timerEl) timerEl.textContent = 'EXPIRED';
+          }
+        }, 1000);
+      }
+
+      // 4. One-Click Copy UPI ID
+      if (btnCopyUpi) {
+        btnCopyUpi.addEventListener('click', () => {
+          const upiId = document.getElementById('upiIdText')?.textContent || 'sanjay132726-1@okicici';
+          navigator.clipboard.writeText(upiId).then(() => {
+            if (copyBtnText) copyBtnText.textContent = 'COPIED!';
+            btnCopyUpi.style.borderColor = 'var(--accent-green)';
+            btnCopyUpi.style.color = 'var(--accent-green)';
+            setTimeout(() => {
+              if (copyBtnText) copyBtnText.textContent = 'COPY ID';
+              btnCopyUpi.style.borderColor = '';
+              btnCopyUpi.style.color = '';
+            }, 2000);
+          }).catch(err => {
+            console.error('Failed to copy UPI ID:', err);
+          });
+        });
+      }
+
+      // One-Click Copy UPI ID 2
+      const btnCopyUpi2 = document.getElementById('btnCopyUpi2');
+      const copyBtnText2 = document.getElementById('copyBtnText2');
+      if (btnCopyUpi2) {
+        btnCopyUpi2.addEventListener('click', () => {
+          const upiId2 = document.getElementById('upiIdText2')?.textContent || '8778910842@ybl';
+          navigator.clipboard.writeText(upiId2).then(() => {
+            if (copyBtnText2) copyBtnText2.textContent = 'COPIED!';
+            btnCopyUpi2.style.borderColor = 'var(--accent-green)';
+            btnCopyUpi2.style.color = 'var(--accent-green)';
+            setTimeout(() => {
+              if (copyBtnText2) copyBtnText2.textContent = 'COPY ID';
+              btnCopyUpi2.style.borderColor = '';
+              btnCopyUpi2.style.color = '';
+            }, 2000);
+          }).catch(err => {
+            console.error('Failed to copy UPI ID 2:', err);
+          });
+        });
+      }
+
+      // 5. Drag & Drop and Screenshot File Upload Handling with Auto Compression
+      if (screenshotInput && dropzoneArea) {
+        // Drag over / leave effects
+        ['dragenter', 'dragover'].forEach(eventName => {
+          dropzoneArea.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropzoneArea.classList.add('dragover');
+          }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+          dropzoneArea.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropzoneArea.classList.remove('dragover');
+          }, false);
+        });
+
+        // Drop event
+        dropzoneArea.addEventListener('drop', (e) => {
+          const dt = e.dataTransfer;
+          const files = dt.files;
+          if (files && files.length > 0) {
+            screenshotInput.files = files;
+            handleFileSelection(files[0]);
+          }
+        });
+
+        // Change event
+        screenshotInput.addEventListener('change', (e) => {
+          if (e.target.files && e.target.files.length > 0) {
+            handleFileSelection(e.target.files[0]);
+          }
+        });
+      }
+
+      // File selection processor with automatic client-side image compression
+      function handleFileSelection(file) {
+        if (!file.type.startsWith('image/')) {
+          alert('Please select a valid image file (PNG, JPG, JPEG, WEBP).');
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            let width = img.width;
+            let height = img.height;
+            const MAX_WIDTH = 750;
+            if (width > MAX_WIDTH) {
+              height = Math.round((height * MAX_WIDTH) / width);
+              width = MAX_WIDTH;
+            }
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+            currentImageDataUrl = canvas.toDataURL('image/jpeg', 0.75);
+            
+            // Display preview
+            if (previewImage) previewImage.src = currentImageDataUrl;
+            if (previewFilename) previewFilename.textContent = file.name;
+            if (previewFilesize) previewFilesize.textContent = formatBytes(Math.round(currentImageDataUrl.length * 0.75));
+
+            if (dropzoneDefaultContent) dropzoneDefaultContent.style.display = 'none';
+            if (dropzonePreviewContent) dropzonePreviewContent.style.display = 'flex';
+
+            // Enable Submit Button
+            enableSubmitButton();
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+
+      // Remove Preview handler
+      if (btnRemovePreview) {
+        btnRemovePreview.addEventListener('click', (e) => {
+          e.stopPropagation();
+          currentImageDataUrl = '';
+          if (screenshotInput) screenshotInput.value = '';
+          if (dropzonePreviewContent) dropzonePreviewContent.style.display = 'none';
+          if (dropzoneDefaultContent) dropzoneDefaultContent.style.display = 'block';
+
+          // Disable Submit Button
+          disableSubmitButton();
+        });
+      }
+
+      function enableSubmitButton() {
+        if (btnSubmitPayment) {
+          btnSubmitPayment.disabled = false;
+          btnSubmitPayment.classList.add('ready');
+          if (submitText) submitText.textContent = 'SUBMIT PAYMENT PROOF & COMPLETE →';
+          if (submitIcon) submitIcon.className = 'fas fa-paper-plane';
+        }
+      }
+
+      function disableSubmitButton() {
+        if (btnSubmitPayment) {
+          btnSubmitPayment.disabled = true;
+          btnSubmitPayment.classList.remove('ready');
+          if (submitText) submitText.textContent = 'ATTACH SCREENSHOT TO SUBMIT';
+          if (submitIcon) submitIcon.className = 'fas fa-lock';
+        }
+      }
+
+      function formatBytes(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+      }
+
+      // 6. Final Submit Payment Proof Handler
+      if (btnSubmitPayment && paymentSuccessModal) {
+        btnSubmitPayment.addEventListener('click', () => {
+          if (!currentImageDataUrl) {
+            alert('Please attach your payment screenshot first.');
+            return;
+          }
+
+          const utrInputVal = (document.getElementById('utrNumber')?.value || '').trim();
+          if (!utrInputVal) {
+            alert('Please enter your 12-digit UTR / UPI Ref Number to complete submission.');
+            document.getElementById('utrNumber')?.focus();
+            return;
+          }
+
+          // Processing UI State
+          btnSubmitPayment.disabled = true;
+          if (submitIcon) submitIcon.className = 'fas fa-circle-notch fa-spin';
+          if (submitText) submitText.textContent = 'VERIFYING PAYMENT PROOF...';
+
+          setTimeout(() => {
+            // Hide Payment Modal
+            if (paymentModal) paymentModal.classList.remove('show');
+            if (timerInterval) clearInterval(timerInterval);
+
+            // Populate Success Confirmation Modal
+            const nameVal = document.getElementById('regName')?.value || 'Operative';
+            const collegeVal = document.getElementById('regCollege')?.value || 'Institution';
+            const passId = '#INT2K26-PASS-' + Math.floor(10000 + Math.random() * 90000);
+
+            // Collect selected events
+            const selectedEvents = [];
+            document.querySelectorAll('input[name="events"]:checked').forEach(cb => {
+              selectedEvents.push(cb.value);
+            });
+
+            document.getElementById('summaryParticipantName').textContent = nameVal;
+            document.getElementById('summaryCollege').textContent = collegeVal;
+            document.getElementById('successPassId').textContent = `PASS TRANSACTION ID: ${passId}`;
+            if (selectedEvents.length > 0) {
+              document.getElementById('summaryEvents').textContent = selectedEvents.join(', ');
+            }
+
+            // Collect registration payload
+            const registrationPayload = {
+              timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
+              passId: passId,
+              name: nameVal,
+              email: document.getElementById('regEmail')?.value || '',
+              mobile: document.getElementById('regMobile')?.value || '',
+              regNo: document.getElementById('regNo')?.value || '',
+              gender: document.querySelector('input[name="gender"]:checked')?.value || 'Male',
+              college: collegeVal,
+              dept: document.getElementById('regDept')?.value || '',
+              district: document.getElementById('regDistrict')?.value || '',
+              pincode: document.getElementById('regPincode')?.value || '',
+              selectedEvents: selectedEvents.join(', '),
+              referred: document.querySelector('input[name="referred"]:checked')?.value || 'No',
+              referralSource: document.querySelector('input[name="source"]:checked')?.value || 'Social Media',
+              referralDept: document.getElementById('regRefDept')?.value || '',
+              utrNo: utrInputVal,
+              paymentProof: currentImageDataUrl || ''
+            };
+
+            // Save to Local Database Store for Admin Dashboard & CSV Export
+            try {
+              const existingRegs = JSON.parse(localStorage.getItem('sympo_registrations_v2') || '[]');
+              existingRegs.unshift(registrationPayload);
+              localStorage.setItem('sympo_registrations_v2', JSON.stringify(existingRegs));
+            } catch (e) {
+              console.error('Local Storage saving error:', e);
+            }
+
+            // 1. Primary Sync with Database (Cloudflare D1 Database & Server API)
+            fetch('/api/register', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(registrationPayload)
+            })
+              .then(res => res.json())
+              .then(data => console.log('🚀 Registration saved to Database:', data))
+              .catch(err => console.error('Database Sync Error:', err));
+
+            // Supabase Database & Storage Bucket Sync
+            syncToSupabase(registrationPayload);
+
+            // 2. Secondary Sync with Google Sheet / Google Apps Script (Fallback Dispatch)
+            const scriptUrl = 'https://script.google.com/macros/s/AKfycbxEwfpBPZzClGj7xdxXfOMz8qwp0xWXpiVBKkwkbY8aPNWWslRlVahWf6BgPEculWz6/exec';
+            if (scriptUrl && scriptUrl.startsWith('http')) {
+              try {
+                // Method 1: Hidden Form Native POST
+                document.getElementById('gs_timestamp').value = registrationPayload.timestamp || '';
+                document.getElementById('gs_passId').value = registrationPayload.passId || '';
+                document.getElementById('gs_name').value = registrationPayload.name || '';
+                document.getElementById('gs_email').value = registrationPayload.email || '';
+                document.getElementById('gs_mobile').value = registrationPayload.mobile || '';
+                document.getElementById('gs_regNo').value = registrationPayload.regNo || '';
+                document.getElementById('gs_gender').value = registrationPayload.gender || '';
+                document.getElementById('gs_college').value = registrationPayload.college || '';
+                document.getElementById('gs_dept').value = registrationPayload.dept || '';
+                document.getElementById('gs_district').value = registrationPayload.district || '';
+                document.getElementById('gs_pincode').value = registrationPayload.pincode || '';
+                document.getElementById('gs_selectedEvents').value = registrationPayload.selectedEvents || '';
+                document.getElementById('gs_referred').value = registrationPayload.referred || '';
+                document.getElementById('gs_referralSource').value = registrationPayload.referralSource || '';
+                document.getElementById('gs_referralDept').value = registrationPayload.referralDept || '';
+                document.getElementById('gs_utrNo').value = registrationPayload.utrNo || '';
+                document.getElementById('gs_paymentProof').value = '[Attached via JS Sync]';
+
+                const syncForm = document.getElementById('gsheetSyncForm');
+                syncForm.action = scriptUrl;
+                syncForm.submit();
+
+                // Method 2: Direct Fetch POST
+                fetch(scriptUrl, {
+                  method: 'POST',
+                  mode: 'no-cors',
+                  headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                  body: JSON.stringify(registrationPayload)
+                }).catch(err => console.error('Fetch Sync error:', err));
+              } catch (e) {
+                console.error('Google Sheet Sync Dispatch Error:', e);
+              }
+            }
+
+            // Display submitted proof thumbnail
+            const submittedProofCard = document.getElementById('submittedProofCard');
+            const submittedProofImage = document.getElementById('submittedProofImage');
+            if (submittedProofCard && submittedProofImage && currentImageDataUrl) {
+              submittedProofImage.src = currentImageDataUrl;
+              submittedProofCard.style.display = 'flex';
+            }
+
+            // Show Success Modal
+            paymentSuccessModal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+
+            // Reset submit button state for future
+            disableSubmitButton();
+          }, 1200);
+        });
+      }
+
+      // Direct PNG Image Download & 1-Page Print Handler
+      const btnDownloadPass = document.getElementById('btnDownloadPass');
+      if (btnDownloadPass) {
+        btnDownloadPass.addEventListener('click', () => {
+          downloadPassAsImage();
+        });
+      }
+
+      function downloadPassAsImage() {
+        const nameVal = document.getElementById('summaryParticipantName')?.textContent || 'Operative';
+        const collegeVal = document.getElementById('summaryCollege')?.textContent || 'Institution';
+        const passIdVal = document.getElementById('successPassId')?.textContent || '#INT2K26-PASS-99882';
+        const eventsVal = document.getElementById('summaryEvents')?.textContent || 'Innov Expo, Workshop';
+
+        const canvas = document.createElement('canvas');
+        canvas.width = 1200;
+        canvas.height = 700;
+        const ctx = canvas.getContext('2d');
+
+        // Dark Cyber Background
+        ctx.fillStyle = '#05080a';
+        ctx.fillRect(0, 0, 1200, 700);
+
+        // Cyber Grid Lines
+        ctx.strokeStyle = 'rgba(0, 240, 255, 0.08)';
+        ctx.lineWidth = 1;
+        for (let x = 0; x < 1200; x += 40) {
+          ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, 700); ctx.stroke();
+        }
+        for (let y = 0; y < 700; y += 40) {
+          ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(1200, y); ctx.stroke();
+        }
+
+        // Pass Border Box
+        ctx.strokeStyle = '#00ff66';
+        ctx.lineWidth = 4;
+        ctx.strokeRect(30, 30, 1140, 640);
+
+        // Corner Brackets
+        ctx.fillStyle = '#00f0ff';
+        ctx.fillRect(20, 20, 30, 6); ctx.fillRect(20, 20, 6, 30);
+        ctx.fillRect(1150, 20, 30, 6); ctx.fillRect(1174, 20, 6, 30);
+        ctx.fillRect(20, 674, 30, 6); ctx.fillRect(20, 650, 6, 30);
+        ctx.fillRect(1150, 674, 30, 6); ctx.fillRect(1174, 650, 6, 30);
+
+        // Header Text
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 30px sans-serif';
+        ctx.fillText('MAHENDRA COLLEGE OF ENGINEERING (AUTONOMOUS)', 70, 95);
+
+        ctx.fillStyle = '#00ff66';
+        ctx.font = 'bold 38px sans-serif';
+        ctx.fillText('INTELLIGENZ 2K26 - OFFICIAL ENTRY PASS', 70, 155);
+
+        ctx.fillStyle = '#00f0ff';
+        ctx.font = 'bold 24px monospace';
+        ctx.fillText(passIdVal, 70, 200);
+
+        // Horizontal Line Separator
+        ctx.strokeStyle = '#00f0ff';
+        ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(70, 220); ctx.lineTo(1130, 220); ctx.stroke();
+
+        // Details Column
+        ctx.fillStyle = '#8892b0'; ctx.font = '22px monospace';
+        ctx.fillText('OPERATIVE NAME:', 70, 275);
+        ctx.fillStyle = '#ffffff'; ctx.font = 'bold 28px monospace';
+        ctx.fillText(nameVal.toUpperCase(), 320, 275);
+
+        ctx.fillStyle = '#8892b0'; ctx.font = '22px monospace';
+        ctx.fillText('INSTITUTION:', 70, 335);
+        ctx.fillStyle = '#ffffff'; ctx.font = 'bold 26px monospace';
+        ctx.fillText(collegeVal, 320, 335);
+
+        ctx.fillStyle = '#8892b0'; ctx.font = '22px monospace';
+        ctx.fillText('SELECTED EVENTS:', 70, 395);
+        ctx.fillStyle = '#00f0ff'; ctx.font = 'bold 24px monospace';
+        ctx.fillText(eventsVal, 320, 395);
+
+        ctx.fillStyle = '#8892b0'; ctx.font = '22px monospace';
+        ctx.fillText('CLEARANCE FEE:', 70, 455);
+        ctx.fillStyle = '#00ff66'; ctx.font = 'bold 28px monospace';
+        ctx.fillText('₹ 300.00 (VERIFIED)', 320, 455);
+
+        ctx.fillStyle = '#8892b0'; ctx.font = '22px monospace';
+        ctx.fillText('VENUE:', 70, 515);
+        ctx.fillStyle = '#ffffff'; ctx.font = 'bold 22px monospace';
+        ctx.fillText('MCE AUDITORIUM (Dr. A.P.J. Abdul Kalam Arangam)', 320, 515);
+
+        ctx.fillStyle = '#8892b0'; ctx.font = '22px monospace';
+        ctx.fillText('EVENT DATE:', 70, 575);
+        ctx.fillStyle = '#ffb703'; ctx.font = 'bold 24px monospace';
+        ctx.fillText('09.10.2026 | 09:30 AM IST', 320, 575);
+
+        // Security Stamp Box
+        ctx.strokeStyle = '#00ff66'; ctx.lineWidth = 3;
+        ctx.strokeRect(840, 260, 280, 260);
+        ctx.fillStyle = 'rgba(0, 255, 102, 0.08)';
+        ctx.fillRect(840, 260, 280, 260);
+
+        ctx.fillStyle = '#00ff66'; ctx.font = 'bold 20px monospace';
+        ctx.fillText('SECURITY CLEARANCE', 855, 305);
+        ctx.fillText('✓ PAYMENT VERIFIED', 855, 355);
+        ctx.fillText('✓ ENTRY ALLOWED', 855, 405);
+        ctx.fillStyle = '#00f0ff'; ctx.font = '16px monospace';
+        ctx.fillText('VALID DAY-1 PASS', 855, 465);
+
+        // Footer Text
+        ctx.fillStyle = '#53627c'; ctx.font = '18px monospace';
+        ctx.fillText('DEPARTMENT OF ARTIFICIAL INTELLIGENCE & DATA SCIENCE | SALEM - 636 106', 70, 645);
+
+        // Direct File Download Trigger
+        const dataUrl = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.download = `INTELLIGENZ_2K26_PASS_${nameVal.replace(/\s+/g, '_')}.png`;
+        link.href = dataUrl;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        // 1-Page Print Backup Trigger
+        setTimeout(() => {
+          window.print();
+        }, 400);
+      }
+    // Supabase Sync with Automatic Storage Image Upload
+    async function syncToSupabase(payload) {
+      const supabaseUrl = (window.SUPABASE_URL && !window.SUPABASE_URL.includes('your-supabase'))
+        ? window.SUPABASE_URL
+        : "https://ufemjutavphtuzdyrfea.supabase.co";
+      const supabaseAnonKey = (window.SUPABASE_ANON_KEY && !window.SUPABASE_ANON_KEY.includes('your-supabase'))
+        ? window.SUPABASE_ANON_KEY
+        : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVmZW1qdXRhdnBodHV6ZHlyZmVhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk4MzM0NDEsImV4cCI6MjEwNTQwOTQ0MX0.bNq1vF35PCVoEC6OElJkWrcb6Y2w8Z4W4nYaTw00bGg";
+
+      if (!supabaseUrl || !supabaseAnonKey) return;
+
+      let finalImageUrl = payload.paymentProof || '';
+
+      // 1. If payload contains base64 image, upload it to Supabase Storage Bucket first!
+      if (finalImageUrl.startsWith('data:image')) {
+        try {
+          const base64Data = finalImageUrl.split('base64,')[1];
+          const binaryStr = atob(base64Data);
+          const len = binaryStr.length;
+          const bytes = new Uint8Array(len);
+          for (let i = 0; i < len; i++) {
+            bytes[i] = binaryStr.charCodeAt(i);
+          }
+          const blob = new Blob([bytes], { type: 'image/jpeg' });
+          const passTag = (payload.passId || 'PASS').replace(/[^a-zA-Z0-9-]/g, '');
+          const fileName = `Receipt_${passTag}_${Date.now()}.jpg`;
+
+          const uploadRes = await fetch(`${supabaseUrl}/storage/v1/object/payment-proofs/${fileName}`, {
+            method: 'POST',
+            headers: {
+              'apikey': supabaseAnonKey,
+              'Authorization': `Bearer ${supabaseAnonKey}`,
+              'Content-Type': 'image/jpeg',
+              'x-upsert': 'true'
+            },
+            body: blob
+          });
+
+          if (uploadRes.ok) {
+            finalImageUrl = `${supabaseUrl}/storage/v1/object/public/payment-proofs/${fileName}`;
+            console.log('🖼️ Screenshot uploaded to Supabase Storage Bucket:', finalImageUrl);
+          }
+        } catch (storageErr) {
+          console.warn('Supabase Storage Bucket fallback to base64 payload:', storageErr);
+        }
+      }
+
+      // 2. Insert row into Supabase registrations table
+      try {
+        const res = await fetch(`${supabaseUrl}/rest/v1/registrations`, {
+          method: 'POST',
+          headers: {
+            'apikey': supabaseAnonKey,
+            'Authorization': `Bearer ${supabaseAnonKey}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({
+            timestamp: payload.timestamp,
+            pass_id: payload.passId,
+            name: payload.name,
+            email: payload.email,
+            mobile: payload.mobile,
+            reg_no: payload.regNo,
+            gender: payload.gender,
+            college: payload.college,
+            dept: payload.dept,
+            district: payload.district,
+            pincode: payload.pincode,
+            selected_events: payload.selectedEvents,
+            referred: payload.referred,
+            referral_source: payload.referralSource,
+            referral_dept: payload.referralDept,
+            utr_no: payload.utrNo,
+            payment_proof: finalImageUrl
+          })
+        });
+        if (res.ok) {
+          console.log('✅ Registration saved to Supabase SQL Database!');
+        }
+      } catch (err) {
+        console.error('Supabase Sync error:', err);
+      }
+    }
+
+    });
+  </script>
+
+  <!-- Hidden Google Sheet Native Sync Form & Iframe -->
+  <iframe name="gsheet_sync_iframe" id="gsheet_sync_iframe" style="display:none;"></iframe>
+  <form id="gsheetSyncForm" action="https://script.google.com/macros/s/AKfycbxEwfpBPZzClGj7xdxXfOMz8qwp0xWXpiVBKkwkbY8aPNWWslRlVahWf6BgPEculWz6/exec" method="POST" target="gsheet_sync_iframe" style="display:none;">
+    <input type="hidden" name="timestamp" id="gs_timestamp">
+    <input type="hidden" name="passId" id="gs_passId">
+    <input type="hidden" name="name" id="gs_name">
+    <input type="hidden" name="email" id="gs_email">
+    <input type="hidden" name="mobile" id="gs_mobile">
+    <input type="hidden" name="regNo" id="gs_regNo">
+    <input type="hidden" name="gender" id="gs_gender">
+    <input type="hidden" name="college" id="gs_college">
+    <input type="hidden" name="dept" id="gs_dept">
+    <input type="hidden" name="district" id="gs_district">
+    <input type="hidden" name="pincode" id="gs_pincode">
+    <input type="hidden" name="selectedEvents" id="gs_selectedEvents">
+    <input type="hidden" name="referred" id="gs_referred">
+    <input type="hidden" name="referralSource" id="gs_referralSource">
+    <input type="hidden" name="referralDept" id="gs_referralDept">
+    <input type="hidden" name="utrNo" id="gs_utrNo">
+    <input type="hidden" name="paymentProof" id="gs_paymentProof">
+  </form>
+</body>
+</html>
+

@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="globeGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00f0ff" stop-opacity="0.3" />
+      <stop offset="50%" stop-color="#0088ff" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+    </radialGradient>
+
+    <linearGradient id="orbitGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00ff66" stop-opacity="0.8" />
+      <stop offset="50%" stop-color="#00f0ff" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#0055ff" stop-opacity="0.2" />
+    </linearGradient>
+
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Ambient Backdrop Glow -->
+  <circle cx="250" cy="250" r="230" fill="url(#globeGlow)" />
+
+  <!-- Outer HUD Ring 1 -->
+  <circle cx="250" cy="250" r="210" fill="none" stroke="#00f0ff" stroke-width="1.5" stroke-dasharray="8 6 24 6" opacity="0.4" />
+  <circle cx="250" cy="250" r="195" fill="none" stroke="#0088ff" stroke-width="1" stroke-dasharray="100 20 40 20" opacity="0.3" />
+  
+  <!-- Outer Elliptical Orbit Rings -->
+  <ellipse cx="250" cy="250" rx="230" ry="80" fill="none" stroke="url(#orbitGrad)" stroke-width="2" filter="url(#glow)" transform="rotate(-30 250 250)" opacity="0.75" />
+  <ellipse cx="250" cy="250" rx="230" ry="80" fill="none" stroke="#00f0ff" stroke-width="1.5" stroke-dasharray="15 8" transform="rotate(30 250 250)" opacity="0.6" />
+
+  <!-- Main Cyber Globe Sphere Lines -->
+  <circle cx="250" cy="250" r="160" fill="none" stroke="#00f0ff" stroke-width="2" opacity="0.8" filter="url(#glow)" />
+  
+  <!-- Latitude Circles -->
+  <ellipse cx="250" cy="250" rx="160" ry="40" fill="none" stroke="#00f0ff" stroke-width="1.2" opacity="0.5" />
+  <ellipse cx="250" cy="250" rx="160" ry="90" fill="none" stroke="#00f0ff" stroke-width="1.2" opacity="0.5" />
+  <ellipse cx="250" cy="250" rx="160" ry="130" fill="none" stroke="#00f0ff" stroke-width="1" opacity="0.4" />
+
+  <!-- Longitude Lines -->
+  <ellipse cx="250" cy="250" rx="40" ry="160" fill="none" stroke="#00f0ff" stroke-width="1.2" opacity="0.5" />
+  <ellipse cx="250" cy="250" rx="90" ry="160" fill="none" stroke="#00f0ff" stroke-width="1.2" opacity="0.5" />
+  <ellipse cx="250" cy="250" rx="130" ry="160" fill="none" stroke="#00f0ff" stroke-width="1" opacity="0.4" />
+
+  <!-- Network Nodes & Connecting Particles -->
+  <g fill="#00ff66" filter="url(#glow)">
+    <circle cx="250" cy="90" r="5" />
+    <circle cx="250" cy="410" r="5" />
+    <circle cx="90" cy="250" r="5" />
+    <circle cx="410" cy="250" r="5" />
+    <circle cx="160" cy="140" r="4" fill="#00f0ff" />
+    <circle cx="340" cy="140" r="4" fill="#00f0ff" />
+    <circle cx="160" cy="360" r="4" fill="#00f0ff" />
+    <circle cx="340" cy="360" r="4" fill="#00f0ff" />
+    <circle cx="290" cy="210" r="6" fill="#ffffff" />
+    <circle cx="210" cy="290" r="6" fill="#ffffff" />
+  </g>
+
+  <!-- Network Beams / Connections -->
+  <line x1="290" y1="210" x2="340" y2="140" stroke="#00ff66" stroke-width="1.5" opacity="0.7" stroke-dasharray="4 2" />
+  <line x1="290" y1="210" x2="250" y2="90" stroke="#00f0ff" stroke-width="1.5" opacity="0.7" />
+  <line x1="210" y1="290" x2="160" y2="360" stroke="#00ff66" stroke-width="1.5" opacity="0.7" />
+  <line x1="210" y1="290" x2="90" y2="250" stroke="#00f0ff" stroke-width="1.5" opacity="0.7" stroke-dasharray="4 2" />
+
+  <!-- Core Pulsing Center -->
+  <circle cx="250" cy="250" r="12" fill="#00f0ff" opacity="0.9" filter="url(#glow)" />
+  <circle cx="250" cy="250" r="6" fill="#ffffff" />
+</svg>

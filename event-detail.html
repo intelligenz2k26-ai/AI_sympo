@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Intelligence & Protocols | INTELLIGENZ 2K26</title>
+  <meta name="description" content="Detailed Event Intelligence, Operational Rules, and Judging Matrices for INTELLIGENZ 2K26 National Level Technical Symposium.">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .event-detail-page {
+      padding: 3rem 0 6rem 0;
+    }
+    
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--accent-cyan);
+      margin-bottom: 1.5rem;
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--border-cyan);
+      background: rgba(0, 240, 255, 0.08);
+      transition: var(--transition);
+      border-radius: 4px;
+      text-decoration: none;
+    }
+    .back-btn:hover {
+      background: var(--accent-cyan);
+      color: #000;
+      box-shadow: 0 0 15px var(--accent-cyan);
+    }
+
+    /* Event Switcher Strip */
+    .event-nav-tabs {
+      display: flex;
+      gap: 0.8rem;
+      overflow-x: auto;
+      padding-bottom: 0.8rem;
+      margin-bottom: 2rem;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent-cyan) var(--bg-panel);
+    }
+    .event-tab-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.65rem 1.2rem;
+      background: rgba(10, 15, 29, 0.85);
+      border: 1px solid var(--border-dim);
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-radius: 4px;
+    }
+    .event-tab-btn:hover {
+      border-color: var(--accent-cyan);
+      color: #fff;
+      background: rgba(0, 240, 255, 0.1);
+    }
+    .event-tab-btn.active {
+      border-color: var(--accent-green);
+      color: #000;
+      background: var(--accent-green);
+      font-weight: 700;
+      box-shadow: 0 0 15px rgba(0, 255, 102, 0.4);
+    }
+
+    /* Hero Header */
+    .detail-hero-box {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-green);
+      padding: 2.5rem;
+      box-shadow: 0 0 30px rgba(0, 255, 102, 0.12);
+      margin-bottom: 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .detail-hero-box::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 150px; height: 150px;
+      background: radial-gradient(circle, rgba(0, 255, 102, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+    }
+    .hero-badges-group {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+    .big-event-icon {
+      font-size: 3.2rem;
+      line-height: 1;
+    }
+    .hero-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .hero-title-wrap h1 {
+      text-align: left;
+      font-size: 2.6rem;
+      margin-bottom: 0.2rem;
+      line-height: 1.1;
+    }
+    .hero-subtitle {
+      font-family: var(--font-mono);
+      color: var(--accent-cyan);
+      font-size: 1.05rem;
+      letter-spacing: 0.5px;
+      margin-bottom: 1rem;
+    }
+    .hero-overview-text {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      max-width: 900px;
+    }
+
+    /* Quick Meta Grid */
+    .meta-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 2.5rem;
+    }
+    .meta-card {
+      background: rgba(10, 15, 29, 0.9);
+      border: 1px solid var(--border-dim);
+      padding: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: all 0.3s ease;
+    }
+    .meta-card:hover {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
+      transform: translateY(-2px);
+    }
+    .meta-icon-box {
+      width: 46px;
+      height: 46px;
+      background: rgba(0, 240, 255, 0.1);
+      border: 1px solid var(--accent-cyan);
+      color: var(--accent-cyan);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+    .meta-card-label {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .meta-card-val {
+      font-weight: 700;
+      color: #fff;
+      font-size: 0.98rem;
+    }
+
+    /* Detail Grid Layout */
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2.5rem;
+    }
+    @media (max-width: 992px) {
+      .detail-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Intel Blocks */
+    .intel-block {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-dim);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      position: relative;
+    }
+    .intel-block-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      color: var(--accent-green);
+      margin-bottom: 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      border-bottom: 1px solid var(--border-dim);
+      padding-bottom: 0.8rem;
+      letter-spacing: 0.5px;
+    }
+    .intel-block-title i {
+      color: var(--accent-cyan);
+    }
+
+    /* Round Cards */
+    .round-card {
+      background: rgba(0, 0, 0, 0.4);
+      border-left: 3px solid var(--accent-cyan);
+      padding: 1.2rem;
+      margin-bottom: 1rem;
+      border-radius: 0 4px 4px 0;
+    }
+    .round-card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 0.5rem;
+    }
+    .round-num-tag {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      background: rgba(0, 240, 255, 0.15);
+      color: var(--accent-cyan);
+      padding: 0.2rem 0.6rem;
+      border: 1px solid var(--border-cyan);
+      font-weight: 700;
+    }
+    .round-title {
+      font-weight: 700;
+      color: #fff;
+      font-size: 1.05rem;
+    }
+    .round-desc {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    /* Custom Bullet Lists */
+    .intel-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+    .intel-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8rem;
+      color: var(--text-secondary);
+      font-size: 0.98rem;
+      line-height: 1.5;
+    }
+    .intel-list li i {
+      color: var(--accent-cyan);
+      margin-top: 0.25rem;
+      flex-shrink: 0;
+    }
+
+    /* Judging Criteria Progress Bars */
+    .judging-item {
+      margin-bottom: 1.2rem;
+    }
+    .judging-label-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.95rem;
+      margin-bottom: 0.4rem;
+    }
+    .judging-name {
+      color: #fff;
+      font-weight: 600;
+    }
+    .judging-score {
+      font-family: var(--font-mono);
+      color: var(--accent-green);
+      font-weight: 700;
+    }
+    .judging-bar-bg {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .judging-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green));
+      border-radius: 4px;
+      transition: width 0.8s ease-in-out;
+    }
+
+    /* Officers / Contacts */
+    .officer-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border-dim);
+      padding: 0.9rem 1.1rem;
+      margin-bottom: 0.8rem;
+    }
+    .officer-info div:first-child {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+    .officer-info div:last-child {
+      font-weight: 700;
+      color: #fff;
+      font-size: 0.95rem;
+    }
+    .btn-call {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(0, 255, 102, 0.12);
+      border: 1px solid var(--border-green);
+      color: var(--accent-green);
+      padding: 0.4rem 0.8rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    .btn-call:hover {
+      background: var(--accent-green);
+      color: #000;
+      box-shadow: 0 0 10px var(--accent-green);
+    }
+
+    /* Prize Cards List */
+    .prize-list-item {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 0.8rem 1rem;
+      border-left: 3px solid var(--accent-amber);
+      margin-bottom: 0.6rem;
+      font-size: 0.93rem;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Navbar & HUD -->
+  <div class="header-wrapper">
+    <nav class="navbar" id="navbar">
+      <div class="nav-container">
+        <a href="index.html#hero" class="nav-brand">
+          <i class="fas fa-microchip brand-icon"></i>
+          <span class="brand-title">INTELLIGENZ<span>_2K26</span></span>
+        </a>
+        
+        <a href="index.html#categories" class="btn-nav-cta">
+          <i class="fas fa-arrow-left"></i> RETURN TO SECTORS
+        </a>
+      </div>
+    </nav>
+
+    <!-- Sticky HUD Status Bar -->
+    <div class="hud-status-strip">
+      <div class="hud-status-content">
+        <div class="hud-left">
+          <div class="hud-item">
+            <span class="status-dot"></span>
+            <span class="hud-label">STATUS:</span>
+            <span class="hud-val">DECLASSIFIED EVENT INTEL</span>
+          </div>
+          <div class="hud-item">
+            <span class="hud-label">PASS VALUE:</span>
+            <span class="hud-val green">₹300 ALL-ACCESS</span>
+          </div>
+        </div>
+        <div class="hud-right">
+          <div class="hud-item">
+            <span class="hud-label">LOCAL CLOCK:</span>
+            <span class="hud-val cyan" id="hudLocalClock">--:--:-- IST</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Event Detail Main Container -->
+  <main class="event-detail-page">
+    <div class="container">
+      
+      <!-- Top Navigation Header -->
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.2rem;">
+        <a href="index.html#categories" class="back-btn">
+          <i class="fas fa-chevron-left"></i> BACK TO SECTORS DASHBOARD
+        </a>
+        <span class="badge-tactical badge-cyan"><i class="fas fa-ticket-alt"></i> ₹300 PASS INCLUDES ALL 6 EVENTS</span>
+      </div>
+
+      <!-- Quick Event Switcher Tabs -->
+      <div class="event-nav-tabs" id="eventTabsNav">
+        <button type="button" class="event-tab-btn" data-key="project-expo"><i class="fas fa-laptop-code"></i> Innov Expo</button>
+        <button type="button" class="event-tab-btn" data-key="prompt-a-thon"><i class="fas fa-robot"></i> Prompt-a-thon</button>
+        <button type="button" class="event-tab-btn" data-key="paper-presentation"><i class="fas fa-file-alt"></i> Paper Talks</button>
+        <button type="button" class="event-tab-btn" data-key="workshop"><i class="fas fa-tools"></i> Workshop</button>
+        <button type="button" class="event-tab-btn" data-key="esport-gaming"><i class="fas fa-gamepad"></i> Esport Gaming</button>
+        <button type="button" class="event-tab-btn" data-key="ipl-auction"><i class="fas fa-chess"></i> IPL Auction</button>
+        <button type="button" class="event-tab-btn" data-key="mystery-box"><i class="fas fa-box-open"></i> Mystery Box</button>
+      </div>
+
+      <!-- Hero Header Box -->
+      <div class="detail-hero-box tactical-box">
+        <div class="hero-header-top">
+          <div class="hero-badges-group">
+            <span class="badge-tactical" id="eventCatBadge">TECHNICAL ARENA</span>
+            <span class="badge-tactical badge-cyan" id="eventTrackBadge">AI/ML TRACK</span>
+          </div>
+          <span class="badge-tactical badge-amber" id="prizeBadge"><i class="fas fa-trophy"></i> PRIZE: CASH BOUNTY &amp; TROPHIES</span>
+        </div>
+
+        <div class="hero-title-wrap">
+          <span class="big-event-icon" id="eventBigIcon">💻</span>
+          <div>
+            <h1 class="section-title" id="eventTitle">INNOV EXPO</h1>
+            <div class="hero-subtitle" id="eventSubtitle">AI/ML Project &amp; Hardware Prototype Exhibition</div>
+          </div>
+        </div>
+
+        <p class="hero-overview-text" id="eventOverview">
+          Loading event intelligence parameters...
+        </p>
+      </div>
+
+      <!-- Meta Metrics Grid -->
+      <div class="meta-cards-grid">
+        <div class="meta-card tactical-box">
+          <div class="meta-icon-box"><i class="fas fa-users"></i></div>
+          <div>
+            <div class="meta-card-label">Squad Size</div>
+            <div class="meta-card-val" id="metaSquad">1 - 4 Members</div>
+          </div>
+        </div>
+        <div class="meta-card tactical-box">
+          <div class="meta-icon-box"><i class="fas fa-clock"></i></div>
+          <div>
+            <div class="meta-card-label">Duration</div>
+            <div class="meta-card-val" id="metaDuration">3.0 Hours</div>
+          </div>
+        </div>
+        <div class="meta-card tactical-box">
+          <div class="meta-icon-box"><i class="fas fa-map-marker-alt"></i></div>
+          <div>
+            <div class="meta-card-label">Venue / Arena</div>
+            <div class="meta-card-val" id="metaLocation">Main Tech Block</div>
+          </div>
+        </div>
+        <div class="meta-card tactical-box">
+          <div class="meta-icon-box"><i class="fas fa-calendar-alt"></i></div>
+          <div>
+            <div class="meta-card-label">Scheduled Time</div>
+            <div class="meta-card-val" id="metaTiming">11:30 AM Onwards</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detail Grid Layout -->
+      <div class="detail-grid">
+        
+        <!-- Left Column: Rounds, Rules, Judging, Prerequisites -->
+        <div>
+          <!-- Rounds & Structure -->
+          <div class="intel-block tactical-box">
+            <h3 class="intel-block-title"><i class="fas fa-sitemap"></i> EVENT ROUNDS &amp; STAGE TIMELINE</h3>
+            <div id="eventRoundsContainer">
+              <!-- Dynamic round cards -->
+            </div>
+          </div>
+
+          <!-- Rules & Protocols -->
+          <div class="intel-block tactical-box">
+            <h3 class="intel-block-title"><i class="fas fa-clipboard-check"></i> OPERATIONAL DIRECTIVES &amp; RULES</h3>
+            <ul class="intel-list" id="eventRulesList">
+              <!-- Dynamic rules -->
+            </ul>
+          </div>
+
+          <!-- Judging Criteria -->
+          <div class="intel-block tactical-box">
+            <h3 class="intel-block-title"><i class="fas fa-chart-bar"></i> JUDGING CRITERIA &amp; EVALUATION MATRIX</h3>
+            <div id="eventJudgingContainer">
+              <!-- Dynamic progress bars -->
+            </div>
+          </div>
+
+          <!-- Prerequisites & Checklist -->
+          <div class="intel-block tactical-box">
+            <h3 class="intel-block-title"><i class="fas fa-tasks"></i> OPERATIVE PREREQUISITES &amp; CHECKLIST</h3>
+            <ul class="intel-list" id="eventChecklist">
+              <!-- Dynamic checklist -->
+            </ul>
+          </div>
+        </div>
+
+        <!-- Right Column: Sidebar CTA, Prizes, Coordinators -->
+        <div>
+          <!-- Register CTA Card -->
+          <div class="intel-block tactical-box" style="border-color: var(--accent-green); background: rgba(0, 255, 102, 0.04);">
+            <h3 class="intel-block-title" style="color: var(--accent-green); border-color: rgba(0, 255, 102, 0.3);">
+              <i class="fas fa-bolt"></i> FAST PASS REGISTRATION
+            </h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); margin-bottom: 1.2rem; line-height: 1.5;">
+              One entry pass (<strong>₹300 / Operative</strong>) unlocks participation in this event along with access to all technical and non-technical tracks, lunch rations, and verified certificates.
+            </p>
+            <a href="register.html" id="btnRegisterCta" class="btn-primary" style="width: 100%; justify-content: center; font-size: 1rem;">
+              <i class="fas fa-shield-alt"></i> REGISTER FOR THIS EVENT
+            </a>
+          </div>
+
+          <!-- Prize & Rewards Card -->
+          <div class="intel-block tactical-box">
+            <h3 class="intel-block-title"><i class="fas fa-award"></i> PRIZE BOUNTY &amp; PERKS</h3>
+            <div id="eventPrizesContainer">
+              <!-- Dynamic prize list -->
+            </div>
+          </div>
+
+          <!-- Command Officers / Coordinators -->
+          <div class="intel-block tactical-box">
+            <h3 class="intel-block-title"><i class="fas fa-user-shield"></i> COMMAND OFFICERS &amp; CONTACTS</h3>
+            <div id="eventCoordinatorsList">
+              <!-- Dynamic officers list -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; 2026 INTELLIGENZ 2K26. AI&amp;DS DEPARTMENT, MAHENDRA COLLEGE OF ENGINEERING (AUTONOMOUS).</div>
+        <div>Designed &amp; Developed for Excellence</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script to load dynamic event details based on URL parameter -->
+  <script>
+    const EVENT_DATABASE = {
+      'project-expo': {
+        key: 'project-expo',
+        registerVal: 'Innov Expo',
+        title: 'INNOV EXPO',
+        subtitle: 'AI/ML Project & Hardware Prototype Exhibition',
+        category: 'TECHNICAL EVENT',
+        badge: 'AI/ML ARENA',
+        badgeClass: '',
+        icon: '💻',
+        prize: 'Cash Rewards + Certificate',
+        overview: 'Innov Expo is the flagship project exhibition battleground of INTELLI-GENZ 2K26. It offers visionary student innovators, software engineers, and hardware builders a platform to demonstrate live software applications, machine learning pipelines, IoT automation prototypes, and neural network applications before an elite jury panel of industry experts and researchers.',
+        squad: '1 - 4 Members',
+        duration: '1 Hours',
+        location: 'Main Tech Block Auditorium & Hardware Lab 2',
+        timing: '09:30 AM - 11:00 PM',
+        rounds: [
+          {
+            title: 'Phase 01: Interactive Booth Exhibition & Demo',
+            desc: 'Teams setup their hardware/software prototypes at assigned exhibition booths. Judges perform initial screening, code evaluation, and live demonstration verification.'
+          },
+          {
+            title: 'Phase 02: Grand Jury Pitching & Defense',
+            desc: 'Shortlisted top projects present a 10-minute slide pitch on the main stage followed by an intensive 5-minute Q&A session with industry judges.'
+          }
+        ],
+        rules: [
+          'Working software application or hardware prototype demonstration is mandatory for all team entries.',
+          'Teams must bring their own laptops, microcontrollers, sensor kits, and extension cords. Basic power sockets & Wi-Fi will be provided.',
+          'Projects must be original work created by the team members. Plagiarism or commercial template clones will result in instant disqualification.',
+          'An abstract poster or 5-slide deck highlighting Problem Statement, Tech Stack, Architecture, and Impact must be submitted at registration.',
+          'Cross-college teams and inter-departmental squads are fully eligible to compete.'
+        ],
+        judging: [
+          { label: 'Innovation & Conceptual Novelty', score: '30%' },
+          { label: 'Technical Complexity & Architecture', score: '30%' },
+          { label: 'Practical Utility & Real-World Impact', score: '20%' },
+          { label: 'Presentation Skill & Jury Q&A Defense', score: '20%' }
+        ],
+        prerequisites: [
+          'Personal Laptops & Chargers',
+          'Project Prototype / Working Source Code',
+          'Hardware Components & Sensor Kits (if applicable)',
+          'Project Banner / Abstract Deck (PDF/PPTX)'
+        ],
+        prizes: [
+          '🥇 1st Place: Grand Cash Prize + Winner Trophy + Certificate of Excellence',
+          '🥈 2nd Place: Cash Bounty + Runner Trophy + Certificate of Merit',
+          '🥉 3rd Place: Special Commendation Cash Award + Shield',
+          '📜 All Participants receive Verified National Level Certificates'
+        ],
+        coordinators: [
+          { role: 'Student Lead', name: 'Mr. S. Siva balan', phone: '+918220118850' },
+          { role: 'Student Lead', name: 'Mr. K. kaviyarasan', phone: '+91 8610921678' }
+        ]
+      },
+
+      'prompt-a-thon': {
+        key: 'prompt-a-thon',
+        registerVal: 'Prompt-a-thon',
+        title: 'PROMPT-A-THON',
+        subtitle: 'Generative AI & Rapid Prompt Engineering Challenge',
+        category: 'TECHNICAL EVENT',
+        badge: 'GENERATIVE AI ARENA',
+        badgeClass: 'badge-cyan',
+        icon: '🤖',
+        prize: 'Cash Rewards + Certificate',
+        overview: 'Prompt-a-thon is an intense, fast-paced Generative AI prompting competition designed to test your mastery over Large Language Models (LLMs) and Diffusion Models. Participants will be tasked with solving complex code bugs, generating pixel-precise artwork, and building agentic prompt workflows against the clock in live sandbox environments.',
+        squad: 'Solo & due(1 & 2 Member)',
+        duration: ' 45 min',
+        location: 'EC 6',
+        timing: '11:15 AM - 12:00 AM',
+        rounds: [
+          {
+            title: 'Sprint 01: Algorithmic Code Synthesis & Debugging',
+            desc: 'Solve multi-layered algorithmic riddles and refactor broken Python/JS code using prompt engineering techniques on designated LLMs.'
+          },
+          {
+            title: 'Sprint 02: Diffusion Visual Replication',
+            desc: 'Recreate target reference images with high fidelity using precise text-to-image prompt parameters, negative prompts, and style tokens.'
+          },
+          {
+            title: 'Sprint 03: Final Boss - Agentic Logic Prompting',
+            desc: 'Construct a multi-step structured system prompt for an autonomous AI agent to resolve a real-world enterprise problem.'
+          }
+        ],
+        rules: [
+          'Live competition executed exclusively on provided lab workstations using monitored browser sandboxes.',
+          'Pre-written prompts, external browser extensions, custom API keys, or mobile phone usage during sprints are strictly prohibited.',
+          'Evaluations are based on output accuracy, prompt token length efficiency, and time taken to complete each task.',
+          'Any form of academic dishonesty or unauthorized internet search will result in immediate squad ban.'
+        ],
+        judging: [
+          { label: 'Output Accuracy & Prompt Alignment', score: '40%' },
+          { label: 'Prompt Efficiency & Token Optimization', score: '30%' },
+          { label: 'Creative Logic & Speed Sprint Bonus', score: '30%' }
+        ],
+        prerequisites: [
+          'Familiarity with OpenAI GPT-4, Claude, Llama & Stable Diffusion / Midjourney prompt structures',
+          'Strong logical reasoning & problem-solving skills'
+        ],
+        prizes: [
+          '🥇 1st Place: Cash Prize + AI Prompt Master Trophy + Certificate of Excellence',
+          '🥈 2nd Place: Cash Bounty + Runner Shield + Certificate of Merit',
+          '📜 All Operatives receive Official National Level Certificates'
+        ],
+        coordinators: [
+          { role: 'Student Lead', name: 'Mr. R. Surya', phone: '+91 6374801808' },
+          { role: 'Student Lead', name: 'Mr. S. Bala Krishnan', phone: '+91 8754260476' }
+        ]
+      },
+
+      'paper-presentation': {
+        key: 'paper-presentation',
+        registerVal: 'Paper Talks',
+        title: 'PAPER TALKS',
+        subtitle: 'National Level Research Paper Presentation Track',
+        category: 'TECHNICAL EVENT',
+        badge: 'RESEARCH ARENA',
+        badgeClass: '',
+        icon: '📄',
+        prize: 'Cash Rewards + Certificate',
+        overview: 'Paper Talks provides an academic showcase for researchers, scholars, and tech enthusiasts to present original research papers on frontier technologies including Deep Learning, Generative AI, Computer Vision, Quantum Computing, Cybersecurity, and Autonomous Systems.',
+        squad: '1 - 2 Members',
+        duration: '1.0 Hours',
+        location: 'Conference Seminar Hall B',
+        timing: '12:00 AM - 01:00 PM',
+        rounds: [
+          {
+            title: 'Phase 01: Abstract & Slide Deck Review',
+            desc: 'Initial screening of IEEE format paper abstracts and presentation decks submitted prior to the presentation hour.'
+          },
+          {
+            title: 'Phase 02: Oral Defense & Expert Panel Q&A',
+            desc: '8-minute oral slide presentation before a distinguished jury of PhD scholars and professors, followed by a 4-minute technical Q&A defense.'
+          }
+        ],
+        rules: [
+          'Submitted papers must strictly adhere to the standard IEEE double-column format.',
+          'Plagiarism score must be below 15% (verified using Turnitin / iThenticate).',
+          'Presentation slides must be limited to a maximum of 12 slides.',
+          'Presenters must hand over 2 hard copies of their paper abstract to the session coordinators upon arrival.',
+          'Decision of the academic jury panel will be final and binding.'
+        ],
+        judging: [
+          { label: 'Research Originality & Domain Impact', score: '35%' },
+          { label: 'Technical Methodology & Data Validation', score: '30%' },
+          { label: 'Presentation Quality & Jury Q&A Defense', score: '35%' }
+        ],
+        prerequisites: [
+          'Research Paper PDF (IEEE Standard Format)',
+          'Presentation Slide Deck (PPTX/PDF on USB drive / Laptop)',
+          '2 Hard Copies of Abstract'
+        ],
+        prizes: [
+          '🥇 1st Place: Best Paper Cash Bounty + Champion Trophy + Certificate of Publication Excellence',
+          '🥈 2nd Place: Cash Award + Runner Trophy + Certificate of Merit',
+          '📜 All Presenters receive IEEE-Style National Presentation Certificates'
+        ],
+        coordinators: [
+          { role: 'Student Lead', name: 'Mrs. A. santra', phone: '+91 9789639389' },
+          { role: 'Student Lead', name: 'Mrs. P. Girija', phone: '+91 8870800581' }
+        ]
+      },
+
+      'workshop': {
+        key: 'workshop',
+        registerVal: 'Workshop',
+        title: 'HANDS-ON WORKSHOP',
+        subtitle: 'Masterclass on Modern AI Pipelines & LLM Deployment',
+        category: 'TECHNICAL EVENT',
+        badge: 'LEARNING ARENA',
+        badgeClass: 'badge-cyan',
+        icon: '🔧',
+        prize: 'Official Technical Certification',
+        overview: 'An intensive, hands-on technical masterclass delivered by industry AI architects and senior machine learning engineers. Learn how to construct PyTorch neural network pipelines, fine-tune open-weight LLMs, build RAG (Retrieval-Augmented Generation) applications, and deploy production AI agents.',
+        squad: 'Individual Entry / Open Access',
+        duration: '1 Hours',
+        location: 'Central IT Seminar Hall',
+        timing: '01:00 AM - 02:00 PM',
+        rounds: [
+          {
+            title: 'Module 01: Core Architecture & LLM Mechanics',
+            desc: 'Deep dive into Transformer architectures, attention mechanisms, vector embeddings, and open-weight model ecosystems (60 Mins).'
+          },
+          {
+            title: 'Module 02: Guided Hands-on Coding Session',
+            desc: 'Interactive coding lab on Google Colab. Build a custom RAG pipeline and fine-tune an AI model with mentor assistance (70 Mins).'
+          },
+          {
+            title: 'Module 03: Mini-Challenge & Digital Certificate Issuance',
+            desc: 'Execute a quick mini-challenge to validate your implementation and receive your verified credential (20 Mins).'
+          }
+        ],
+        rules: [
+          'Open to all registered INTELLIGENZ 2K26 ticket holders with no extra fee.',
+          'Participants are strongly encouraged to bring personal laptops for hands-on execution.',
+          'High-speed Wi-Fi and complete starter GitHub repository code kits will be provided.',
+          'Digital Certificate of Participation & Technical Mastery will be awarded at session end.'
+        ],
+        judging: [
+          { label: 'Hands-on Notebook Code Execution', score: '50%' },
+          { label: 'Interactive Assignment & Quiz Completion', score: '50%' }
+        ],
+        prerequisites: [
+          'Personal Laptop with Chrome/Firefox Browser',
+          'Active Google / GitHub Account for Colab Access',
+          'Basic knowledge of Python fundamentals'
+        ],
+        prizes: [
+          '🏆 Official Industry Workshop Certificate of Completion',
+          '📦 Complete Source Code Repository & AI E-Book Starter Kit'
+        ],
+        coordinators: [
+          { role: 'Student Lead', name: 'Mr. M. Naveen Prathap', phone: '+91 9025579134' },
+          { role: 'Student Lead', name: 'Mr. M. Hariharan', phone: '+91 9345495476' }
+        ]
+      },
+
+      'esport-gaming': {
+        key: 'esport-gaming',
+        registerVal: 'Esport Gaming',
+        title: 'ESPORT GAMING',
+        subtitle: 'Free Fire Squad Battle Royale Tournament',
+        category: 'NON-TECHNICAL EVENT',
+        badge: 'GAMING ARENA',
+        badgeClass: 'badge-amber',
+        icon: '🎮',
+        prize: 'Cash Prizes + Certificate',
+        overview: 'Enter the ultimate esports arena of INTELLIGENZ 2K26! Free Fire Esports Tournament pits top college gaming squads against each other in high-octane custom Battle Royale rooms. Squad leaders must formulate tactical drops, coordinate combat strategies, and out-aim rivals to secure the Booyah!',
+        squad: '4 Operatives (Squad Entry)',
+        duration: 'Knockout Stages',
+        location: 'Non-Tech Gaming Complex (Indoor Arena)',
+        timing: '01:00 PM - 02:00',
+        rounds: [
+          {
+            title: 'Stage 01: Qualifier Rooms (Map: Bermuda)',
+            desc: 'Knockout custom rooms. Top squads advance based on cumulative survival points and kill bounties.'
+          },
+          {
+            title: 'Stage 02: Semi-Final Battle (Map: Purgatory / Kalahari)',
+            desc: 'High-intensity lobby featuring top surviving qualifier teams vying for top 12 final spots.'
+          },
+          {
+            title: 'Stage 03: Grand Finale Showdown (Multi-Map Series)',
+            desc: 'Top 12 squads clash in a 3-match custom room series to declare the INTELLIGENZ 2K26 Esport Champions!'
+          }
+        ],
+        rules: [
+          'Mobile Devices ONLY. Emulators (Bluestacks, LDPlayer), triggers, hacks, or modified APKs are strictly banned with zero tolerance.',
+          'Custom Room ID and Password will be broadcast to registered squad captains 15 minutes prior to match launch.',
+          'Squad captains must register all 4 player game IDs (UIDs) at the gaming desk 20 minutes before schedule.',
+          'Points Scoring System: Placement (1st = 12pts, 2nd = 9pts, 3rd = 8pts, 4th = 7pts...) + 1 Point per Kill Bounty.',
+          'Tournament Referees decision on match restarts or glitches will be final.'
+        ],
+        judging: [
+          { label: 'Survival Placement Rank Points', score: '50%' },
+          { label: 'Total Kill Bounty Elimination Points', score: '50%' }
+        ],
+        prerequisites: [
+          'Mobile Phone with Free Fire / Free Fire MAX updated',
+          'Stable 4G/5G Cellular Data connection',
+          'Earphones / Headphones for team voice chat'
+        ],
+        prizes: [
+          '🥇 1st Place: Champion Squad Cash Bounty + Winners Trophy + Esports Shield',
+          '🥈 2nd Place: Runner Squad Cash Prize + Runner Trophy',
+          '🥉 3rd Place: Squad Cash Prize + Medal',
+          '📜 Certificates for all participating squads'
+        ],
+        coordinators: [
+          { role: 'Student Lead', name: 'Mr. S. Sanjay', phone: '+91 9786448633' },
+          { role: 'Student Lead', name: 'Mr. M. Sanjaykumar', phone: '+91 7200785033' }
+        ]
+      },
+
+      'ipl-auction': {
+        key: 'ipl-auction',
+        registerVal: 'IPL Auction',
+        title: 'IPL TACTICAL AUCTION',
+        subtitle: 'Strategic Cricket Bidding & Roster Building Challenge',
+        category: 'NON-TECHNICAL EVENT',
+        badge: 'STRATEGY ARENA',
+        badgeClass: 'badge-amber',
+        icon: '🏏',
+        prize: 'Cash Rewards + Certificate',
+        overview: 'Experience the high-stakes thrill of the IPL Auction room! Step into the roles of team owners, analysts, and bidding strategists. Armed with a ₹100 Crore virtual purse, your squad must navigate auction dynamics, analyze player performance metrics, bid against rival franchises, and construct a balanced XI to win the championship title.',
+        squad: '2 - 3 Operatives per Franchise',
+        duration: '1.00 Hours',
+        location: 'Strategy Hall 4',
+        timing: '01:00 PM - 02:00 PM',
+        rounds: [
+          {
+            title: 'Round 01: Cricket IQ & Tactical Screening Quiz',
+            desc: 'A 20-minute preliminary quiz testing team knowledge of IPL statistics, player ratings, and auction rules. Top teams advance to live bidding.'
+          },
+          {
+            title: 'Round 02: Live Bidding Arena War',
+            desc: 'Qualified teams enter the live auction hall with a virtual purse to bid for marquee players, uncapped stars, spin bowlers, and international icons.'
+          }
+        ],
+        rules: [
+          'Roster Mandates: Final team must contain 11 to 15 players, satisfying minimum composition rules (Min 4 Bowlers, Min 4 Batsmen, Min 1 Wicketkeeper, Min 2 All-Rounders, Max 4 Foreign Players).',
+          'Budget Rule: Each team starts with ₹100 Crore virtual purse. Exceeding purse limits leads to immediate disqualification.',
+          'Live Bids: Bids raised during live auction are final and cannot be withdrawn once knocked down by the auctioneer.',
+          'In case of tied team rating points, the team with highest unspent purse remaining wins.'
+        ],
+        judging: [
+          { label: 'Overall Roster Balance & XI Team Rating', score: '40%' },
+          { label: 'Statistical Player Rating & Synergy Score', score: '35%' },
+          { label: 'Purse Management & Budget Efficiency', score: '25%' }
+        ],
+        prerequisites: [
+          'Deep knowledge of IPL player statistics & team dynamics',
+          'Calculators & Notebooks for budget management'
+        ],
+        prizes: [
+          '🥇 1st Place: Champion Franchise Cash Bounty + IPL Auction Trophy',
+          '🥈 2nd Place: Runner Franchise Cash Prize + Runner Shield',
+          '📜 Official Certificates for all participating strategists'
+        ],
+        coordinators: [
+          { role: 'Student Lead', name: 'Mr.U.K.R. Eshwar Kannan', phone: '+91 9363294224 ' },
+          { role: 'Student Lead', name: 'Mr. J. Gokulnath', phone: '+91 7708104576' }
+        ]
+      },
+
+      'mystery-box': {
+        key: 'mystery-box',
+        registerVal: 'Mystery Box',
+        title: 'MYSTERY BOX',
+        subtitle: 'Unbox the Unexpected • Surprise Challenges & Tactical Riddles',
+        category: 'NON-TECHNICAL EVENT',
+        badge: 'SURPRISE ARENA',
+        badgeClass: 'badge-amber',
+        icon: '📦',
+        prize: 'Cash Rewards + Certificate',
+        overview: 'Step into the realm of pure mystery and excitement! Mystery Box is an unpredictable non-technical battlefield where teams choose mysterious boxes containing unknown challenges, instant tasks, brain teasers, and spontaneous fun activities. Adapt on the spot, solve secrets under pressure, and conquer every box to emerge victorious!',
+        squad: '2 - 3 Operatives per Squad',
+        duration: '1.00 Hours',
+        location: 'Non-Tech Arena (Main Stage)',
+        timing: '01:00 PM - 02:00 PM',
+        rounds: [
+          {
+            title: 'Round 01: The Clue Cipher (Riddle Selection)',
+            desc: 'Teams solve quick cryptos and tactical riddles to claim high-value Mystery Boxes from the arena table.'
+          },
+          {
+            title: 'Round 02: Unbox & Perform (Live Challenge Execution)',
+            desc: 'Squads open their chosen Mystery Box to reveal hidden tasks (fun physical challenges, rapid-fire trivia, spontaneous acting/mimicry, or memory puzzles) and complete them within time limits.'
+          },
+          {
+            title: 'Round 03: The Final Vault (Surprise Showdown)',
+            desc: 'Top scoring teams face the Master Mystery Vault containing ultimate surprise high-stakes bonus tasks to claim victory.'
+          }
+        ],
+        rules: [
+          'Open to all registered INTELLIGENZ 2K26 operatives.',
+          'Each squad must accept whichever challenge is revealed inside their selected Mystery Box without refusal.',
+          'Time limits for each task must be strictly adhered to as measured by the event judges.',
+          'Fair play and enthusiastic participation are mandatory; judge decisions on scoring are absolute.'
+        ],
+        judging: [
+          { label: 'Task Execution Accuracy & Creativity', score: '40%' },
+          { label: 'Completion Speed & Time Management', score: '30%' },
+          { label: 'Teamwork, Enthusiasm & Audience Score', score: '30%' }
+        ],
+        prerequisites: [
+          'Quick thinking and adaptability',
+          'Enthusiastic team spirit and fun mindset'
+        ],
+        prizes: [
+          '🥇 1st Place: Mystery Champion Trophy + Cash Bounty + Mystery Gift Box',
+          '🥈 2nd Place: Runner-up Trophy + Cash Reward + Special Hamper',
+          '🥉 3rd Place: Certificate of Distinction + Gift Cards',
+          '📜 Certificates of Participation for all operatives'
+        ],
+        coordinators: [
+          { role: 'Student Lead', name: 'Mr.vibin', phone: '+91 6384307967' },
+          { role: 'Student Lead', name: 'Ms.keerthi', phone: '+91 ' }
+        ]
+      }
+    };
+
+    function renderEventData(key) {
+      const data = EVENT_DATABASE[key] || EVENT_DATABASE['project-expo'];
+
+      // Title & Subtitle
+      document.getElementById('eventTitle').textContent = data.title;
+      document.getElementById('eventSubtitle').textContent = data.subtitle;
+      document.getElementById('eventBigIcon').textContent = data.icon;
+      document.getElementById('eventOverview').textContent = data.overview;
+
+      // Badges
+      const catBadge = document.getElementById('eventCatBadge');
+      catBadge.textContent = data.category;
+      if (data.category.includes('NON')) {
+        catBadge.className = 'badge-tactical badge-amber';
+      } else {
+        catBadge.className = 'badge-tactical';
+      }
+
+      const trackBadge = document.getElementById('eventTrackBadge');
+      trackBadge.textContent = data.badge;
+      trackBadge.className = `badge-tactical ${data.badgeClass || 'badge-cyan'}`;
+
+      document.getElementById('prizeBadge').innerHTML = `<i class="fas fa-trophy"></i> PRIZE: ${data.prize}`;
+
+      // Meta Cards
+      document.getElementById('metaSquad').textContent = data.squad;
+      document.getElementById('metaDuration').textContent = data.duration;
+      document.getElementById('metaLocation').textContent = data.location;
+      document.getElementById('metaTiming').textContent = data.timing;
+
+      // CTA Register Link
+      const regBtn = document.getElementById('btnRegisterCta');
+      regBtn.href = `register.html?event=${encodeURIComponent(data.key)}`;
+
+      // Rounds Container
+      const roundsContainer = document.getElementById('eventRoundsContainer');
+      roundsContainer.innerHTML = data.rounds.map((r, i) => `
+        <div class="round-card">
+          <div class="round-card-header">
+            <span class="round-num-tag">STEP ${String(i + 1).padStart(2, '0')}</span>
+            <span class="round-title">${r.title}</span>
+          </div>
+          <div class="round-desc">${r.desc}</div>
+        </div>
+      `).join('');
+
+      // Rules List
+      const rulesList = document.getElementById('eventRulesList');
+      rulesList.innerHTML = data.rules.map(r => `
+        <li><i class="fas fa-chevron-right"></i> <div>${r}</div></li>
+      `).join('');
+
+      // Judging Progress Bars
+      const judgingContainer = document.getElementById('eventJudgingContainer');
+      judgingContainer.innerHTML = data.judging.map(j => `
+        <div class="judging-item">
+          <div class="judging-label-row">
+            <span class="judging-name">${j.label}</span>
+            <span class="judging-score">${j.score}</span>
+          </div>
+          <div class="judging-bar-bg">
+            <div class="judging-bar-fill" style="width: ${j.score}"></div>
+          </div>
+        </div>
+      `).join('');
+
+      // Prerequisites Checklist
+      const checklist = document.getElementById('eventChecklist');
+      checklist.innerHTML = data.prerequisites.map(p => `
+        <li><i class="fas fa-check-circle" style="color: var(--accent-green);"></i> <div>${p}</div></li>
+      `).join('');
+
+      // Prizes List
+      const prizesContainer = document.getElementById('eventPrizesContainer');
+      prizesContainer.innerHTML = data.prizes.map(p => `
+        <div class="prize-list-item">
+          <div>${p}</div>
+        </div>
+      `).join('');
+
+      // Coordinators List
+      const coordsContainer = document.getElementById('eventCoordinatorsList');
+      coordsContainer.innerHTML = data.coordinators.map(c => `
+        <div class="officer-card">
+          <div class="officer-info">
+            <div>${c.role}</div>
+            <div>${c.name}</div>
+          </div>
+          <a href="tel:${c.phone.replace(/[^0-9+]/g, '')}" class="btn-call">
+            <i class="fas fa-phone-alt"></i> CALL
+          </a>
+        </div>
+      `).join('');
+
+      // Update active state of top nav tabs
+      document.querySelectorAll('.event-tab-btn').forEach(btn => {
+        if (btn.getAttribute('data-key') === key) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+    }
+
+    const KEY_MAP = {
+      'project-expo': 'project-expo',
+      'innov-expo': 'project-expo',
+      'innovexpo': 'project-expo',
+      'expo': 'project-expo',
+      
+      'prompt-a-thon': 'prompt-a-thon',
+      'promptathon': 'prompt-a-thon',
+      'prompt': 'prompt-a-thon',
+      
+      'paper-presentation': 'paper-presentation',
+      'paper-talks': 'paper-presentation',
+      'papertalks': 'paper-presentation',
+      'paper': 'paper-presentation',
+      
+      'workshop': 'workshop',
+      'hands-on-workshop': 'workshop',
+      'handsonworkshop': 'workshop',
+      
+      'esport-gaming': 'esport-gaming',
+      'esports': 'esport-gaming',
+      'freefire': 'esport-gaming',
+      'gaming': 'esport-gaming',
+      
+      'ipl-auction': 'ipl-auction',
+      'iplauction': 'ipl-auction',
+      'ipl': 'ipl-auction',
+      'auction': 'ipl-auction'
+    };
+
+    function resolveEventKey(rawKey) {
+      if (!rawKey) return 'project-expo';
+      const normalized = rawKey.toLowerCase().trim();
+      return KEY_MAP[normalized] || (EVENT_DATABASE[normalized] ? normalized : 'project-expo');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      let currentEvent = resolveEventKey(params.get('event'));
+
+      renderEventData(currentEvent);
+
+      // Event Switcher Tab click handlers
+      document.querySelectorAll('.event-tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const key = resolveEventKey(btn.getAttribute('data-key'));
+          if (key && EVENT_DATABASE[key]) {
+            renderEventData(key);
+            // Update URL without reload
+            const newUrl = `${window.location.pathname}?event=${encodeURIComponent(key)}`;
+            window.history.pushState({ event: key }, '', newUrl);
+            window.scrollTo({ top: 180, behavior: 'smooth' });
+          }
+        });
+      });
+
+      // Handle back/forward navigation in browser
+      window.addEventListener('popstate', (e) => {
+        const params = new URLSearchParams(window.location.search);
+        const eventKey = resolveEventKey(params.get('event'));
+        renderEventData(eventKey);
+      });
+
+      // Local Clock HUD
+      setInterval(() => {
+        const now = new Date();
+        const clockEl = document.getElementById('hudLocalClock');
+        if (clockEl) {
+          clockEl.textContent = now.toLocaleTimeString('en-US', { hour12: false }) + ' IST';
+        }
+      }, 1000);
+    });
+  </script>
+</body>
+</html>
