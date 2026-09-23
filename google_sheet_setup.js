@@ -245,6 +245,8 @@ function testSendWelcomeEmail() {
   Logger.log("✅ Test Welcome Email sent to " + Session.getActiveUser().getEmail());
 }
 
+
+
 function doGet(e) {
   // If GET request has POST parameters (fallback mode), process POST
   if (e && e.parameter && (e.parameter.name || e.parameter.passId)) {

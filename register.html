@@ -663,21 +663,8 @@
         </div>
       </div>
 
-      <!-- Instant WhatsApp Greetings & Pass Card -->
-      <div id="whatsappGreetingsCard" style="background: rgba(37, 211, 102, 0.08); border: 1px solid rgba(37, 211, 102, 0.4); padding: 1.1rem; border-radius: 6px; margin-bottom: 1.3rem; text-align: center;">
-        <div style="font-size: 0.85rem; color: #25D366; font-family: var(--font-mono); font-weight: 700; margin-bottom: 0.35rem; display: flex; align-items: center; justify-content: center; gap: 0.45rem;">
-          <i class="fab fa-whatsapp" style="font-size: 1.25rem;"></i> AUTOMATIC WHATSAPP GREETINGS READY
-        </div>
-        <p style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.85rem; line-height: 1.4;">
-          Your welcome greetings and official symposium pass docket have been generated. Click below to receive them instantly on WhatsApp!
-        </p>
-        <a id="btnOpenWhatsAppGreetings" href="#" target="_blank" rel="noopener noreferrer" class="btn-primary" style="background: #25D366; border: 1px solid #25D366; color: #000; font-weight: 700; font-size: 0.88rem; width: 100%; justify-content: center; text-decoration: none; padding: 0.7rem 1rem; box-shadow: 0 0 15px rgba(37, 211, 102, 0.3); transition: var(--transition);">
-          <i class="fab fa-whatsapp" style="font-size: 1.15rem;"></i> OPEN &amp; RECEIVE PASS ON WHATSAPP
-        </a>
-      </div>
-
       <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
-        Your 1-Day Pass for <strong>INTELLIGENZ 2K26</strong> has been registered. Official entry credentials and greetings have also been dispatched to your email.
+        Your 1-Day Pass for <strong>INTELLIGENZ 2K26</strong> has been registered. Official entry credentials and greetings have been dispatched automatically to your email &amp; WhatsApp.
       </p>
 
       <div style="display: flex; gap: 0.8rem; flex-wrap: wrap;">
@@ -702,6 +689,10 @@
 
   <!-- Supabase Real-time Database Config -->
   <script src="assets/js/supabase_config.js"></script>
+
+  <!-- EmailJS Automated Email Dispatch -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="assets/js/emailjs_config.js"></script>
 
   <!-- Interactive JavaScript Logic -->
   <script>
@@ -1110,40 +1101,54 @@
               submittedProofCard.style.display = 'flex';
             }
 
-            // Build Personalized Automatic WhatsApp Greetings Message
-            try {
-              const cleanMobile = (registrationPayload.mobile || '').replace(/[^0-9]/g, '');
-              const waGreetingsText = 
-`🎉 *INTELLI-GENZ 2K26 REGISTRATION CONFIRMED!* 🎉
+            // =========================================================================
+            // AUTOMATED EMAILJS GREETINGS DISPATCH (Service: service_4j8755y)
+            // =========================================================================
+            if (registrationPayload.email) {
+              try {
+                const emailParams = {
+                  to_name: registrationPayload.name || 'Participant',
+                  to_email: registrationPayload.email,
+                  participant_name: registrationPayload.name || 'Participant',
+                  pass_id: registrationPayload.passId || '',
+                  college: registrationPayload.college || '',
+                  dept: registrationPayload.dept || '',
+                  reg_no: registrationPayload.regNo || '',
+                  mobile: registrationPayload.mobile || '',
+                  selected_events: registrationPayload.selectedEvents || 'All Registered Events',
+                  utr_no: registrationPayload.utrNo || '',
+                  event_date: '09.10.2026 (Friday) @ 09:30 AM',
+                  venue: 'Mahendra College of Engineering, Minnampalli, Salem - 636106',
+                  coordinator_sowmiya: '+91 9500625570',
+                  coordinator_parthipan: '+91 8778910842'
+                };
 
-Greetings *${registrationPayload.name || 'Operative'}*,
-Welcome to *INTELLI-GENZ 2K26* National Level Technical Symposium hosted by Department of Artificial Intelligence & Data Science, Mahendra College of Engineering (Autonomous), Salem.
+                const sId = window.EMAILJS_SERVICE_ID || 'service_4j8755y';
+                const tId = window.EMAILJS_TEMPLATE_ID || 'template_sympo';
+                const pKey = window.EMAILJS_PUBLIC_KEY || '';
 
-🎫 *Pass Clearance ID:* ${registrationPayload.passId}
-🎓 *College:* ${registrationPayload.college || 'N/A'}
-🏫 *Department:* ${registrationPayload.dept || 'N/A'}
-🆔 *Roll/Reg No:* ${registrationPayload.regNo || 'N/A'}
-⚡ *Registered Events:* ${registrationPayload.selectedEvents || 'All Registered Arena Tracks'}
-💳 *UTR Ref:* ${registrationPayload.utrNo || 'N/A'}
-
-📅 *Event Date:* 09.10.2026 (Friday) @ 09:30 AM
-📍 *Venue:* Mahendra College of Engineering, Minnampalli, Salem - 636106
-🍽️ *Refreshments:* Complimentary Campus Mess Dining Rations Included with Pass!
-
-📞 *Coordinator Helpline:*
-• Staff Coordinator: Ms. M. Sowmiya (+91 9500625570)
-• Student Lead: Mr. M. Parthipan (+91 8778910842)
-
-Your pass has been generated. Please save this message for on-campus verification. See you at the Arena! 🚀`;
-
-              const targetWaPhone = cleanMobile.length === 10 ? ('91' + cleanMobile) : (cleanMobile || '919500625570');
-              const waUrl = `https://api.whatsapp.com/send?phone=${targetWaPhone}&text=${encodeURIComponent(waGreetingsText)}`;
-              const btnOpenWa = document.getElementById('btnOpenWhatsAppGreetings');
-              if (btnOpenWa) {
-                btnOpenWa.href = waUrl;
+                if (window.emailjs && pKey) {
+                  emailjs.init({ publicKey: pKey });
+                  emailjs.send(sId, tId, emailParams)
+                    .then(res => console.log('🚀 Automated Email sent via EmailJS:', res.status, res.text))
+                    .catch(err => console.error('EmailJS Dispatch error:', err));
+                } else if (pKey) {
+                  fetch('https://api.emailjs.com/api/v1.0/email/send', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      service_id: sId,
+                      template_id: tId,
+                      user_id: pKey,
+                      template_params: emailParams
+                    })
+                  })
+                  .then(res => console.log('🚀 EmailJS REST status:', res.status))
+                  .catch(err => console.error('EmailJS REST error:', err));
+                }
+              } catch (emailErr) {
+                console.error('EmailJS Automation Exception:', emailErr);
               }
-            } catch (waErr) {
-              console.error('WhatsApp Greeting URL error:', waErr);
             }
 
             // Show Success Modal

@@ -244,12 +244,11 @@
               <th>SELECTED EVENTS</th>
               <th>UTR REF NO</th>
               <th>PROOF</th>
-              <th>WHATSAPP GREETINGS</th>
             </tr>
           </thead>
           <tbody id="registrationsTbody">
             <tr>
-              <td colspan="12" style="text-align: center; color: var(--text-muted); padding: 3rem 1rem;">
+              <td colspan="11" style="text-align: center; color: var(--text-muted); padding: 3rem 1rem;">
                 <i class="fas fa-spinner fa-spin" style="font-size: 1.5rem; margin-bottom: 0.5rem; display: block;"></i>
                 Loading registrations database...
               </td>
@@ -462,40 +461,9 @@
             <td style="color: var(--accent-cyan); font-weight: 600;">${r.selectedEvents || 'N/A'}</td>
             <td style="font-family: var(--font-mono); font-size: 0.88rem; font-weight: 700; color: var(--accent-cyan);">${r.utrNo || 'N/A'}</td>
             <td>${proofHtml}</td>
-            <td>
-              <button type="button" class="btn-action-outline" style="color: #25D366; border-color: rgba(37, 211, 102, 0.5); padding: 0.32rem 0.65rem; font-size: 0.75rem; white-space: nowrap; cursor: pointer; background: rgba(37, 211, 102, 0.08);" onclick="sendWhatsAppGreeting(${i})" title="Send Official WhatsApp Greetings">
-                <i class="fab fa-whatsapp"></i> Send Greeting
-              </button>
-            </td>
           </tr>
         `;
       }).join('');
-    }
-
-    function sendWhatsAppGreeting(index) {
-      const r = allRegistrations[index];
-      if (!r) return;
-      const cleanMobile = (r.mobile || '').replace(/[^0-9]/g, '');
-      if (!cleanMobile) {
-        alert('Mobile number not available for this participant.');
-        return;
-      }
-      const targetPhone = cleanMobile.length === 10 ? ('91' + cleanMobile) : cleanMobile;
-      const greetingMsg = 
-`🎉 *INTELLI-GENZ 2K26 REGISTRATION CONFIRMED!* 🎉
-
-Hello *${r.name || 'Participant'}*,
-Greetings from *INTELLI-GENZ 2K26* Symposium Team (Department of AI&DS, Mahendra College of Engineering, Salem).
-
-🎫 *Pass Clearance ID:* ${r.passId || 'N/A'}
-🎓 *College:* ${r.college || 'N/A'}
-⚡ *Events:* ${r.selectedEvents || 'All Events'}
-📅 *Date:* 09.10.2026 (Friday) @ 09:30 AM
-📍 *Venue:* Mahendra College of Engineering, Salem
-
-Your pass has been verified and confirmed. We look forward to seeing you at the Arena! 🚀`;
-
-      window.open(`https://api.whatsapp.com/send?phone=${targetPhone}&text=${encodeURIComponent(greetingMsg)}`, '_blank');
     }
 
     function getDirectImageSrc(proof) {
