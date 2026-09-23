@@ -1109,6 +1109,9 @@
                 const emailParams = {
                   to_name: registrationPayload.name || 'Participant',
                   to_email: registrationPayload.email,
+                  email: registrationPayload.email,
+                  user_email: registrationPayload.email,
+                  from_name: 'INTELLI-GENZ 2K26 (MCE AI&DS)',
                   participant_name: registrationPayload.name || 'Participant',
                   pass_id: registrationPayload.passId || '',
                   college: registrationPayload.college || '',
@@ -1120,7 +1123,8 @@
                   event_date: '09.10.2026 (Friday) @ 09:30 AM',
                   venue: 'Mahendra College of Engineering, Minnampalli, Salem - 636106',
                   coordinator_sowmiya: '+91 9500625570',
-                  coordinator_parthipan: '+91 8778910842'
+                  coordinator_parthipan: '+91 8778910842',
+                  message: `Pass ID: ${registrationPayload.passId} | Events: ${registrationPayload.selectedEvents} | Venue: Mahendra College of Engineering, Salem on 09.10.2026.`
                 };
 
                 const sId = window.EMAILJS_SERVICE_ID || 'service_4j8755y';
