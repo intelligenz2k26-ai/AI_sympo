@@ -26,11 +26,11 @@ function initPreloader() {
   if (!preloader) return;
 
   const bootLogs = [
-    { time: "[0.001s]", text: "KERNEL_INIT: INTELLIGENZ OS v4.09 loading...", type: "normal" },
+    { time: "[0.001s]", text: "KERNEL_INIT: INTELLI-GENZ OS v4.09 loading...", type: "normal" },
     { time: "[0.045s]", text: "MEM_ALLOC: 64GB High-Density RAM mapped.", type: "normal" },
     { time: "[0.120s]", text: "NET_SYNC: Establishing encrypted uplink...", type: "normal" },
     { time: "[0.350s]", text: "SEC_CHK: Defcon 1 protocols activated.", type: "success" },
-    { time: "[0.680s]", text: "CYBER_ARENA: Initializing INTELLIGENZ 2K26 matrices...", type: "normal" },
+    { time: "[0.680s]", text: "CYBER_ARENA: Initializing INTELLI-GENZ-2K26 matrices...", type: "normal" },
     { time: "[0.950s]", text: "SYSTEM READY: Status Online & Armed.", type: "success" }
   ];
 
@@ -280,7 +280,7 @@ function initTerminalCLI() {
 
       case 'clear':
         terminalOutput.innerHTML = '';
-        appendTerminalLine('INTELLIGENZ 2K26 TERMINAL CLI v4.09');
+        appendTerminalLine('INTELLI-GENZ-2K26 TERMINAL CLI v4.09');
         appendTerminalLine('Type "help" for a list of available tactical directives.');
         break;
 
@@ -336,7 +336,7 @@ function initDispatchForm() {
       if (statusMsg) {
         statusMsg.style.display = 'block';
         statusMsg.className = 'badge-tactical badge-cyan';
-        statusMsg.textContent = '[COMMUNICATION TRANSMITTED SUCCESSFULLY to INTELLIGENZ COMMAND HQ]';
+        statusMsg.textContent = '[COMMUNICATION TRANSMITTED SUCCESSFULLY to INTELLI-GENZ COMMAND HQ]';
         form.reset();
         setTimeout(() => {
           statusMsg.style.display = 'none';

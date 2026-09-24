@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Booking Confirmation & Ticket Checkout | INTELLIGENZ 2K26</title>
-  <meta name="description" content="Official Registration & Ticket Checkout for INTELLIGENZ 2K26 1-Day National Level Technical Symposium.">
+  <title>Booking Confirmation & Ticket Checkout | INTELLI-GENZ-2K26</title>
+  <meta name="description" content="Official Registration & Ticket Checkout for INTELLI-GENZ-2K26 1-Day National Level Technical Symposium.">
   
   <!-- CSS Stylesheet -->
   <link rel="stylesheet" href="assets/css/style.css">
@@ -66,6 +66,85 @@
       accent-color: var(--accent-green);
       width: 16px;
       height: 16px;
+    }
+    /* Event Selection Counter Badges & Validation Indicators */
+    .event-section-box {
+      border: 1px solid rgba(0, 240, 255, 0.12);
+      border-radius: 8px;
+      padding: 0.8rem 1rem 1rem 1rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      background: rgba(0, 240, 255, 0.02);
+      margin-bottom: 1.2rem;
+    }
+    .event-section-box.has-error {
+      border-color: #ff3366 !important;
+      background: rgba(255, 0, 85, 0.08) !important;
+      box-shadow: 0 0 18px rgba(255, 0, 85, 0.28);
+    }
+    .event-counter-badge {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+    .event-counter-badge.badge-valid {
+      background: rgba(0, 255, 157, 0.15);
+      color: var(--accent-green);
+      border: 1px solid var(--accent-green);
+      box-shadow: 0 0 8px rgba(0, 255, 157, 0.2);
+    }
+    .event-counter-badge.badge-invalid {
+      background: rgba(255, 0, 85, 0.18);
+      color: #ff4d79;
+      border: 1px solid #ff3366;
+      box-shadow: 0 0 10px rgba(255, 0, 85, 0.3);
+      animation: pulse-warn 1.2s infinite alternate;
+    }
+    .event-validation-indicator {
+      margin-top: 0.75rem;
+      padding: 0.6rem 0.9rem;
+      background: rgba(255, 0, 85, 0.14);
+      border-left: 3px solid #ff3366;
+      color: #ff6b8b;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      border-radius: 4px;
+      animation: shake-error 0.4s ease-in-out;
+    }
+    @keyframes pulse-warn {
+      0% { opacity: 0.85; transform: scale(1); }
+      100% { opacity: 1; transform: scale(1.03); filter: drop-shadow(0 0 5px rgba(255, 51, 102, 0.8)); }
+    }
+    @keyframes shake-error {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+    .toast-limit-notice {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: #111a24;
+      border: 1px solid #ff3366;
+      color: #ff4d79;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), 0 0 15px rgba(255, 51, 102, 0.4);
+      padding: 0.8rem 1.2rem;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      animation: shake-error 0.4s ease-in-out;
     }
     .summary-card {
       position: sticky;
@@ -132,7 +211,7 @@
       <div class="nav-container">
         <a href="index.html#hero" class="nav-brand">
           <i class="fas fa-microchip brand-icon"></i>
-          <span class="brand-title">INTELLIGENZ<span>_2K26</span></span>
+          <span class="brand-title">INTELLI-GENZ<span>-2K26</span></span>
         </a>
         
         <a href="index.html" class="btn-nav-cta">
@@ -255,37 +334,53 @@
             </div>
 
             <!-- 3. Event Selection -->
-            <div class="form-section-title">
-              <i class="fas fa-layer-group"></i> Select Target TECHNICAL Events SELECT(2) *
+            <!-- Technical Events (Choose Exactly 2) -->
+            <div id="techEventsSection" class="event-section-box">
+              <div class="form-section-title" style="justify-content: space-between; align-items: center; margin-top: 0.2rem; border-bottom: 1px solid rgba(0, 240, 255, 0.2);">
+                <span style="display: flex; align-items: center; gap: 0.5rem;"><i class="fas fa-microchip"></i> Select Target TECHNICAL Events (SELECT 2) *</span>
+                <span id="techEventBadge" class="event-counter-badge badge-valid">2 / 2 SELECTED</span>
+              </div>
+              <div class="checkbox-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-top: 0.8rem;">
+                <label class="checkbox-option">
+                  <input type="checkbox" name="events" class="tech-event-cb" value="Innov Expo" checked> Innov Expo (AI/ML)
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="events" class="tech-event-cb" value="Prompt-a-thon" checked> Prompt-a-thon (GenAI)
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="events" class="tech-event-cb" value="Paper Talks"> Paper Talks (Paper Presentation)
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="events" class="tech-event-cb" value="Workshop"> Hands-on Workshop
+                </label>
+              </div>
+              <div id="techEventError" class="event-validation-indicator" style="display: none;">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span id="techEventErrorText">Please select exactly 2 Technical Events before proceeding (Currently: 2/2)</span>
+              </div>
             </div>
 
-            <div class="checkbox-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
-              <label class="checkbox-option">
-                <input type="checkbox" name="events" value="Innov Expo" checked> Innov Expo (AI/ML)
-              </label>
-              <label class="checkbox-option">
-                <input type="checkbox" name="events" value="Prompt-a-thon"> Prompt-a-thon (GenAI)
-              </label>
-              <label class="checkbox-option">
-                <input type="checkbox" name="events" value="Paper Talks"> Paper Talks (Paper Presentation)
-              </label>
-              <label class="checkbox-option">
-                <input type="checkbox" name="events" value="Workshop"> Hands-on Workshop
-              </label>
-
-              <div class="form-section-title">
-              <i class="fas fa-layer-group"></i> Select Target NON TECHNICAL EVENT (1) *
-            </div>
-            <div class="checkbox-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;"></div>
-              <label class="checkbox-option">
-                <input type="checkbox" name="events" value="Esport Gaming"> Esport Gaming (Free Fire)
-              </label>
-              <label class="checkbox-option">
-                <input type="checkbox" name="events" value="IPL Auction"> IPL Tactical Auction
-              </label>
-              <label class="checkbox-option">
-                <input type="checkbox" name="events" value="Mystery Box"> Mystery Box
-              </label>
+            <!-- Non-Technical Events (Choose Exactly 1) -->
+            <div id="nonTechEventsSection" class="event-section-box" style="margin-top: 1.2rem;">
+              <div class="form-section-title" style="justify-content: space-between; align-items: center; margin-top: 0.2rem; border-bottom: 1px solid rgba(0, 240, 255, 0.2);">
+                <span style="display: flex; align-items: center; gap: 0.5rem;"><i class="fas fa-gamepad"></i> Select Target NON TECHNICAL EVENT (SELECT 1) *</span>
+                <span id="nonTechEventBadge" class="event-counter-badge badge-valid">1 / 1 SELECTED</span>
+              </div>
+              <div class="checkbox-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-top: 0.8rem;">
+                <label class="checkbox-option">
+                  <input type="checkbox" name="events" class="nontech-event-cb" value="Esport Gaming"> Esport Gaming (Free Fire)
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="events" class="nontech-event-cb" value="IPL Auction" checked> IPL Tactical Auction
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="events" class="nontech-event-cb" value="Mystery Box"> Mystery Box
+                </label>
+              </div>
+              <div id="nonTechEventError" class="event-validation-indicator" style="display: none;">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span id="nonTechEventErrorText">Please select exactly 1 Non-Technical Event before proceeding (Currently: 1/1)</span>
+              </div>
             </div>
 
             <!-- 4. Referral & Source Details -->
@@ -365,7 +460,7 @@
         <div class="summary-card tactical-box">
           <div class="summary-event-banner">
             <h3 style="font-family: var(--font-heading); color: var(--accent-green); font-size: 1.4rem;">
-              INTELLIGENZ 2K26
+              INTELLI-GENZ-2K26
             </h3>
             <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.3rem;">
               <i class="fas fa-map-marker-alt" style="color: var(--accent-cyan);"></i> Department of AI&amp;DS, Tech Campus, Sector 4
@@ -435,7 +530,7 @@
         <div class="modal-title-group">
           <i class="fas fa-qrcode modal-icon"></i>
           <div>
-            <h3 class="modal-heading">INTELLIGENZ 2K26 PAYMENT GATEWAY</h3>
+            <h3 class="modal-heading">INTELLI-GENZ-2K26 PAYMENT GATEWAY</h3>
             <span class="modal-subheading">STEP 2 OF 2: SCAN QR &amp; UPLOAD PAYMENT PROOF</span>
           </div>
         </div>
@@ -515,9 +610,9 @@
             <div class="qr-code-frame">
               <div class="qr-scanner-line"></div>
               <img id="paymentQrImage2" 
-                   src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&ecc=H&margin=10&data=upi%3A%2F%2Fpay%3Fpa%3D8778910842%40ybl%26pn%3DParthipan%26mc%3D0000%26tn%3DINTELLIGENZ%25202K26%2520Registration%26am%3D300%26cu%3DINR" 
-                   alt="PhonePe/Paytm QR Code 2 - ₹300 (8778910842@ybl)" class="qr-image"
-                   onerror="this.onerror=null; this.src='https://chart.googleapis.com/chart?cht=qr&chs=350x350&chld=H|1&chl=upi%3A%2F%2Fpay%3Fpa%3D8778910842%40ybl%26pn%3DParthipan%26am%3D300%26cu%3DINR';">
+                   src="assets/phonepe_qr.png" 
+                   alt="PhonePe QR Code - ₹300 (7200785033@ybl)" class="qr-image"
+                   onerror="this.onerror=null; this.src='https://api.qrserver.com/v1/create-qr-code/?size=400x400&ecc=H&margin=10&data=upi%3A%2F%2Fpay%3Fpa%3D7200785033%40ybl%26pn%3DMaster%2520Sanjaykumar%2520Madhu%26mc%3D0000%26tn%3DINTELLIGENZ%25202K26%2520Registration%26am%3D300%26cu%3DINR';">
             </div>
 
             <div class="qr-instructions">
@@ -528,7 +623,7 @@
             <div class="upi-copy-box">
               <div class="upi-id-details">
                 <span class="upi-label">OFFICIAL UPI ID 2:</span>
-                <span class="upi-id-text" id="upiIdText2">6381661311@ybl</span>
+                <span class="upi-id-text" id="upiIdText2">7200785033@ybl</span>
               </div>
               <button type="button" class="btn-copy-upi" id="btnCopyUpi2" title="Copy UPI ID 2">
                 <i class="fas fa-copy"></i> <span id="copyBtnText2">COPY ID</span>
@@ -664,7 +759,7 @@
       </div>
 
       <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
-        Your 1-Day Pass for <strong>INTELLIGENZ 2K26</strong> has been registered. Official entry credentials and greetings have been dispatched automatically to your email &amp; WhatsApp.
+        Your 1-Day Pass for <strong>INTELLI-GENZ-2K26</strong> has been registered. Official entry credentials and greetings have been dispatched automatically to your email &amp; WhatsApp.
       </p>
 
       <div style="display: flex; gap: 0.8rem; flex-wrap: wrap;">
@@ -681,7 +776,7 @@
   <footer class="footer">
     <div class="container">
       <div class="footer-bottom">
-        <div>&copy; 2026 INTELLIGENZ 2K26. AI&amp;DS DEPARTMENT. ALL RIGHTS RESERVED.</div>
+        <div>&copy; 2026 INTELLI-GENZ-2K26. AI&amp;DS DEPARTMENT. ALL RIGHTS RESERVED.</div>
         <div>Developed by AI payalunga</div>
       </div>
     </div>
@@ -755,6 +850,117 @@
       let currentImageDataUrl = '';
       let timerInterval = null;
 
+      // =========================================================================
+      // Event Selection Constraints & Live Validation (2 Tech, 1 Non-Tech)
+      // =========================================================================
+      const techCheckboxes = document.querySelectorAll('.tech-event-cb');
+      const nonTechCheckboxes = document.querySelectorAll('.nontech-event-cb');
+      const techBadge = document.getElementById('techEventBadge');
+      const nonTechBadge = document.getElementById('nonTechEventBadge');
+      const techBox = document.getElementById('techEventsSection');
+      const nonTechBox = document.getElementById('nonTechEventsSection');
+      const techError = document.getElementById('techEventError');
+      const nonTechError = document.getElementById('nonTechEventError');
+      const techErrorText = document.getElementById('techEventErrorText');
+      const nonTechErrorText = document.getElementById('nonTechErrorText');
+
+      function showNoticeToast(message) {
+        const existing = document.querySelector('.toast-limit-notice');
+        if (existing) existing.remove();
+        const toast = document.createElement('div');
+        toast.className = 'toast-limit-notice';
+        toast.innerHTML = `<i class="fas fa-exclamation-circle"></i> <span>${message}</span>`;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+          toast.style.transition = 'opacity 0.4s ease';
+          toast.style.opacity = '0';
+          setTimeout(() => toast.remove(), 400);
+        }, 3200);
+      }
+
+      function updateEventSelectionState() {
+        const techChecked = document.querySelectorAll('.tech-event-cb:checked');
+        const nonTechChecked = document.querySelectorAll('.nontech-event-cb:checked');
+
+        const techCount = techChecked.length;
+        const nonTechCount = nonTechChecked.length;
+
+        // Update Technical Badge & Error Indicator
+        if (techBadge) {
+          if (techCount === 2) {
+            techBadge.textContent = '✓ 2 / 2 SELECTED';
+            techBadge.className = 'event-counter-badge badge-valid';
+            if (techError) techError.style.display = 'none';
+            if (techBox) techBox.classList.remove('has-error');
+          } else {
+            const need = 2 - techCount;
+            techBadge.textContent = `${techCount} / 2 SELECTED (${need > 0 ? `NEED ${need} MORE` : 'MAX 2'})`;
+            techBadge.className = 'event-counter-badge badge-invalid';
+            if (techCount < 2 && techError && techErrorText) {
+              techErrorText.textContent = `⚠️ Please select exactly 2 Technical Events before proceeding (Currently: ${techCount}/2)`;
+            }
+          }
+        }
+
+        // Update Non-Technical Badge & Error Indicator
+        if (nonTechBadge) {
+          if (nonTechCount === 1) {
+            nonTechBadge.textContent = '✓ 1 / 1 SELECTED';
+            nonTechBadge.className = 'event-counter-badge badge-valid';
+            if (nonTechError) nonTechError.style.display = 'none';
+            if (nonTechBox) nonTechBox.classList.remove('has-error');
+          } else {
+            const need = 1 - nonTechCount;
+            nonTechBadge.textContent = `${nonTechCount} / 1 SELECTED (${need > 0 ? 'NEED 1' : 'MAX 1'})`;
+            nonTechBadge.className = 'event-counter-badge badge-invalid';
+            if (nonTechCount === 0 && nonTechError && nonTechErrorText) {
+              nonTechErrorText.textContent = `⚠️ Please select exactly 1 Non-Technical Event before proceeding (Currently: 0/1)`;
+            }
+          }
+        }
+      }
+
+      // Handle Technical Selection with Max 2 limit
+      techCheckboxes.forEach(cb => {
+        cb.addEventListener('click', (e) => {
+          const currentlyChecked = document.querySelectorAll('.tech-event-cb:checked');
+          if (cb.checked && currentlyChecked.length > 2) {
+            e.preventDefault();
+            cb.checked = false;
+            showNoticeToast('Maximum 2 Technical Events allowed! Deselect an event to choose another.');
+            if (techError && techErrorText) {
+              techErrorText.textContent = 'Maximum 2 Technical Events allowed! Deselect an event to choose another.';
+              techError.style.display = 'flex';
+              if (techBox) techBox.classList.add('has-error');
+            }
+            return;
+          }
+          updateEventSelectionState();
+        });
+      });
+
+      // Handle Non-Technical Selection with Max 1 limit
+      nonTechCheckboxes.forEach(cb => {
+        cb.addEventListener('click', (e) => {
+          const currentlyChecked = document.querySelectorAll('.nontech-event-cb:checked');
+          if (cb.checked && currentlyChecked.length > 1) {
+            e.preventDefault();
+            cb.checked = false;
+            showNoticeToast('Maximum 1 Non-Technical Event allowed! Deselect the selected event first.');
+            if (nonTechError && nonTechErrorText) {
+              nonTechErrorText.textContent = 'Maximum 1 Non-Technical Event allowed! Deselect the current event first.';
+              nonTechError.style.display = 'flex';
+              if (nonTechBox) nonTechBox.classList.add('has-error');
+            }
+            return;
+          }
+          updateEventSelectionState();
+        });
+      });
+
+      // Initial validation state on load
+      updateEventSelectionState();
+
       // 2. Form Submission -> Triggers Step 2 Payment Modal
       if (bookingForm && paymentModal) {
         bookingForm.addEventListener('submit', (e) => {
@@ -762,6 +968,40 @@
           
           if (!bookingForm.checkValidity()) {
             bookingForm.reportValidity();
+            return;
+          }
+
+          // Validate Event Counts (Exact 2 Tech & 1 Non-Tech required)
+          const currentTechChecked = document.querySelectorAll('.tech-event-cb:checked');
+          const currentNonTechChecked = document.querySelectorAll('.nontech-event-cb:checked');
+          let eventValidationFailed = false;
+          let firstErrorElem = null;
+
+          if (currentTechChecked.length !== 2) {
+            eventValidationFailed = true;
+            if (techBox) techBox.classList.add('has-error');
+            if (techError && techErrorText) {
+              techErrorText.textContent = `⚠️ Please select exactly 2 Technical Events before proceeding (Currently: ${currentTechChecked.length}/2)`;
+              techError.style.display = 'flex';
+              firstErrorElem = techBox;
+            }
+          }
+
+          if (currentNonTechChecked.length !== 1) {
+            eventValidationFailed = true;
+            if (nonTechBox) nonTechBox.classList.add('has-error');
+            if (nonTechError && nonTechErrorText) {
+              nonTechErrorText.textContent = `⚠️ Please select exactly 1 Non-Technical Event before proceeding (Currently: ${currentNonTechChecked.length}/1)`;
+              nonTechError.style.display = 'flex';
+              if (!firstErrorElem) firstErrorElem = nonTechBox;
+            }
+          }
+
+          if (eventValidationFailed) {
+            if (firstErrorElem) {
+              firstErrorElem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            showNoticeToast('Incomplete event selection! You must select exactly 2 Technical and 1 Non-Technical event.');
             return;
           }
 
@@ -834,7 +1074,7 @@
       const copyBtnText2 = document.getElementById('copyBtnText2');
       if (btnCopyUpi2) {
         btnCopyUpi2.addEventListener('click', () => {
-          const upiId2 = document.getElementById('upiIdText2')?.textContent || '8778910842@ybl';
+          const upiId2 = document.getElementById('upiIdText2')?.textContent || '7200785033@ybl';
           navigator.clipboard.writeText(upiId2).then(() => {
             if (copyBtnText2) copyBtnText2.textContent = 'COPIED!';
             btnCopyUpi2.style.borderColor = 'var(--accent-green)';
@@ -1111,7 +1351,7 @@
                   to_email: registrationPayload.email,
                   email: registrationPayload.email,
                   user_email: registrationPayload.email,
-                  from_name: 'INTELLI-GENZ 2K26 (MCE AI&DS)',
+                  from_name: 'INTELLI-GENZ-2K26 (MCE AI&DS)',
                   participant_name: registrationPayload.name || 'Participant',
                   pass_id: registrationPayload.passId || '',
                   college: registrationPayload.college || '',
@@ -1217,7 +1457,7 @@
 
         ctx.fillStyle = '#00ff66';
         ctx.font = 'bold 38px sans-serif';
-        ctx.fillText('INTELLIGENZ 2K26 - OFFICIAL ENTRY PASS', 70, 155);
+        ctx.fillText('INTELLI-GENZ-2K26 - OFFICIAL ENTRY PASS', 70, 155);
 
         ctx.fillStyle = '#00f0ff';
         ctx.font = 'bold 24px monospace';
@@ -1279,7 +1519,7 @@
         // Direct File Download Trigger
         const dataUrl = canvas.toDataURL('image/png');
         const link = document.createElement('a');
-        link.download = `INTELLIGENZ_2K26_PASS_${nameVal.replace(/\s+/g, '_')}.png`;
+        link.download = `INTELLI-GENZ-2K26_PASS_${nameVal.replace(/\s+/g, '_')}.png`;
         link.href = dataUrl;
         document.body.appendChild(link);
         link.click();

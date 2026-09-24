@@ -1,5 +1,5 @@
 // ============================================================================
-// INTELLIGENZ 2K26 - GOOGLE SHEETS AUTOMATIC DATABASE SYNC SCRIPT
+// INTELLI-GENZ-2K26 - GOOGLE SHEETS AUTOMATIC DATABASE SYNC SCRIPT
 // ============================================================================
 // Spreadsheet ID: 1qMxYlH-0WHhHGVX4SBvtYdg4ZjYO1lzc2daJT45ynP8
 // ============================================================================
@@ -152,7 +152,7 @@ function sendWelcomeEmail(data) {
   var mobile = data.mobile || "N/A";
   var utr = data.utrNo || data.utr || "N/A";
 
-  var subject = "🚀 Welcome to INTELLI-GENZ 2K26 | Registration Pass Confirmed [" + passId + "]";
+  var subject = "🚀 Welcome to INTELLI-GENZ-2K26 | Registration Pass Confirmed [" + passId + "]";
 
   var htmlBody = '<!DOCTYPE html>' +
     '<html><head><meta charset="utf-8">' +
@@ -179,14 +179,14 @@ function sendWelcomeEmail(data) {
     '</style></head><body>' +
     '<div class="card">' +
       '<div class="hdr">' +
-        '<div class="hdr-title">⚡ INTELLI-GENZ 2K26 ⚡</div>' +
+        '<div class="hdr-title">⚡ INTELLI-GENZ-2K26 ⚡</div>' +
         '<div class="hdr-sub">NATIONAL LEVEL TECHNICAL SYMPOSIUM<br>DEPARTMENT OF ARTIFICIAL INTELLIGENCE & DATA SCIENCE<br>MAHENDRA COLLEGE OF ENGINEERING (AUTONOMOUS), SALEM</div>' +
         '<div class="badge-tag">REGISTRATION PASS CONFIRMED</div>' +
       '</div>' +
       '<div class="body-content">' +
         '<div class="greeting-text">Greetings <strong>' + name + '</strong>,</div>' +
         '<p style="color: #a0aec0; font-size: 14px; margin-top: 0;">' +
-          'Welcome to <strong>INTELLI-GENZ 2K26</strong>! Your registration has been successfully recorded in our central operations mainframe. Here are your official entry pass details:' +
+          'Welcome to <strong>INTELLI-GENZ-2K26</strong>! Your registration has been successfully recorded in our central operations mainframe. Here are your official entry pass details:' +
         '</p>' +
         '<div class="pass-box">' +
           '<div class="pass-id">' + passId + '</div>' +
@@ -217,7 +217,7 @@ function sendWelcomeEmail(data) {
       '<div class="ftr">' +
         '<div>MAHENDRA COLLEGE OF ENGINEERING (AUTONOMOUS) — SINCE 1978 | NAAC "A" GRADE</div>' +
         '<div style="margin-top: 6px;">Need Assistance? Staff Coordinator: <a href="tel:+919500625570" class="hl">+91 9500625570</a> | Student Lead: <a href="tel:+918778910842" class="hl">+91 8778910842</a></div>' +
-        '<div style="margin-top: 8px; color: #3b4252;">&copy; 2026 INTELLIGENZ 2K26 — AI&DS Department. Automated Dispatch System.</div>' +
+        '<div style="margin-top: 8px; color: #3b4252;">&copy; 2026 INTELLI-GENZ-2K26 — AI&DS Department. Automated Dispatch System.</div>' +
       '</div>' +
     '</div></body></html>';
 
@@ -225,7 +225,7 @@ function sendWelcomeEmail(data) {
     to: recipient,
     subject: subject,
     htmlBody: htmlBody,
-    name: "INTELLI-GENZ 2K26"
+    name: "INTELLI-GENZ-2K26"
   });
 }
 

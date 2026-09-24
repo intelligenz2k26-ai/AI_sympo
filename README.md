@@ -1,6 +1,6 @@
-# INTELLIGENZ_2K26 - Tactical Command Center Tech Fest
+# INTELLI-GENZ-2K26 - Tactical Command Center Tech Fest
 
-A single-page dark-themed tactical command center website for **INTELLIGENZ 2K26** (Department of Artificial Intelligence & Data Science National Symposium).
+A single-page dark-themed tactical command center website for **INTELLI-GENZ-2K26** (Department of Artificial Intelligence & Data Science National Symposium).
 
 ## 🎯 Topic & Event Categories
 
@@ -18,7 +18,7 @@ A single-page dark-themed tactical command center website for **INTELLIGENZ 2K26
 
 ## ⚡ Features & Aesthetic System
 
-- **Full-Screen Tactical Preloader**: Displays `INTELLIGENZ_2K26 INITIALIZING_` with numeric `0%`→`100%` progress bar, boot logs, and override skip option.
+- **Full-Screen Tactical Preloader**: Displays `INTELLI-GENZ-2K26 INITIALIZING_` with numeric `0%`→`100%` progress bar, boot logs, and override skip option.
 - **HUD Status Strip**: Positioned directly beneath navigation featuring real-time status (`STATUS: ONLINE & ARMED`) and live local clock (`HH:MM:SS IST`).
 - **Tactical Sticky Navigation**: Labels (`Home`, `About`, `Metrics`, `Schedule`, `Quick Actions`, `Categories`, `Registration`, `Accommodation`, `FAQs`, `Contact`), `"More"` dropdown menu, and direct `"Register Now"` CTA.
 - **Hero Countdown & Mini CLI**: Real-time event countdown box, live HUD clock readout, and interactive CLI console supporting commands (`help`, `events`, `status`, `register`, `accommodation`, `clear`, `matrix`).

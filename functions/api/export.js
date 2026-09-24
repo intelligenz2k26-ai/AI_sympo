@@ -66,7 +66,7 @@ export async function onRequestGet(context) {
       csvContent += rowData.join(",") + "\n";
     });
 
-    const filename = `INTELLIGENZ_2K26_Registrations_${new Date().toISOString().split('T')[0]}.csv`;
+    const filename = `INTELLI-GENZ-2K26_Registrations_${new Date().toISOString().split('T')[0]}.csv`;
 
     return new Response(csvContent, {
       headers: {
