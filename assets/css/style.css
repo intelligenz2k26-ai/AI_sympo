@@ -622,26 +622,49 @@ img {
     radial-gradient(circle at 10% 20%, rgba(0, 255, 102, 0.05) 0%, transparent 45%);
 }
 
-/* Full-width College Hero Header Box (Image 2 Design) */
+/* ==========================================================================
+   COLLEGE HERO HEADER — HIGH-POWER TACTICAL CYBER CHASSIS
+   ========================================================================== */
 .college-hero-header {
   position: relative;
-  background: linear-gradient(135deg, rgba(6, 14, 26, 0.92) 0%, rgba(10, 22, 40, 0.95) 100%);
-  border: 1.5px solid var(--accent-cyan);
-  box-shadow: 0 0 30px rgba(0, 240, 255, 0.3), inset 0 0 20px rgba(0, 240, 255, 0.12);
-  padding: 1.25rem 2rem;
+  background:
+    linear-gradient(rgba(0, 240, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.035) 1px, transparent 1px),
+    radial-gradient(ellipse at 50% -10%, rgba(0, 240, 255, 0.16) 0%, transparent 65%),
+    radial-gradient(ellipse at 50% 110%, rgba(0, 255, 136, 0.08) 0%, transparent 65%),
+    linear-gradient(135deg, rgba(6, 14, 26, 0.96) 0%, rgba(10, 22, 40, 0.98) 100%);
+  background-size: 20px 20px, 20px 20px, 100% 100%, 100% 100%, 100% 100%;
+  border: 1.5px solid rgba(0, 240, 255, 0.85);
+  border-radius: 6px;
+  box-shadow:
+    0 0 35px rgba(0, 240, 255, 0.35),
+    inset 0 0 25px rgba(0, 240, 255, 0.12),
+    0 12px 40px rgba(0, 0, 0, 0.6);
+  padding: 1.6rem 2.2rem 1.4rem 2.2rem;
   margin-bottom: 2.5rem;
   overflow: hidden;
-  transition: var(--transition);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.college-hero-header:hover {
+  border-color: rgba(0, 255, 170, 0.9);
+  box-shadow:
+    0 0 45px rgba(0, 240, 255, 0.45),
+    0 0 20px rgba(0, 255, 170, 0.25),
+    inset 0 0 30px rgba(0, 240, 255, 0.18),
+    0 16px 50px rgba(0, 0, 0, 0.7);
+}
+
+/* Outer Cyber Tactical Corner Brackets */
 .college-hero-header::before,
 .college-hero-header::after {
   content: "";
   position: absolute;
-  width: 16px;
-  height: 16px;
+  width: 22px;
+  height: 22px;
   pointer-events: none;
   z-index: 5;
+  transition: all 0.3s ease;
 }
 
 .college-hero-header::before {
@@ -649,6 +672,7 @@ img {
   left: -1px;
   border-top: 3px solid var(--accent-cyan);
   border-left: 3px solid var(--accent-cyan);
+  filter: drop-shadow(0 0 6px var(--accent-cyan));
 }
 
 .college-hero-header::after {
@@ -656,83 +680,222 @@ img {
   right: -1px;
   border-bottom: 3px solid var(--accent-cyan);
   border-right: 3px solid var(--accent-cyan);
+  filter: drop-shadow(0 0 6px var(--accent-cyan));
 }
 
+/* Ambient Cyber Scanline Overlay */
+.college-header-scanline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg,
+    transparent 0%,
+    rgba(0, 240, 255, 0.05) 50%,
+    transparent 100%);
+  pointer-events: none;
+  animation: bannerScanline 5s ease-in-out infinite alternate;
+  z-index: 1;
+}
+
+@keyframes bannerScanline {
+  0% { transform: translateY(-100%); opacity: 0; }
+  50% { opacity: 0.8; }
+  100% { transform: translateY(100%); opacity: 0; }
+}
+
+/* Corner Telemetry HUD Badges */
+.banner-hud-tag {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--accent-cyan);
+  opacity: 0.85;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  pointer-events: none;
+  text-shadow: 0 0 8px rgba(0, 240, 255, 0.6);
+}
+
+.banner-hud-tag.top-left {
+  top: 8px;
+  left: 18px;
+}
+
+.banner-hud-tag.top-right {
+  top: 8px;
+  right: 18px;
+  color: var(--accent-green);
+}
+
+.hud-blink-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-green);
+  box-shadow: 0 0 8px var(--accent-green);
+  animation: hudDotBlink 1.8s infinite ease-in-out;
+  display: inline-block;
+}
+
+@keyframes hudDotBlink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(0.7); }
+}
+
+.hud-slash {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Inner Layout */
 .college-header-inner {
+  position: relative;
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 2rem;
+  gap: 2.2rem;
+  margin-top: 0.35rem;
 }
 
-@media (max-width: 860px) {
-  .college-header-inner {
-    flex-direction: column;
-    text-align: center;
-    gap: 1.2rem;
-  }
-}
-
-.college-logo-wrapper,
-.college-seal-wrapper {
-  flex: 0 0 140px;
-  width: 140px;
+/* ==========================================================================
+   LOGO POWER CHASSIS ("logo kum power kudu")
+   ========================================================================== */
+.college-logo-wrapper {
+  flex: 0 0 170px;
+  width: 170px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-@media (max-width: 860px) {
-  .college-seal-wrapper {
-    display: none;
+.college-logo-chassis {
+  position: relative;
+  width: 100%;
+  max-width: 165px;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(0, 240, 255, 0.85);
+  box-shadow:
+    0 0 25px rgba(0, 240, 255, 0.55),
+    0 0 50px rgba(0, 102, 255, 0.3),
+    inset 0 0 12px rgba(0, 240, 255, 0.25);
+  animation: logoPowerPulse 3.5s ease-in-out infinite;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+  overflow: hidden;
+}
+
+.college-logo-chassis:hover {
+  transform: translateY(-4px) scale(1.04);
+  border-color: rgba(0, 255, 170, 1);
+  box-shadow:
+    0 0 35px rgba(0, 255, 170, 0.7),
+    0 0 65px rgba(0, 240, 255, 0.45),
+    inset 0 0 18px rgba(0, 255, 170, 0.35);
+}
+
+@keyframes logoPowerPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 22px rgba(0, 240, 255, 0.5),
+      0 0 45px rgba(0, 102, 255, 0.25),
+      inset 0 0 10px rgba(0, 240, 255, 0.2);
+    border-color: rgba(0, 240, 255, 0.85);
+  }
+  50% {
+    box-shadow:
+      0 0 35px rgba(0, 255, 136, 0.65),
+      0 0 60px rgba(0, 240, 255, 0.38),
+      inset 0 0 16px rgba(0, 255, 136, 0.3);
+    border-color: rgba(0, 255, 136, 0.95);
   }
 }
 
-.header-hud-emblem {
+/* Light Sheen Sweep Effect across the Logo */
+.logo-sheen-sweep {
+  position: absolute;
+  top: -50%;
+  left: -75%;
+  width: 50%;
+  height: 200%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    transparent 100%
+  );
+  transform: rotate(35deg);
+  pointer-events: none;
+  animation: logoSheenMove 4.5s ease-in-out infinite;
+  z-index: 2;
+}
+
+@keyframes logoSheenMove {
+  0%, 60% { left: -85%; opacity: 0; }
+  70% { opacity: 0.85; }
+  100% { left: 160%; opacity: 0; }
+}
+
+/* Corner Reticle Brackets on Logo Frame */
+.logo-bracket {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.logo-bracket.top-l {
+  top: 2px;
+  left: 2px;
+  border-top: 2px solid var(--accent-cyan);
+  border-left: 2px solid var(--accent-cyan);
+}
+.logo-bracket.top-r {
+  top: 2px;
+  right: 2px;
+  border-top: 2px solid var(--accent-cyan);
+  border-right: 2px solid var(--accent-cyan);
+}
+.logo-bracket.bot-l {
+  bottom: 2px;
+  left: 2px;
+  border-bottom: 2px solid var(--accent-cyan);
+  border-left: 2px solid var(--accent-cyan);
+}
+.logo-bracket.bot-r {
+  bottom: 2px;
+  right: 2px;
+  border-bottom: 2px solid var(--accent-cyan);
+  border-right: 2px solid var(--accent-cyan);
+}
+
+.college-logo-img.institution-logo {
   width: 100%;
-  border: 1.5px solid var(--border-cyan);
-  background: rgba(0, 240, 255, 0.06);
-  padding: 0.65rem 0.5rem;
-  border-radius: 6px;
-  text-align: center;
-  box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
-}
-
-.emblem-icon {
-  font-size: 1.6rem;
-  color: var(--accent-cyan);
-  filter: drop-shadow(0 0 8px var(--accent-cyan-glow));
-}
-
-.emblem-dept {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--accent-green);
-  letter-spacing: 1.5px;
-}
-
-.emblem-sub {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  color: var(--text-secondary);
-  letter-spacing: 1px;
-}
-
-.college-logo-img {
-  width: 100%;
-  max-height: 140px;
+  height: auto;
+  max-height: 125px;
   object-fit: contain;
-  filter: drop-shadow(2px 4px 8px rgba(0, 0, 0, 0.4));
+  display: block;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.25)) drop-shadow(0 0 10px rgba(0, 102, 255, 0.25));
+  transition: transform 0.3s ease;
 }
 
+.college-logo-chassis:hover .college-logo-img.institution-logo {
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35)) drop-shadow(0 0 14px rgba(0, 102, 255, 0.45));
+}
+
+/* Circular Seal style fallback if used */
 .college-logo-img.circular-seal {
   width: 130px;
   height: 130px;
@@ -741,21 +904,13 @@ img {
   background: #ffffff;
   padding: 3px;
   border: 2.5px solid var(--accent-green);
-  box-shadow: 0 0 20px rgba(0, 255, 102, 0.45);
-  filter: drop-shadow(0 0 12px rgba(0, 255, 102, 0.35));
+  box-shadow: 0 0 25px rgba(0, 255, 102, 0.55);
+  filter: drop-shadow(0 0 15px rgba(0, 255, 102, 0.45));
 }
 
-.college-logo-img.institution-logo {
-  max-height: 120px;
-  border-radius: 8px;
-  background: #ffffff;
-  padding: 5px;
-  border: 1.5px solid var(--border-cyan);
-  box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
-  object-fit: contain;
-  filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.3));
-}
-
+/* ==========================================================================
+   COLLEGE TITLE TYPOGRAPHY (CHROME & ELECTRIC NEON)
+   ========================================================================== */
 .college-title-wrapper {
   flex-grow: 1;
   text-align: center;
@@ -763,47 +918,257 @@ img {
 
 .college-main-title {
   font-family: var(--font-heading);
-  font-size: clamp(1.8rem, 4vw, 3.4rem);
-  font-weight: 800;
-  color: #ffffff;
+  font-size: clamp(1.8rem, 3.8vw, 3.3rem);
+  font-weight: 900;
   letter-spacing: 3px;
   text-transform: uppercase;
-  line-height: 1.1;
-  text-shadow: 0 0 20px rgba(0, 240, 255, 0.9), 0 0 45px rgba(0, 240, 255, 0.45);
-  margin-bottom: 0.3rem;
+  line-height: 1.12;
+  margin-bottom: 0.35rem;
+  background: linear-gradient(180deg, #FFFFFF 0%, #E8F8FF 40%, #8FE3FE 85%, #52C2FE 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.85)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.9));
+  animation: titleGlowBreathe 4s ease-in-out infinite alternate;
+}
+
+@keyframes titleGlowBreathe {
+  0% {
+    filter: drop-shadow(0 0 18px rgba(0, 240, 255, 0.8)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.9));
+  }
+  100% {
+    filter: drop-shadow(0 0 30px rgba(0, 240, 255, 1)) drop-shadow(0 0 50px rgba(0, 102, 255, 0.45)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.9));
+  }
 }
 
 .college-sub-title {
   font-family: var(--font-heading);
-  font-size: clamp(1.2rem, 2.5vw, 2.2rem);
-  font-weight: 700;
-  color: var(--accent-cyan);
-  letter-spacing: 4px;
+  font-size: clamp(1.2rem, 2.4vw, 2.1rem);
+  font-weight: 800;
+  letter-spacing: 5px;
   text-transform: uppercase;
   line-height: 1.2;
-  text-shadow: 0 0 18px rgba(0, 240, 255, 0.85);
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.9rem;
+  background: linear-gradient(90deg, #00f0ff 0%, #00ffaa 50%, #00f0ff 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 16px rgba(0, 255, 170, 0.85));
+  animation: subTitleShimmer 5s linear infinite;
 }
 
+@keyframes subTitleShimmer {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+/* ==========================================================================
+   TECH SUBBAR & RADAR MICROCHIP
+   ========================================================================== */
 .college-title-subbar {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  justify-content: center;
+  gap: 1.2rem;
   width: 100%;
+  position: relative;
 }
 
 .title-tech-line-left,
 .title-tech-line-right {
   height: 2px;
   flex: 1;
-  background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
-  box-shadow: 0 0 10px var(--accent-cyan);
+  position: relative;
+  background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.85), transparent);
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.8);
+  overflow: hidden;
+}
+
+.title-tech-line-left .energy-tracer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60px;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, #ffffff, transparent);
+  box-shadow: 0 0 10px #ffffff;
+  animation: energyTraceLeft 2.8s ease-in-out infinite;
+}
+
+.title-tech-line-right .energy-tracer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60px;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, #ffffff, transparent);
+  box-shadow: 0 0 10px #ffffff;
+  animation: energyTraceRight 2.8s ease-in-out infinite;
+}
+
+@keyframes energyTraceLeft {
+  0% { right: -60px; opacity: 0; }
+  40% { opacity: 1; }
+  100% { right: 100%; opacity: 0; }
+}
+
+@keyframes energyTraceRight {
+  0% { left: -60px; opacity: 0; }
+  40% { opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+}
+
+.title-tech-accent-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+}
+
+.radar-pulse-ring,
+.radar-pulse-ring-2 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 1.5px solid var(--accent-cyan);
+  pointer-events: none;
+  animation: radarWave 2.8s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+}
+
+.radar-pulse-ring-2 {
+  animation-delay: 1.4s;
+}
+
+@keyframes radarWave {
+  0% {
+    width: 20px;
+    height: 20px;
+    opacity: 1;
+    border-color: #00ffaa;
+  }
+  100% {
+    width: 58px;
+    height: 58px;
+    opacity: 0;
+    border-color: #00f0ff;
+  }
 }
 
 .title-tech-accent {
+  color: #00f0ff;
+  font-size: 1.25rem;
+  text-shadow: 0 0 15px rgba(0, 240, 255, 0.95);
+  position: relative;
+  z-index: 2;
+  transition: transform 0.3s ease;
+}
+
+.title-tech-accent-wrapper:hover .title-tech-accent {
+  transform: scale(1.2) rotate(90deg);
+  color: #00ffaa;
+}
+
+/* ==========================================================================
+   RIGHT HUD BADGE (AI & DS AUTONOMOUS)
+   ========================================================================== */
+.college-seal-wrapper {
+  flex: 0 0 150px;
+  width: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-hud-emblem {
+  position: relative;
+  width: 100%;
+  border: 1.5px solid rgba(0, 240, 255, 0.6);
+  background: rgba(0, 240, 255, 0.08);
+  backdrop-filter: blur(8px);
+  padding: 0.85rem 0.6rem;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow:
+    0 0 20px rgba(0, 240, 255, 0.22),
+    inset 0 0 15px rgba(0, 240, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.header-hud-emblem:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent-green);
+  box-shadow:
+    0 0 30px rgba(0, 255, 136, 0.4),
+    inset 0 0 20px rgba(0, 255, 136, 0.2);
+}
+
+.emblem-icon {
+  font-size: 1.8rem;
   color: var(--accent-cyan);
-  font-size: 1.2rem;
-  text-shadow: 0 0 12px var(--accent-cyan);
+  filter: drop-shadow(0 0 10px var(--accent-cyan-glow));
+  animation: emblemPulse 3s ease-in-out infinite alternate;
+}
+
+@keyframes emblemPulse {
+  0% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(0, 240, 255, 0.7)); }
+  100% { transform: scale(1.1); filter: drop-shadow(0 0 15px rgba(0, 255, 136, 0.9)); color: #00ffaa; }
+}
+
+.emblem-dept {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--accent-green);
+  letter-spacing: 1.5px;
+  text-shadow: 0 0 10px rgba(0, 255, 102, 0.6);
+}
+
+.emblem-sub {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.8);
+  letter-spacing: 1.2px;
+}
+
+.hud-live-pip {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent-green);
+  box-shadow: 0 0 6px var(--accent-green);
+  animation: hudDotBlink 1.5s infinite;
+}
+
+@media (max-width: 860px) {
+  .college-header-inner {
+    flex-direction: column;
+    text-align: center;
+    gap: 1.2rem;
+  }
+  .banner-hud-tag {
+    font-size: 0.55rem;
+    letter-spacing: 1px;
+  }
+  .college-seal-wrapper {
+    display: none;
+  }
 }
 
 /* Tactical Cyan Box Styles */
@@ -2565,8 +2930,20 @@ textarea.form-control {
   }
 
   .college-hero-header {
-    padding: 1rem 1rem;
+    padding: 1.8rem 1rem 1.1rem 1rem;
     margin-bottom: 1.5rem;
+  }
+
+  .banner-hud-tag.top-left {
+    top: 6px;
+    left: 10px;
+    font-size: 0.54rem;
+  }
+
+  .banner-hud-tag.top-right {
+    top: 6px;
+    right: 10px;
+    font-size: 0.54rem;
   }
 
   .college-header-inner {
@@ -2577,12 +2954,17 @@ textarea.form-control {
   }
 
   .college-logo-wrapper {
-    width: 90px;
+    width: 110px;
     flex: none;
   }
 
+  .college-logo-chassis {
+    padding: 6px 10px;
+    border-radius: 9px;
+  }
+
   .college-logo-img.institution-logo {
-    max-height: 80px;
+    max-height: 78px;
   }
 
   .college-seal-wrapper {
@@ -3200,15 +3582,25 @@ textarea.form-control {
 
   /* ── COLLEGE BANNER ── */
   .college-hero-header {
-    padding: 0.8rem 0.75rem;
+    padding: 1.5rem 0.65rem 0.85rem 0.65rem;
+  }
+
+  .banner-hud-tag {
+    font-size: 0.48rem;
+    letter-spacing: 0.8px;
   }
 
   .college-logo-wrapper {
-    width: 70px;
+    width: 90px;
+  }
+
+  .college-logo-chassis {
+    padding: 4px 6px;
+    border-radius: 8px;
   }
 
   .college-logo-img.institution-logo {
-    max-height: 65px;
+    max-height: 62px;
   }
 
   /* ── ACCOMMODATION ── */
