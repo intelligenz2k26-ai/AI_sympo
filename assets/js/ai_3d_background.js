@@ -1,5 +1,5 @@
 /**
- * INTELLI-GENZ 2K26 - ULTRA-PREMIUM PROFESSIONAL AI AMBIENT UNIVERSE
+ * INTELLI-GENZ-2K26 - ULTRA-PREMIUM PROFESSIONAL AI AMBIENT UNIVERSE
  * Crafted with AAA-tier conference aesthetics (Linear / Apple Intelligence / Vercel style):
  * 
  * 1. Interactive Cursor Spotlight Aura & Energy Comet Trail
