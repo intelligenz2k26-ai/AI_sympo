@@ -482,6 +482,27 @@ img {
   box-shadow: 0 0 8px #00ff66, 0 0 16px #00ff66;
 }
 
+/* Dedicated Registration Tab Highlight */
+.nav-link.nav-link-register {
+  color: var(--accent-green);
+  border: 1px solid rgba(0, 255, 102, 0.4);
+  background: rgba(0, 255, 102, 0.08);
+  box-shadow: 0 0 10px rgba(0, 255, 102, 0.15);
+}
+
+.nav-link.nav-link-register:hover {
+  background: rgba(0, 255, 102, 0.2);
+  border-color: rgba(0, 255, 102, 0.9);
+  color: #00ff88;
+  box-shadow: 0 0 16px rgba(0, 255, 102, 0.45);
+  transform: translateY(-2px);
+}
+
+.nav-link.nav-link-register .nav-ico {
+  color: var(--accent-green);
+  opacity: 1;
+}
+
 /* Dropdown Menu */
 .nav-item-dropdown {
   position: relative;
