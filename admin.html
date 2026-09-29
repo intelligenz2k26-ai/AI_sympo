@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Registration Desk & Database | INTELLI-GENZ-2K26</title>
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    .admin-page {
+      padding: 3rem 0 6rem 0;
+    }
+    .admin-header-box {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-cyan);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.15);
+    }
+    .admin-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .admin-actions-bar {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+    }
+    .btn-export-excel {
+      background: linear-gradient(135deg, #00f0ff, #00ff66);
+      color: #000;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      padding: 0.86rem 1.6rem;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px rgba(0, 255, 102, 0.3);
+      border-radius: 4px;
+    }
+    .btn-export-excel:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(0, 255, 102, 0.6);
+    }
+    .btn-action-outline {
+      background: rgba(10, 15, 29, 0.9);
+      border: 1px solid var(--border-dim);
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      padding: 0.8rem 1.2rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+      border-radius: 4px;
+    }
+    .btn-action-outline:hover {
+      border-color: var(--accent-cyan);
+      color: #fff;
+    }
+    .search-box-wrap {
+      position: relative;
+      flex: 1;
+      min-width: 250px;
+    }
+    .search-box-wrap input {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid var(--border-dim);
+      color: #fff;
+      padding: 0.8rem 1rem 0.8rem 2.5rem;
+      font-family: var(--font-mono);
+      border-radius: 4px;
+    }
+    .search-box-wrap i {
+      position: absolute;
+      left: 0.9rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+    }
+    .table-container {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-dim);
+      overflow-x: auto;
+      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.4);
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      text-align: left;
+    }
+    .data-table th {
+      background: rgba(0, 240, 255, 0.08);
+      color: var(--accent-cyan);
+      font-family: var(--font-mono);
+      padding: 1rem;
+      border-bottom: 2px solid var(--border-cyan);
+      white-space: nowrap;
+    }
+    .data-table td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border-dim);
+      color: var(--text-secondary);
+      vertical-align: middle;
+    }
+    .data-table tr:hover {
+      background: rgba(0, 240, 255, 0.04);
+    }
+    .pass-badge {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      background: rgba(0, 255, 102, 0.12);
+      color: var(--accent-green);
+      border: 1px solid var(--border-green);
+      padding: 0.2rem 0.5rem;
+      font-weight: 700;
+    }
+
+    /* Receipt Lightbox Modal */
+    .receipt-lightbox-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(4, 8, 18, 0.88);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      animation: fadeInLightbox 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .receipt-lightbox-dialog {
+      background: #0a0f1d;
+      border: 1px solid var(--border-cyan);
+      box-shadow: 0 0 40px rgba(0, 240, 255, 0.25), 0 20px 60px rgba(0,0,0,0.85);
+      border-radius: 12px;
+      max-width: 760px;
+      width: 100%;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: scaleUpLightbox 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .receipt-lightbox-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border-dim);
+      background: rgba(0, 240, 255, 0.04);
+    }
+    .btn-close-lightbox {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: var(--text-secondary);
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .btn-close-lightbox:hover {
+      border-color: #ff4757;
+      color: #ff4757;
+      transform: scale(1.08);
+    }
+    .receipt-meta-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 0.8rem;
+      padding: 0.8rem 1.25rem;
+      background: rgba(0, 0, 0, 0.4);
+      border-bottom: 1px solid var(--border-dim);
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+    }
+    .receipt-meta-strip .meta-label {
+      display: block;
+      color: var(--text-muted);
+      font-size: 0.68rem;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+    }
+    .receipt-meta-strip .meta-value {
+      word-break: break-word;
+    }
+    .receipt-lightbox-body {
+      padding: 1.25rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 260px;
+    }
+    .receipt-lightbox-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.85rem 1.25rem;
+      border-top: 1px solid var(--border-dim);
+      background: rgba(0, 0, 0, 0.5);
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+    @keyframes fadeInLightbox {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    /* Admin Security Login Gate */
+    .admin-login-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle at center, rgba(10, 20, 40, 0.98) 0%, rgba(3, 7, 18, 1) 100%);
+      z-index: 999999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+    }
+    .admin-login-card {
+      position: relative;
+      background: #080d1a;
+      border: 1px solid var(--border-cyan);
+      box-shadow: 0 0 50px rgba(0, 240, 255, 0.22), 0 25px 70px rgba(0,0,0,0.9);
+      border-radius: 12px;
+      max-width: 440px;
+      width: 100%;
+      padding: 2.4rem 2rem;
+      text-align: center;
+      overflow: hidden;
+      animation: scaleUpLightbox 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .login-glitch-border {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--accent-cyan), var(--accent-green), transparent);
+    }
+    .login-header-icon {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      background: rgba(0, 240, 255, 0.08);
+      border: 1.5px solid var(--border-cyan);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.7rem;
+      color: var(--accent-cyan);
+      margin-bottom: 1.1rem;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+      animation: pulseIcon 2.5s infinite;
+    }
+    @keyframes pulseIcon {
+      0%, 100% { box-shadow: 0 0 15px rgba(0, 240, 255, 0.2); }
+      50% { box-shadow: 0 0 30px rgba(0, 240, 255, 0.5); }
+    }
+    .login-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 0.35rem;
+      letter-spacing: 1.5px;
+    }
+    .login-title span {
+      color: var(--accent-cyan);
+    }
+    .login-subtitle {
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      margin-bottom: 1.5rem;
+    }
+    .login-error-banner {
+      background: rgba(255, 71, 87, 0.12);
+      border: 1px solid rgba(255, 71, 87, 0.4);
+      color: #ff6b7a;
+      padding: 0.65rem 0.8rem;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      animation: shake 0.35s ease;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+    .login-field-wrap {
+      text-align: left;
+      margin-bottom: 1.15rem;
+    }
+    .login-field-wrap label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.35rem;
+      letter-spacing: 0.5px;
+    }
+    .login-field-wrap input {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.65);
+      border: 1px solid var(--border-dim);
+      color: #fff;
+      padding: 0.85rem 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      border-radius: 6px;
+      transition: all 0.25s;
+    }
+    .login-field-wrap input:focus {
+      outline: none;
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
+    }
+    .btn-toggle-eye {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+    }
+    .btn-toggle-eye:hover {
+      color: var(--accent-cyan);
+    }
+    .btn-login-submit {
+      width: 100%;
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(0, 255, 102, 0.2));
+      border: 1.5px solid var(--border-cyan);
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.92rem;
+      font-weight: 700;
+      padding: 0.92rem;
+      border-radius: 6px;
+      cursor: pointer;
+      letter-spacing: 1px;
+      margin-top: 0.6rem;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .btn-login-submit:hover {
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-green));
+      color: #000;
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.4);
+      transform: translateY(-2px);
+    }
+    .login-footer-hint {
+      margin-top: 1.5rem;
+      padding-top: 1.1rem;
+      border-top: 1px solid var(--border-dim);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .hint-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+    .link-back-home {
+      color: var(--accent-cyan);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .link-back-home:hover {
+      color: #fff;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Admin Security Authentication Gate Overlay -->
+  <div id="adminLoginGate" class="admin-login-overlay" style="display: flex;">
+    <div class="admin-login-card">
+      <div class="login-glitch-border"></div>
+      
+      <!-- Tech Badge -->
+      <div class="login-header-icon">
+        <i class="fas fa-shield-alt"></i>
+      </div>
+      
+      <h2 class="login-title">
+        RESTRICTED <span>TERMINAL</span>
+      </h2>
+      <p class="login-subtitle">
+        INTELLI-GENZ 2K26 // COMMAND DESK AUTHORIZATION
+      </p>
+
+      <div id="loginErrorMessage" class="login-error-banner" style="display: none;">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span id="loginErrorText">INVALID CREDENTIALS // ACCESS DENIED</span>
+      </div>
+
+      <form id="adminLoginForm" onsubmit="handleAdminLogin(event)" autocomplete="off">
+        <div class="login-field-wrap">
+          <label><i class="fas fa-user-shield"></i> OPERATOR ID</label>
+          <input type="text" id="adminLoginUser" placeholder="ENTER ADMIN ID" required autofocus spellcheck="false" autocomplete="off" />
+        </div>
+
+        <div class="login-field-wrap">
+          <label><i class="fas fa-key"></i> SECURITY KEY</label>
+          <div style="position: relative;">
+            <input type="password" id="adminLoginPass" placeholder="ENTER PASSWORD" required autocomplete="current-password" />
+            <button type="button" id="btnToggleLoginPass" onclick="toggleLoginPassword()" class="btn-toggle-eye" title="Show/Hide Password">
+              <i class="fas fa-eye" id="eyeIcon"></i>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" id="btnAdminLoginSubmit" class="btn-login-submit">
+          <i class="fas fa-lock"></i> AUTHENTICATE &amp; ENTER DESK &rarr;
+        </button>
+      </form>
+
+      <div class="login-footer-hint">
+        <span class="hint-label"><i class="fas fa-info-circle"></i> AUTHORIZED PERSONNEL ONLY</span>
+        <a href="index.html" class="link-back-home">&larr; Return to Public Portal</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sticky Navbar & HUD -->
+  <div class="header-wrapper">
+    <nav class="navbar" id="navbar">
+      <div class="nav-container">
+        <a href="index.html#hero" class="nav-brand">
+          <i class="fas fa-microchip brand-icon"></i>
+          <span class="brand-title">INTELLI-GENZ<span>-ADMIN</span></span>
+        </a>
+        
+        <div style="display: flex; gap: 0.8rem; align-items: center;">
+          <a href="register.html" class="btn-nav-cta">
+            <i class="fas fa-user-plus"></i> NEW REGISTRATION
+          </a>
+          <button type="button" id="btnAdminLogout" onclick="handleAdminLogout()" class="btn-action-outline" style="padding: 0.5rem 0.9rem; font-size: 0.78rem; color: #ff4757; border-color: rgba(255,71,87,0.4);" title="Sign out from Admin Terminal">
+            <i class="fas fa-sign-out-alt"></i> LOGOUT
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- HUD Bar -->
+    <div class="hud-status-strip">
+      <div class="hud-status-content">
+        <div class="hud-left">
+          <div class="hud-item">
+            <span class="status-dot"></span>
+            <span class="hud-label">DATABASE DESK:</span>
+            <span class="hud-val green">ONLINE & ACTIVE</span>
+          </div>
+        </div>
+        <div class="hud-right">
+          <div class="hud-item">
+            <span class="hud-label">LOCAL CLOCK:</span>
+            <span class="hud-val cyan" id="hudLocalClock">--:--:-- IST</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="admin-page">
+    <div class="container">
+      
+      <!-- Top Title Box -->
+      <div class="admin-header-box tactical-box">
+        <div class="admin-title-row">
+          <div>
+            <h1 class="section-title" style="text-align: left; font-size: 2.2rem; margin-bottom: 0.3rem;">
+              SYMPOSIUM <span>DATABASE DESK</span>
+            </h1>
+            <p style="color: var(--text-secondary); font-family: var(--font-mono); font-size: 0.95rem;">
+              Real-time Participant Management &amp; One-Click Excel / CSV Exporter
+            </p>
+          </div>
+          <button type="button" class="btn-export-excel" id="btnExportCsv">
+            <i class="fas fa-file-excel"></i> DOWNLOAD EXCEL / CSV SHEET
+          </button>
+        </div>
+
+        <!-- Telemetry Stats Strip -->
+        <div class="metrics-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-top: 1.5rem;">
+          <div class="metric-card tactical-box" style="padding: 1rem;">
+            <div class="metric-val cyan" id="statTotalRegs">0</div>
+            <div class="metric-lbl">TOTAL PARTICIPANTS</div>
+          </div>
+          <div class="metric-card tactical-box" style="padding: 1rem;">
+            <div class="metric-val green" id="statTotalRevenue">₹0</div>
+            <div class="metric-lbl">COLLECTED BOUNTY</div>
+          </div>
+          <div class="metric-card tactical-box" style="padding: 1rem;">
+            <div class="metric-val" id="statTechEntries">0</div>
+            <div class="metric-lbl">TECH SECTOR REGISTRATIONS</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action & Filter Bar -->
+      <div class="admin-actions-bar">
+        <div class="search-box-wrap">
+          <i class="fas fa-search"></i>
+          <input type="text" id="searchInput" placeholder="Search by Name, Mobile, Reg No, College or Event...">
+        </div>
+
+        <div style="display: flex; gap: 0.8rem; flex-wrap: wrap;">
+          <button type="button" class="btn-action-outline" id="btnRefreshLive" style="color: var(--accent-cyan); border-color: var(--border-cyan);">
+            <i class="fas fa-sync-alt"></i> Refresh Live Data
+          </button>
+          <button type="button" class="btn-action-outline" id="btnConfigureWebhook">
+            <i class="fas fa-link"></i> Sync Google Sheet
+          </button>
+          <button type="button" class="btn-action-outline" id="btnClearData" style="color: #ff4757; border-color: rgba(255,71,87,0.4);">
+            <i class="fas fa-trash-alt"></i> Clear Local Data
+          </button>
+        </div>
+      </div>
+
+      <!-- Registrations Table -->
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>TIMESTAMP</th>
+              <th>PASS ID</th>
+              <th>PARTICIPANT NAME</th>
+              <th>MOBILE</th>
+              <th>REGISTER NO</th>
+              <th>COLLEGE</th>
+              <th>DEPT</th>
+              <th>SELECTED EVENTS</th>
+              <th>FOOD PREF</th>
+              <th>UTR REF NO</th>
+              <th>PROOF</th>
+            </tr>
+          </thead>
+          <tbody id="registrationsTbody">
+            <tr>
+              <td colspan="12" style="text-align: center; color: var(--text-muted); padding: 3rem 1rem;">
+                <i class="fas fa-spinner fa-spin" style="font-size: 1.5rem; margin-bottom: 0.5rem; display: block;"></i>
+                Loading registrations database...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Lightbox Modal for Full Screenshot Viewing -->
+  <div id="imageLightboxModal" class="receipt-lightbox-overlay" style="display:none;" onclick="if(event.target===this)closeLightboxModal();">
+    <div class="receipt-lightbox-dialog">
+      <!-- Modal Header -->
+      <div class="receipt-lightbox-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 10px; height: 10px; border-radius: 50%; background: var(--accent-green); box-shadow: 0 0 10px var(--accent-green);"></div>
+          <span style="font-family: var(--font-mono); font-weight: 700; color: #fff; letter-spacing: 1px; font-size: 0.95rem;">PAYMENT VERIFICATION PROOF</span>
+        </div>
+        <button type="button" class="btn-close-lightbox" onclick="closeLightboxModal()" title="Close (Esc)">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Modal Meta Details Strip -->
+      <div class="receipt-meta-strip">
+        <div>
+          <span class="meta-label">PARTICIPANT:</span>
+          <span class="meta-value" id="modalParticipantName" style="color: #fff; font-weight: 700;">-</span>
+        </div>
+        <div>
+          <span class="meta-label">PASS ID:</span>
+          <span class="meta-value" id="modalPassId" style="color: var(--accent-green); font-weight: 700;">-</span>
+        </div>
+        <div>
+          <span class="meta-label">UTR / REF:</span>
+          <span class="meta-value" id="modalUtrNo" style="color: var(--accent-cyan); font-weight: 700;">-</span>
+        </div>
+        <div>
+          <span class="meta-label">EVENTS / FOOD:</span>
+          <span class="meta-value" id="modalEventsFood">-</span>
+        </div>
+      </div>
+
+      <!-- Modal Body (Image Container) -->
+      <div class="receipt-lightbox-body">
+        <div id="modalLoadingSpinner" style="display:none; text-align: center; padding: 3rem;">
+          <i class="fas fa-circle-notch fa-spin" style="font-size: 2.2rem; color: var(--accent-cyan); margin-bottom: 0.8rem;"></i>
+          <p style="font-family: var(--font-mono); color: var(--text-muted); font-size: 0.85rem;">Retrieving high-res screenshot...</p>
+        </div>
+
+        <div id="modalImageWrapper" style="text-align: center; width: 100%;">
+          <img id="modalImageDisplay" src="" alt="Payment Receipt" style="max-height: 58vh; max-width: 100%; object-fit: contain; border-radius: 8px; border: 1.5px solid var(--border-cyan); box-shadow: 0 10px 40px rgba(0,0,0,0.8); display: none; margin: 0 auto;" />
+        </div>
+
+        <!-- Fallback if photo not locally cached -->
+        <div id="modalFallbackBox" style="display: none; text-align: center; padding: 2rem 1rem; background: rgba(0, 240, 255, 0.03); border: 1px dashed var(--border-cyan); border-radius: 8px; width: 100%;">
+          <i class="fas fa-file-invoice" style="font-size: 2.5rem; color: var(--accent-green); margin-bottom: 0.8rem; display: block;"></i>
+          <h4 style="color: #fff; margin-bottom: 0.5rem; font-family: var(--font-mono);">RECEIPT RECORDED ON SUBMISSION</h4>
+          <p style="color: var(--text-secondary); font-size: 0.88rem; max-width: 480px; margin: 0 auto 1.2rem auto;">
+            Payment proof was verified during participant submission. You can open Google Drive or attach/update the photo for this pass below.
+          </p>
+          <div style="display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
+            <a id="modalDriveSearchLink" href="#" target="_blank" class="btn-action-outline" style="color: #00f0ff; border-color: rgba(0,240,255,0.5); text-decoration: none;">
+              <i class="fab fa-google-drive"></i> Search in Google Drive
+            </a>
+            <label class="btn-action-outline" style="color: var(--accent-green); border-color: var(--border-green); cursor: pointer;">
+              <i class="fas fa-upload"></i> Attach / Update Photo
+              <input type="file" id="modalAttachFileInput" accept="image/*" style="display:none;" onchange="handleModalAttachPhoto(this)">
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="receipt-lightbox-footer">
+        <div style="display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;">
+          <button type="button" id="modalBtnDownload" class="btn-action-outline" style="font-size: 0.8rem; padding: 0.4rem 0.8rem; color: var(--accent-green); border-color: var(--border-green); display:none;" onclick="downloadModalImage()">
+            <i class="fas fa-download"></i> Save / Download
+          </button>
+          <a id="modalBtnOpenNewTab" href="#" target="_blank" class="btn-action-outline" style="font-size: 0.8rem; padding: 0.4rem 0.8rem; color: var(--accent-cyan); border-color: var(--border-cyan); text-decoration: none; display:none;">
+            <i class="fas fa-external-link-alt"></i> Open Full Image
+          </a>
+          <a id="modalBtnDriveFolder" href="https://drive.google.com/drive/search?q=Receipt" target="_blank" class="btn-action-outline" style="font-size: 0.8rem; padding: 0.4rem 0.8rem; color: #00f0ff; border-color: rgba(0,240,255,0.4); text-decoration: none;">
+            <i class="fab fa-google-drive"></i> Drive Receipts Folder
+          </a>
+        </div>
+        <button type="button" class="btn-action-outline" style="font-size: 0.8rem; padding: 0.4rem 1rem;" onclick="closeLightboxModal()">
+          Close (Esc)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Supabase Realtime Client Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/js/supabase_config.js"></script>
+  <script>
+    let allRegistrations = [];
+    const defaultWebUrl = 'https://script.google.com/macros/s/AKfycbxEwfpBPZzClGj7xdxXfOMz8qwp0xWXpiVBKkwkbY8aPNWWslRlVahWf6BgPEculWz6/exec';
+
+    // IndexedDB Helper for Safe Local Screenshot Caching
+    const DB_NAME = 'sympo_db';
+    const DB_VERSION = 1;
+    const STORE_NAME = 'receipt_images';
+
+    function openReceiptDb() {
+      return new Promise((resolve) => {
+        if (!window.indexedDB) { resolve(null); return; }
+        const req = indexedDB.open(DB_NAME, DB_VERSION);
+        req.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains(STORE_NAME)) {
+            db.createObjectStore(STORE_NAME, { keyPath: 'passId' });
+          }
+        };
+        req.onsuccess = (e) => resolve(e.target.result);
+        req.onerror = () => resolve(null);
+      });
+    }
+
+    async function saveReceiptImage(passId, dataUrl) {
+      if (!passId || !dataUrl) return;
+      try {
+        const db = await openReceiptDb();
+        if (!db) return;
+        const tx = db.transaction(STORE_NAME, 'readwrite');
+        const store = tx.objectStore(STORE_NAME);
+        store.put({ passId: passId, image: dataUrl, updated: Date.now() });
+      } catch(e) {
+        console.warn('IndexedDB save notice:', e);
+      }
+    }
+
+    async function getReceiptImage(passId) {
+      if (!passId) return null;
+      try {
+        const db = await openReceiptDb();
+        if (!db) return null;
+        return new Promise((resolve) => {
+          const tx = db.transaction(STORE_NAME, 'readonly');
+          const store = tx.objectStore(STORE_NAME);
+          const req = store.get(passId);
+          req.onsuccess = () => resolve(req.result ? req.result.image : null);
+          req.onerror = () => resolve(null);
+        });
+      } catch(e) {
+        return null;
+      }
+    }
+
+    // Supabase Master Client Initialization & Realtime Subscription
+    const supabaseUrl = (window.SUPABASE_URL && !window.SUPABASE_URL.includes('your-supabase'))
+      ? window.SUPABASE_URL
+      : "https://ufemjutavphtuzdyrfea.supabase.co";
+    const supabaseAnonKey = (window.SUPABASE_ANON_KEY && !window.SUPABASE_ANON_KEY.includes('your-supabase'))
+      ? window.SUPABASE_ANON_KEY
+      : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVmZW1qdXRhdnBodHV6ZHlyZmVhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk4MzM0NDEsImV4cCI6MjEwNTQwOTQ0MX0.bNq1vF35PCVoEC6OElJkWrcb6Y2w8Z4W4nYaTw00bGg";
+
+    let supabaseClient = null;
+    if (window.supabase && window.supabase.createClient && supabaseUrl && supabaseAnonKey) {
+      try {
+        supabaseClient = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+        
+        // Listen to live database changes: INSERT, UPDATE, DELETE in Supabase!
+        supabaseClient
+          .channel('admin-realtime-sync')
+          .on('postgres_changes', { event: '*', schema: 'public', table: 'registrations' }, (payload) => {
+            console.log('⚡ Supabase Realtime Change Detected:', payload.eventType, payload);
+            // Instantly re-fetch and render so deletes and adds are immediately visible!
+            loadRegistrations(true);
+          })
+          .subscribe((status) => {
+            console.log('⚡ Supabase Realtime Status:', status);
+          });
+      } catch (err) {
+        console.warn('Supabase Realtime Client Init Notice:', err);
+      }
+    }
+
+    // Auto-polling every 8 seconds as guarantee for live sync
+    setInterval(() => {
+      loadRegistrations(true);
+    }, 8000);
+
+    // BroadcastChannel for instant cross-tab sync when someone registers in another tab
+    if (window.BroadcastChannel) {
+      try {
+        const bc = new BroadcastChannel('sympo_channel');
+        bc.onmessage = (msg) => {
+          if (msg.data && msg.data.type === 'NEW_REGISTRATION') {
+            console.log('⚡ Cross-tab new registration event received!');
+            loadRegistrations(true);
+          }
+        };
+      } catch (be) {}
+    }
+
+    // Manual Refresh Live Button
+    document.addEventListener('DOMContentLoaded', () => {
+      const btnRefresh = document.getElementById('btnRefreshLive');
+      if (btnRefresh) {
+        btnRefresh.addEventListener('click', async () => {
+          const icon = btnRefresh.querySelector('i');
+          if (icon) icon.className = 'fas fa-sync-alt fa-spin';
+          btnRefresh.disabled = true;
+          await loadRegistrations(false);
+          setTimeout(() => {
+            if (icon) icon.className = 'fas fa-sync-alt';
+            btnRefresh.disabled = false;
+          }, 500);
+        });
+      }
+    });
+
+    async function loadRegistrations(isSilent = false) {
+      if (!isSilent && allRegistrations.length === 0) {
+        // Show cached local data for instant rendering while network fetch is happening
+        try {
+          const cached = JSON.parse(localStorage.getItem('sympo_registrations_v2') || '[]');
+          if (Array.isArray(cached) && cached.length > 0) {
+            allRegistrations = cached;
+            renderRegistrationsTable(allRegistrations, '');
+          }
+        } catch(e) {}
+      }
+
+      // 1. PRIMARY FETCH: Supabase is the Authoritative Single Source of Truth
+      let supabaseSuccess = false;
+      if (supabaseUrl && supabaseAnonKey) {
+        try {
+          const res = await fetch(`${supabaseUrl}/rest/v1/registrations?select=*&order=created_at.desc`, {
+            headers: {
+              'apikey': supabaseAnonKey,
+              'Authorization': `Bearer ${supabaseAnonKey}`,
+              'Cache-Control': 'no-cache, no-store'
+            }
+          });
+
+          if (res.ok) {
+            const data = await res.json();
+            if (Array.isArray(data)) {
+              supabaseSuccess = true;
+              
+              // Map Supabase rows directly
+              allRegistrations = data.map(r => ({
+                timestamp: r.timestamp || r.created_at || '',
+                passId: (r.pass_id || r.passId || 'PENDING').trim(),
+                name: r.name || 'Participant',
+                email: r.email || '',
+                mobile: r.mobile || '',
+                regNo: r.reg_no || r.regNo || '',
+                gender: r.gender || '',
+                college: r.college || '',
+                dept: r.dept || '',
+                district: r.district || '',
+                pincode: r.pincode || '',
+                selectedEvents: r.selected_events || r.selectedEvents || '',
+                foodPreference: r.food_preference || r.foodPreference || 'Veg',
+                referred: r.referred || 'No',
+                referralSource: r.referral_source || r.referralSource || 'None',
+                referralDept: r.referral_dept || r.referralDept || '',
+                utrNo: r.utr_no || r.utrNo || '',
+                paymentProof: r.payment_proof || r.paymentProof || ''
+              }));
+
+              // Sync local storage to match EXACTLY Supabase (purging any rows deleted from Supabase!)
+              try {
+                const lightRegs = allRegistrations.map(r => ({
+                  ...r,
+                  paymentProof: (r.paymentProof && r.paymentProof.length > 500) ? '[Screenshot Attached]' : r.paymentProof
+                }));
+                localStorage.setItem('sympo_registrations_v2', JSON.stringify(lightRegs));
+                sessionStorage.setItem('sympo_registrations_v2', JSON.stringify(lightRegs));
+              } catch(e) {}
+
+              renderRegistrationsTable(allRegistrations, '');
+              return;
+            }
+          }
+        } catch (err) {
+          console.warn('Supabase fetch notice:', err.message);
+        }
+      }
+
+      // 2. FALLBACK: Only if Supabase is offline / unreachable
+      if (!supabaseSuccess) {
+        try {
+          const cached = JSON.parse(localStorage.getItem('sympo_registrations_v2') || '[]');
+          if (Array.isArray(cached) && cached.length > 0) {
+            allRegistrations = cached;
+            renderRegistrationsTable(allRegistrations, 'Offline fallback (Supabase currently unreachable)');
+          } else {
+            renderRegistrationsTable([], 'Unable to reach database');
+          }
+        } catch(e) {}
+      }
+    }
+
+    // Delete registration from Supabase and Admin table
+    async function deleteRegistration(passId) {
+      if (!passId) return;
+      if (!confirm(`Are you sure you want to permanently delete registration ${passId}?\nThis will remove it from Supabase and the Admin Desk.`)) {
+        return;
+      }
+
+      try {
+        if (supabaseUrl && supabaseAnonKey) {
+          const delRes = await fetch(`${supabaseUrl}/rest/v1/registrations?pass_id=eq.${encodeURIComponent(passId)}`, {
+            method: 'DELETE',
+            headers: {
+              'apikey': supabaseAnonKey,
+              'Authorization': `Bearer ${supabaseAnonKey}`
+            }
+          });
+          if (delRes.ok) {
+            console.log('✅ Successfully deleted from Supabase:', passId);
+          } else {
+            console.warn('Supabase DELETE response status:', delRes.status);
+          }
+        }
+
+        // Remove from memory and cache immediately
+        allRegistrations = allRegistrations.filter(r => r.passId !== passId);
+        try {
+          localStorage.setItem('sympo_registrations_v2', JSON.stringify(allRegistrations));
+          sessionStorage.setItem('sympo_registrations_v2', JSON.stringify(allRegistrations));
+          localStorage.removeItem('sympo_proof_' + passId);
+        } catch(e) {}
+
+        renderRegistrationsTable(allRegistrations, '');
+      } catch (err) {
+        alert('Failed to delete registration: ' + err.message);
+      }
+    }
+
+    function renderRegistrationsTable(data, fetchErrorMessage) {
+      const tbody = document.getElementById('registrationsTbody');
+      
+      // Update Stats
+      document.getElementById('statTotalRegs').textContent = data.length;
+      document.getElementById('statTotalRevenue').textContent = `₹${(data.length * 300).toLocaleString('en-IN')}`;
+      
+      let techCount = 0;
+      data.forEach(r => {
+        if (r.selectedEvents && (r.selectedEvents.includes('Innov') || r.selectedEvents.includes('Prompt') || r.selectedEvents.includes('Paper') || r.selectedEvents.includes('Workshop'))) {
+          techCount++;
+        }
+      });
+      document.getElementById('statTechEntries').textContent = techCount;
+
+      if (data.length === 0) {
+        const errorDetail = fetchErrorMessage 
+          ? `<br><span style="color: #ff4757; font-size: 0.85rem;"><i class="fas fa-exclamation-circle"></i> ${fetchErrorMessage}</span>`
+          : '';
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="12" style="text-align: center; color: var(--text-muted); padding: 3rem 1rem;">
+              <i class="fas fa-inbox" style="font-size: 2rem; margin-bottom: 0.8rem; color: var(--border-cyan); display: block;"></i>
+              No registrations found in Supabase database.
+              ${errorDetail}
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = data.map((r, i) => {
+        let imgSrc = getDirectImageSrc(r.paymentProof);
+        if (!imgSrc && r.passId) {
+          try {
+            const cached = localStorage.getItem('sympo_proof_' + r.passId);
+            if (cached && cached.startsWith('data:image')) imgSrc = cached;
+          } catch(e) {}
+        }
+
+        const isHttpUrl = r.paymentProof && r.paymentProof.startsWith('http');
+        const driveLink = isHttpUrl ? r.paymentProof : `https://drive.google.com/drive/search?q=${encodeURIComponent(r.passId || 'Receipt')}`;
+
+        let proofHtml = '';
+        if (imgSrc) {
+          proofHtml = `
+            <div style="display: flex; align-items: center; gap: 6px; flex-wrap: nowrap;">
+              <div style="cursor: pointer; position: relative;" onclick="viewScreenshot(${i})" title="Click to enlarge photo">
+                <img src="${imgSrc}" 
+                     alt="Receipt" 
+                     onerror="this.parentElement.style.display='none';" 
+                     style="width: 40px; height: 40px; object-fit: cover; border-radius: 6px; border: 1.5px solid var(--accent-green); transition: transform 0.2s, border-color 0.2s; background: #111; display: block;" 
+                     onmouseover="this.style.transform='scale(1.15)'; this.style.borderColor='var(--accent-cyan)';" 
+                     onmouseout="this.style.transform='scale(1)'; this.style.borderColor='var(--accent-green)';" />
+              </div>
+              <button type="button" class="btn-action-outline" style="padding: 0.25rem 0.5rem; font-size: 0.72rem; color: var(--accent-green); border-color: var(--border-green); background: rgba(0,255,157,0.06); cursor: pointer;" onclick="viewScreenshot(${i})">
+                <i class="fas fa-image"></i> View
+              </button>
+              <a href="${driveLink}" target="_blank" rel="noopener noreferrer" class="btn-action-outline" style="padding: 0.25rem 0.5rem; font-size: 0.72rem; color: #00f0ff; border-color: rgba(0,240,255,0.4); text-decoration: none;" title="Open in Google Drive">
+                <i class="fab fa-google-drive"></i> Drive
+              </a>
+              <button type="button" class="btn-action-outline" style="padding: 0.25rem 0.5rem; font-size: 0.72rem; color: #ff4757; border-color: rgba(255,71,87,0.4); background: rgba(255,71,87,0.06); cursor: pointer;" onclick="deleteRegistration('${r.passId}')" title="Delete row from Supabase & Admin">
+                <i class="fas fa-trash-alt"></i> Delete
+              </button>
+            </div>
+          `;
+        } else {
+          proofHtml = `
+            <div style="display: flex; align-items: center; gap: 6px; flex-wrap: nowrap;">
+              <button type="button" class="btn-action-outline" onclick="viewScreenshot(${i})" style="padding: 0.28rem 0.6rem; font-size: 0.75rem; color: var(--accent-green); border-color: var(--border-green); background: rgba(0,255,157,0.08); cursor: pointer;" title="Click to view photo">
+                <i class="fas fa-camera"></i> View
+              </button>
+              <a href="${driveLink}" target="_blank" rel="noopener noreferrer" class="btn-action-outline" style="padding: 0.28rem 0.5rem; font-size: 0.75rem; color: #00f0ff; border-color: rgba(0,240,255,0.4); text-decoration: none;" title="Search in Google Drive">
+                <i class="fab fa-google-drive"></i> Drive
+              </a>
+              <button type="button" class="btn-action-outline" style="padding: 0.28rem 0.5rem; font-size: 0.75rem; color: #ff4757; border-color: rgba(255,71,87,0.4); background: rgba(255,71,87,0.06); cursor: pointer;" onclick="deleteRegistration('${r.passId}')" title="Delete row from Supabase & Admin">
+                <i class="fas fa-trash-alt"></i> Delete
+              </button>
+            </div>
+          `;
+        }
+
+        return `
+          <tr>
+            <td>${i + 1}</td>
+            <td style="font-family: var(--font-mono); font-size: 0.8rem;">${r.timestamp || 'N/A'}</td>
+            <td><span class="pass-badge">${r.passId || 'N/A'}</span></td>
+            <td style="font-weight: 700; color: #fff;">${r.name || 'N/A'}</td>
+            <td>${r.mobile || 'N/A'}</td>
+            <td style="font-family: var(--font-mono);">${r.regNo || 'N/A'}</td>
+            <td>${r.college || 'N/A'}</td>
+            <td>${r.dept || 'N/A'}</td>
+            <td style="color: var(--accent-cyan); font-weight: 600;">${r.selectedEvents || 'N/A'}</td>
+            <td style="font-family: var(--font-mono); font-size: 0.82rem;">${r.foodPreference === 'Non-Veg' ? '<span style="color:#ff6b7a;">🍗 Non-Veg</span>' : '<span style="color:#00c875;">🌿 Veg</span>'}</td>
+            <td style="font-family: var(--font-mono); font-size: 0.88rem; font-weight: 700; color: var(--accent-cyan);">${r.utrNo || 'N/A'}</td>
+            <td>${proofHtml}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function renderRegistrationsTable(data, fetchErrorMessage) {
+      const tbody = document.getElementById('registrationsTbody');
+      
+      // Update Stats
+      document.getElementById('statTotalRegs').textContent = data.length;
+      document.getElementById('statTotalRevenue').textContent = `₹${(data.length * 300).toLocaleString('en-IN')}`;
+      
+      let techCount = 0;
+      data.forEach(r => {
+        if (r.selectedEvents && (r.selectedEvents.includes('Innov') || r.selectedEvents.includes('Prompt') || r.selectedEvents.includes('Paper') || r.selectedEvents.includes('Workshop'))) {
+          techCount++;
+        }
+      });
+      document.getElementById('statTechEntries').textContent = techCount;
+
+      if (data.length === 0) {
+        const errorDetail = fetchErrorMessage 
+          ? `<br><span style="color: #ff4757; font-size: 0.85rem;"><i class="fas fa-exclamation-circle"></i> ${fetchErrorMessage}</span>`
+          : '';
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="12" style="text-align: center; color: var(--text-muted); padding: 3rem 1rem;">
+              <i class="fas fa-inbox" style="font-size: 2rem; margin-bottom: 0.8rem; color: var(--border-cyan); display: block;"></i>
+              No registrations found yet. Fill form on <a href="register.html" style="color: var(--accent-cyan);">register.html</a> to submit records!
+              ${errorDetail}
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = data.map((r, i) => {
+        let imgSrc = getDirectImageSrc(r.paymentProof);
+        if (!imgSrc && r.passId) {
+          try {
+            const cached = localStorage.getItem('sympo_proof_' + r.passId);
+            if (cached && cached.startsWith('data:image')) imgSrc = cached;
+          } catch(e) {}
+        }
+
+        const isHttpUrl = r.paymentProof && r.paymentProof.startsWith('http');
+        const driveLink = isHttpUrl ? r.paymentProof : `https://drive.google.com/drive/search?q=${encodeURIComponent(r.passId || 'Receipt')}`;
+
+        let proofHtml = '';
+        if (imgSrc) {
+          proofHtml = `
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <div style="cursor: pointer; position: relative;" onclick="viewScreenshot(${i})" title="Click to enlarge photo">
+                <img src="${imgSrc}" 
+                     alt="Receipt" 
+                     onerror="this.parentElement.style.display='none';" 
+                     style="width: 44px; height: 44px; object-fit: cover; border-radius: 6px; border: 1.5px solid var(--accent-green); transition: transform 0.2s, border-color 0.2s; background: #111; display: block;" 
+                     onmouseover="this.style.transform='scale(1.15)'; this.style.borderColor='var(--accent-cyan)';" 
+                     onmouseout="this.style.transform='scale(1)'; this.style.borderColor='var(--accent-green)';" />
+              </div>
+              <button type="button" class="btn-action-outline" style="padding: 0.28rem 0.55rem; font-size: 0.75rem; color: var(--accent-green); border-color: var(--border-green); background: rgba(0,255,157,0.06); cursor: pointer;" onclick="viewScreenshot(${i})">
+                <i class="fas fa-image"></i> View
+              </button>
+              <a href="${driveLink}" target="_blank" rel="noopener noreferrer" class="btn-action-outline" style="padding: 0.28rem 0.55rem; font-size: 0.75rem; color: #00f0ff; border-color: rgba(0,240,255,0.4); text-decoration: none;" title="Open in Google Drive">
+                <i class="fab fa-google-drive"></i> Drive
+              </a>
+            </div>
+          `;
+        } else {
+          proofHtml = `
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <button type="button" class="btn-action-outline" onclick="viewScreenshot(${i})" style="padding: 0.32rem 0.7rem; font-size: 0.78rem; color: var(--accent-green); border-color: var(--border-green); background: rgba(0,255,157,0.08); cursor: pointer;" title="Click to view photo">
+                <i class="fas fa-camera"></i> View Photo
+              </button>
+              <a href="${driveLink}" target="_blank" rel="noopener noreferrer" class="btn-action-outline" style="padding: 0.32rem 0.55rem; font-size: 0.78rem; color: #00f0ff; border-color: rgba(0,240,255,0.4); text-decoration: none;" title="Search in Google Drive">
+                <i class="fab fa-google-drive"></i> Drive
+              </a>
+            </div>
+          `;
+        }
+
+        return `
+          <tr>
+            <td>${i + 1}</td>
+            <td style="font-family: var(--font-mono); font-size: 0.8rem;">${r.timestamp || 'N/A'}</td>
+            <td><span class="pass-badge">${r.passId || 'N/A'}</span></td>
+            <td style="font-weight: 700; color: #fff;">${r.name || 'N/A'}</td>
+            <td>${r.mobile || 'N/A'}</td>
+            <td style="font-family: var(--font-mono);">${r.regNo || 'N/A'}</td>
+            <td>${r.college || 'N/A'}</td>
+            <td>${r.dept || 'N/A'}</td>
+            <td style="color: var(--accent-cyan); font-weight: 600;">${r.selectedEvents || 'N/A'}</td>
+            <td style="font-family: var(--font-mono); font-size: 0.82rem;">${r.foodPreference === 'Non-Veg' ? '<span style="color:#ff6b7a;">🍗 Non-Veg</span>' : '<span style="color:#00c875;">🌿 Veg</span>'}</td>
+            <td style="font-family: var(--font-mono); font-size: 0.88rem; font-weight: 700; color: var(--accent-cyan);">${r.utrNo || 'N/A'}</td>
+            <td>${proofHtml}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function getDirectImageSrc(proof) {
+      if (!proof) return null;
+      if (proof.startsWith('data:image')) return proof;
+      if (proof.startsWith('http')) {
+        const driveMatch = proof.match(/\/file\/d\/([^\/\?]+)/) || proof.match(/[?&]id=([^&]+)/);
+        if (driveMatch && driveMatch[1]) {
+          return `https://lh3.googleusercontent.com/d/${driveMatch[1]}`;
+        }
+        if (proof.includes('supabase.co/storage') || proof.match(/\.(jpeg|jpg|png|webp|gif)(\?|$)/i)) {
+          return proof;
+        }
+        return null;
+      }
+      if (proof.length > 100 && !proof.startsWith('http') && !proof.startsWith('[')) {
+        return 'data:image/jpeg;base64,' + proof;
+      }
+      return null;
+    }
+
+    let currentModalIndex = null;
+
+    async function viewScreenshot(index) {
+      const item = allRegistrations[index];
+      if (!item) return;
+      currentModalIndex = index;
+
+      const modal = document.getElementById('imageLightboxModal');
+      const img = document.getElementById('modalImageDisplay');
+      const spinner = document.getElementById('modalLoadingSpinner');
+      const fallback = document.getElementById('modalFallbackBox');
+      const btnDownload = document.getElementById('modalBtnDownload');
+      const btnOpenTab = document.getElementById('modalBtnOpenNewTab');
+      const driveSearchLink = document.getElementById('modalDriveSearchLink');
+
+      // Populate meta fields
+      document.getElementById('modalParticipantName').textContent = item.name || 'Participant';
+      document.getElementById('modalPassId').textContent = item.passId || 'N/A';
+      document.getElementById('modalUtrNo').textContent = item.utrNo || 'N/A';
+      document.getElementById('modalEventsFood').innerHTML = `
+        <span style="color: var(--accent-cyan); font-weight: 600;">${item.selectedEvents || 'Events'}</span>
+        &nbsp;&bull;&nbsp;
+        <span>${item.foodPreference === 'Non-Veg' ? '🍗 Non-Veg' : '🌿 Veg'}</span>
+      `;
+
+      const driveUrl = (item.paymentProof && item.paymentProof.startsWith('http'))
+        ? item.paymentProof
+        : `https://drive.google.com/drive/search?q=${encodeURIComponent(item.passId || item.utrNo || 'Receipt')}`;
+      if (driveSearchLink) driveSearchLink.href = driveUrl;
+
+      // Show Modal
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+      img.style.display = 'none';
+      fallback.style.display = 'none';
+      spinner.style.display = 'block';
+      btnDownload.style.display = 'none';
+      btnOpenTab.style.display = 'none';
+
+      // 1. Direct image check
+      let imgSrc = getDirectImageSrc(item.paymentProof);
+
+      // 2. Local storage check
+      if (!imgSrc && item.passId) {
+        try {
+          const cached = localStorage.getItem('sympo_proof_' + item.passId);
+          if (cached && cached.startsWith('data:image')) imgSrc = cached;
+        } catch(e) {}
+      }
+
+      // 3. IndexedDB check
+      if (!imgSrc && item.passId) {
+        try {
+          const idbImg = await getReceiptImage(item.passId);
+          if (idbImg) imgSrc = idbImg;
+        } catch(e) {}
+      }
+
+      spinner.style.display = 'none';
+
+      if (imgSrc) {
+        img.src = imgSrc;
+        img.style.display = 'block';
+        fallback.style.display = 'none';
+        btnDownload.style.display = 'inline-flex';
+        btnOpenTab.style.display = 'inline-flex';
+        btnOpenTab.href = imgSrc;
+      } else {
+        fallback.style.display = 'block';
+        img.style.display = 'none';
+      }
+    }
+
+    function closeLightboxModal() {
+      const modal = document.getElementById('imageLightboxModal');
+      if (modal) modal.style.display = 'none';
+      document.body.style.overflow = 'auto';
+      currentModalIndex = null;
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeLightboxModal();
+    });
+
+    function downloadModalImage() {
+      const img = document.getElementById('modalImageDisplay');
+      if (!img || !img.src) return;
+      const a = document.createElement('a');
+      a.href = img.src;
+      const item = currentModalIndex !== null ? allRegistrations[currentModalIndex] : null;
+      const passTag = item ? (item.passId || 'receipt').replace(/[^a-zA-Z0-9-]/g, '') : 'receipt';
+      a.download = `PaymentProof_${passTag}.jpg`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    function handleModalAttachPhoto(input) {
+      if (!input.files || input.files.length === 0) return;
+      const file = input.files[0];
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        const dataUrl = e.target.result;
+        const item = currentModalIndex !== null ? allRegistrations[currentModalIndex] : null;
+        if (item && item.passId) {
+          item.paymentProof = dataUrl;
+          try {
+            localStorage.setItem('sympo_proof_' + item.passId, dataUrl);
+            await saveReceiptImage(item.passId, dataUrl);
+          } catch(err) {}
+          renderRegistrationsTable(allRegistrations, '');
+          viewScreenshot(currentModalIndex);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Export Data to CSV File with Direct Supabase Picture URLs
+    async function exportToCsv() {
+      if (allRegistrations.length === 0) {
+        alert('No registrations available to export.');
+        return;
+      }
+
+      const headers = [
+        "Timestamp", "Pass ID", "Full Name", "Email Address", "Mobile Number",
+        "Register Number", "Gender", "College Name", "Department", "District",
+        "Pincode", "Selected Events", "Food Preference", "Referred?", "Referral Source", "Referral Dept",
+        "UTR Ref Number", "Receipt Picture URL (Supabase)"
+      ];
+
+      const supabaseUrl = (window.SUPABASE_URL && !window.SUPABASE_URL.includes('your-supabase'))
+        ? window.SUPABASE_URL
+        : "https://ufemjutavphtuzdyrfea.supabase.co";
+      const supabaseAnonKey = (window.SUPABASE_ANON_KEY && !window.SUPABASE_ANON_KEY.includes('your-supabase'))
+        ? window.SUPABASE_ANON_KEY
+        : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVmZW1qdXRhdnBodHV6ZHlyZmVhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk4MzM0NDEsImV4cCI6MjEwNTQwOTQ0MX0.bNq1vF35PCVoEC6OElJkWrcb6Y2w8Z4W4nYaTw00bGg";
+
+      // Process each row to ensure a direct Supabase Picture URL
+      const rows = [];
+      for (const r of allRegistrations) {
+        let picUrl = r.paymentProof || '';
+
+        // 1. If it's already a direct Supabase Storage picture URL, keep it!
+        if (picUrl.includes('supabase.co/storage')) {
+          // direct pic url ready
+        } 
+        // 2. If it's a Google Drive file link, convert to direct image
+        else if (picUrl.includes('drive.google.com/file/d/')) {
+          const driveMatch = picUrl.match(/\/file\/d\/([^\/\?]+)/);
+          if (driveMatch && driveMatch[1]) {
+            picUrl = `https://lh3.googleusercontent.com/d/${driveMatch[1]}`;
+          }
+        } 
+        // 3. If it has a local image in localStorage or IndexedDB, upload it to Supabase Storage now!
+        else {
+          let localImg = (picUrl.startsWith('data:image')) ? picUrl : null;
+          if (!localImg && r.passId) {
+            try {
+              const cached = localStorage.getItem('sympo_proof_' + r.passId);
+              if (cached && cached.startsWith('data:image')) localImg = cached;
+            } catch(e) {}
+            if (!localImg) {
+              try { localImg = await getReceiptImage(r.passId); } catch(e) {}
+            }
+          }
+
+          if (localImg && localImg.startsWith('data:image')) {
+            try {
+              const base64Data = localImg.split('base64,')[1];
+              const binaryStr = atob(base64Data);
+              const bytes = new Uint8Array(binaryStr.length);
+              for (let i = 0; i < binaryStr.length; i++) {
+                bytes[i] = binaryStr.charCodeAt(i);
+              }
+              const blob = new Blob([bytes], { type: 'image/jpeg' });
+              const passTag = (r.passId || 'PASS').replace(/[^a-zA-Z0-9-]/g, '');
+              const fileName = `Receipt_${passTag}_${Date.now()}.jpg`;
+
+              const uploadRes = await fetch(`${supabaseUrl}/storage/v1/object/payment-proofs/${fileName}`, {
+                method: 'POST',
+                headers: {
+                  'apikey': supabaseAnonKey,
+                  'Authorization': `Bearer ${supabaseAnonKey}`,
+                  'Content-Type': 'image/jpeg',
+                  'x-upsert': 'true'
+                },
+                body: blob
+              });
+
+              if (uploadRes.ok) {
+                picUrl = `${supabaseUrl}/storage/v1/object/public/payment-proofs/${fileName}`;
+                r.paymentProof = picUrl;
+                try { localStorage.setItem('sympo_proof_' + r.passId, picUrl); } catch(e) {}
+              }
+            } catch(e) {}
+          }
+        }
+
+        // If still a drive search link or generic status, provide direct Supabase picture URL
+        if (!picUrl || picUrl.includes('drive.google.com/drive/search') || picUrl.startsWith('[')) {
+          const passTag = (r.passId || 'PASS').replace(/[^a-zA-Z0-9-]/g, '');
+          picUrl = `${supabaseUrl}/storage/v1/object/public/payment-proofs/Receipt_${passTag}.jpg`;
+        }
+
+        rows.push([
+          `"${(r.timestamp || '').replace(/"/g, '""')}"`,
+          `"${(r.passId || '').replace(/"/g, '""')}"`,
+          `"${(r.name || '').replace(/"/g, '""')}"`,
+          `"${(r.email || '').replace(/"/g, '""')}"`,
+          `"${(r.mobile || '').replace(/"/g, '""')}"`,
+          `"${(r.regNo || '').replace(/"/g, '""')}"`,
+          `"${(r.gender || '').replace(/"/g, '""')}"`,
+          `"${(r.college || '').replace(/"/g, '""')}"`,
+          `"${(r.dept || '').replace(/"/g, '""')}"`,
+          `"${(r.district || '').replace(/"/g, '""')}"`,
+          `"${(r.pincode || '').replace(/"/g, '""')}"`,
+          `"${(r.selectedEvents || '').replace(/"/g, '""')}"`,
+          `"${(r.foodPreference || 'Veg').replace(/"/g, '""')}"`,
+          `"${(r.referred || '').replace(/"/g, '""')}"`,
+          `"${(r.referralSource || '').replace(/"/g, '""')}"`,
+          `"${(r.referralDept || '').replace(/"/g, '""')}"`,
+          `"${(r.utrNo || '').replace(/"/g, '""')}"`,
+          `"${picUrl.replace(/"/g, '""')}"`
+        ]);
+      }
+
+      const csvString = "\uFEFF" + [headers.join(','), ...rows.map(e => e.join(','))].join('\r\n');
+      const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", `INTELLI-GENZ-2K26_Participants_${new Date().toISOString().slice(0, 10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
+
+    // Admin Authentication Credentials Fixed
+    const REQUIRED_ADMIN_USER = 'admin';
+    const REQUIRED_ADMIN_PASS = 'EVENT@2k26';
+
+    function checkAdminAuth() {
+      const isAuth = sessionStorage.getItem('sympo_admin_auth') === 'true';
+      const gate = document.getElementById('adminLoginGate');
+      if (isAuth) {
+        if (gate) {
+          gate.style.display = 'none';
+        }
+        document.body.style.overflow = 'auto';
+        return true;
+      } else {
+        if (gate) {
+          gate.style.display = 'flex';
+          gate.style.opacity = '1';
+        }
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => {
+          document.getElementById('adminLoginUser')?.focus();
+        }, 120);
+        return false;
+      }
+    }
+
+    function handleAdminLogin(event) {
+      if (event) event.preventDefault();
+      const userEl = document.getElementById('adminLoginUser');
+      const passEl = document.getElementById('adminLoginPass');
+      const errBox = document.getElementById('loginErrorMessage');
+      const errText = document.getElementById('loginErrorText');
+      const submitBtn = document.getElementById('btnAdminLoginSubmit');
+
+      const user = (userEl ? userEl.value : '').trim();
+      const pass = (passEl ? passEl.value : '').trim();
+
+      if (user.toLowerCase() === REQUIRED_ADMIN_USER && pass === REQUIRED_ADMIN_PASS) {
+        // Successful login
+        if (errBox) errBox.style.display = 'none';
+        if (submitBtn) {
+          submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> ACCESS GRANTED // INITIALIZING...';
+          submitBtn.style.background = 'linear-gradient(135deg, #00c875, #00f0ff)';
+          submitBtn.style.color = '#000';
+        }
+
+        sessionStorage.setItem('sympo_admin_auth', 'true');
+
+        setTimeout(() => {
+          const gate = document.getElementById('adminLoginGate');
+          if (gate) {
+            gate.style.opacity = '0';
+            setTimeout(() => {
+              gate.style.display = 'none';
+              document.body.style.overflow = 'auto';
+            }, 300);
+          }
+          loadRegistrations();
+        }, 400);
+      } else {
+        // Failed login
+        if (errBox) {
+          errBox.style.display = 'flex';
+          errText.textContent = 'INVALID OPERATOR ID OR PASSWORD // ACCESS DENIED';
+        }
+        if (passEl) {
+          passEl.value = '';
+          passEl.focus();
+        }
+      }
+    }
+
+    function toggleLoginPassword() {
+      const passInput = document.getElementById('adminLoginPass');
+      const eyeIcon = document.getElementById('eyeIcon');
+      if (passInput) {
+        if (passInput.type === 'password') {
+          passInput.type = 'text';
+          if (eyeIcon) {
+            eyeIcon.classList.remove('fa-eye');
+            eyeIcon.classList.add('fa-eye-slash');
+          }
+        } else {
+          passInput.type = 'password';
+          if (eyeIcon) {
+            eyeIcon.classList.remove('fa-eye-slash');
+            eyeIcon.classList.add('fa-eye');
+          }
+        }
+      }
+    }
+
+    function handleAdminLogout() {
+      if (confirm('Are you sure you want to sign out from the Admin Terminal?')) {
+        sessionStorage.removeItem('sympo_admin_auth');
+        const userEl = document.getElementById('adminLoginUser');
+        const passEl = document.getElementById('adminLoginPass');
+        const errBox = document.getElementById('loginErrorMessage');
+        const submitBtn = document.getElementById('btnAdminLoginSubmit');
+        if (userEl) userEl.value = '';
+        if (passEl) passEl.value = '';
+        if (errBox) errBox.style.display = 'none';
+        if (submitBtn) {
+          submitBtn.innerHTML = '<i class="fas fa-lock"></i> AUTHENTICATE &amp; ENTER DESK &rarr;';
+          submitBtn.style.background = '';
+          submitBtn.style.color = '';
+        }
+        checkAdminAuth();
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (checkAdminAuth()) {
+        loadRegistrations();
+      }
+
+      // Refresh Live Data Button
+      const btnRefreshLive = document.getElementById('btnRefreshLive');
+      if (btnRefreshLive) {
+        btnRefreshLive.addEventListener('click', () => {
+          if (checkAdminAuth()) loadRegistrations();
+        });
+      }
+
+      // Export CSV
+      document.getElementById('btnExportCsv').addEventListener('click', exportToCsv);
+
+      // Search Filter
+      document.getElementById('searchInput').addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        if (!query) {
+          renderRegistrationsTable(allRegistrations);
+          return;
+        }
+
+        const filtered = allRegistrations.filter(r => 
+          (r.name && r.name.toLowerCase().includes(query)) ||
+          (r.mobile && r.mobile.includes(query)) ||
+          (r.regNo && r.regNo.toLowerCase().includes(query)) ||
+          (r.college && r.college.toLowerCase().includes(query)) ||
+          (r.selectedEvents && r.selectedEvents.toLowerCase().includes(query)) ||
+          (r.passId && r.passId.toLowerCase().includes(query))
+        );
+        renderRegistrationsTable(filtered);
+      });
+
+      // Configure Google Webhook (preserve user customized URL if set)
+      const defaultWebUrl = 'https://script.google.com/macros/s/AKfycbxEwfpBPZzClGj7xdxXfOMz8qwp0xWXpiVBKkwkbY8aPNWWslRlVahWf6BgPEculWz6/exec';
+      if (!localStorage.getItem('sympo_google_sheet_url')) {
+        localStorage.setItem('sympo_google_sheet_url', defaultWebUrl);
+      }
+
+      document.getElementById('btnConfigureWebhook').addEventListener('click', () => {
+        const currentUrl = localStorage.getItem('sympo_google_sheet_url') || defaultWebUrl;
+        const inputUrl = prompt("Enter your Google Apps Script Web App URL to sync real-time registrations to Google Sheets:", currentUrl);
+        if (inputUrl !== null) {
+          localStorage.setItem('sympo_google_sheet_url', inputUrl.trim());
+          alert("Google Sheet Webhook URL saved successfully!");
+          loadRegistrations();
+        }
+      });
+
+      // Clear Data
+      document.getElementById('btnClearData').addEventListener('click', () => {
+        if (confirm("Are you sure you want to clear all stored registrations from local desk database?")) {
+          localStorage.removeItem('sympo_registrations_v2');
+          sessionStorage.removeItem('sympo_registrations_v2');
+          allRegistrations = [];
+          renderRegistrationsTable([], '');
+        }
+      });
+
+      // Real-time synchronization across browser tabs
+      window.addEventListener('storage', (e) => {
+        if (e.key === 'sympo_registrations_v2') {
+          if (sessionStorage.getItem('sympo_admin_auth') === 'true') {
+            console.log('🔄 New registration detected via LocalStorage in another tab, refreshing admin desk...');
+            loadRegistrations();
+          }
+        }
+      });
+
+      try {
+        if (window.BroadcastChannel) {
+          const bc = new BroadcastChannel('sympo_channel');
+          bc.onmessage = (msg) => {
+            if (msg && msg.data && msg.data.type === 'NEW_REGISTRATION') {
+              if (sessionStorage.getItem('sympo_admin_auth') === 'true') {
+                console.log('⚡ New registration received via BroadcastChannel:', msg.data.data);
+                loadRegistrations();
+              }
+            }
+          };
+        }
+      } catch(e) {}
+
+      // Auto-poll for new registrations every 15 seconds (only when authenticated)
+      setInterval(() => {
+        if (sessionStorage.getItem('sympo_admin_auth') === 'true') {
+          loadRegistrations();
+        }
+      }, 15000);
+
+      // Local Clock
+      setInterval(() => {
+        const now = new Date();
+        document.getElementById('hudLocalClock').textContent = now.toLocaleTimeString('en-US', { hour12: false }) + ' IST';
+      }, 1000);
+    });
+  </script>
+</body>
+</html>
